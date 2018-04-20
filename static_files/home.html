@@ -60,7 +60,13 @@
             //display popular images
             const popularRequestUrl = 'home/popular';
             $ajax({
-              
+              url: popularRequestUrl,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+                console.log('Recieved popular pictures');
+                console.log(data);
+              }
             });
             
 		});
@@ -78,7 +84,16 @@
 			$('#followingContent').removeClass('hide');
 			$('#following').addClass('active');
             //display followed images
-            const followingRequestUrl = 'home/following'
+            const followingRequestUrl = 'home/following';
+            $ajax({
+              url: followingRequestUrl,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+                console.log('Recieved followed pictures');
+                console.log(data);
+              }
+            });
 		});
 		$('#trending').click(function(e){
 			if($('#popularContent').hasClass('hide')){
@@ -94,7 +109,16 @@
 			$('#trendingContent').removeClass('hide');
 			$('#trending').addClass('active');
             //display trending images
-            const trendingRequestUrl = 'home/trending'
+            const trendingRequestUrl = 'home/trending';
+            $ajax({
+              url: trendingRequestUrl,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+                console.log('Recieved trending pictures');
+                console.log(data);
+              }
+            });
 		});
 	</script>
 </body>
