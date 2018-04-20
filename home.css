@@ -1,0 +1,80 @@
+#topNav {
+	z-index: 1;
+}
+
+.search {
+	float: right;
+	width: 15%;
+}
+
+#leftMenu {
+	margin-top: 3.5rem;
+}
+
+#leftMenu li {
+	padding: 5px 0;
+	padding-left: 20px;
+}
+
+.main {
+	margin-left: 160px; /* Same as the width of the sidenav */
+    padding: 0px 10px;
+}
+
+#innerNav {
+	margin-top: 2rem;
+	margin-left: 3.5rem;
+	overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 90%;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+#innerNav li {
+	display: inline;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f8f9fa;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.navbar-brand {
+	margin-left: 0.3rem;
+	font-size: 1.75rem;
+}
+
+.nav-item:hover {
+	background-color: #ddd;
+}
+
+.tabcontent {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    margin-left: 3.5rem;
+    width: 90%;
+}
+
+.hide {
+	display: none;
+}
+
+.active {
+	background-color: #ccc;
+}
