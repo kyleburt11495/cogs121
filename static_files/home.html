@@ -40,10 +40,11 @@
 				<p>This is following content</p>
 			</div>
 		</div>
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-		<script>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script>
 		$('#popular').click(function(e){
 			if($('#trendingContent').hasClass('hide')){
 				$('#trendingContent').removeClass('hide');
@@ -57,18 +58,18 @@
 			$('#following').removeClass('active');
 			$('#popularContent').removeClass('hide');
 			$('#popular').addClass('active');
-
-			//display popular images
-			const popularRequestUrl = 'home/popular';
-			$.ajax({
-				url: popularRequestUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved popular pictures');
-					console.log(data);
-				}
-			});
+            //display popular images
+            const popularRequestUrl = '/popular';
+            console.log('Clicked popular');
+            $.ajax({
+              url: popularRequestUrl,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+                console.log('Received popular pictures');
+                console.log(data);
+              }
+            });
 
 		});
 		$('#following').click(function(e){
@@ -84,17 +85,17 @@
 			$('#popular').removeClass('active');
 			$('#followingContent').removeClass('hide');
 			$('#following').addClass('active');
-			//display followed images
-			const followingRequestUrl = 'home/following';
-			$ajax({
-				url: followingRequestUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved followed pictures');
-					console.log(data);
-				}
-			});
+            //display followed images
+            const followingRequestUrl = '/following';
+            $.ajax({
+              url: followingRequestUrl,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+                console.log('Received followed pictures');
+                console.log(data);
+              }
+            });
 		});
 		$('#trending').click(function(e){
 			if($('#popularContent').hasClass('hide')){
@@ -109,17 +110,17 @@
 			$('#following').removeClass('active');
 			$('#trendingContent').removeClass('hide');
 			$('#trending').addClass('active');
-			//display trending images
-			const trendingRequestUrl = 'home/trending';
-			$ajax({
-				url: trendingRequestUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved trending pictures');
-					console.log(data);
-				}
-			});
+            //display trending images
+            const trendingRequestUrl = '/trending';
+            $.ajax({
+              url: trendingRequestUrl,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+                console.log('Received trending pictures');
+                console.log(data);
+              }
+            });
 		});
 		</script>
 	</body>
