@@ -57,6 +57,12 @@
 			$('#following').removeClass('active');
 			$('#popularContent').removeClass('hide');
 			$('#popular').addClass('active');
+            //display popular images
+            const popularRequestUrl = 'home/popular';
+            $ajax({
+              
+            });
+            
 		});
 		$('#following').click(function(e){
 			if($('#trendingContent').hasClass('hide')){
@@ -71,6 +77,8 @@
 			$('#popular').removeClass('active');
 			$('#followingContent').removeClass('hide');
 			$('#following').addClass('active');
+            //display followed images
+            const followingRequestUrl = 'home/following'
 		});
 		$('#trending').click(function(e){
 			if($('#popularContent').hasClass('hide')){
@@ -85,7 +93,11 @@
 			$('#following').removeClass('active');
 			$('#trendingContent').removeClass('hide');
 			$('#trending').addClass('active');
+            //display trending images
+            const trendingRequestUrl = 'home/trending'
 		});
 	</script>
 </body>
 </html>
+
+
