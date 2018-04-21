@@ -12,27 +12,27 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/messages', (req, res) => {
-  console.log('Running home');
+  console.log('Running messages');
 
 });
 
 app.get('/picview', (req, res) => {
-  console.log('Running home');
+  console.log('Running picview');
 
 });
 
 app.get('/profile', (req, res) => {
-  console.log('Running home');
+  console.log('Running profile');
 
 });
 
 app.get('/project', (req, res) => {
-  console.log('Running home');
+  console.log('Running project');
 
 });
 
 app.get('/upload', (req, res) => {
-    console.log('Running home');
+    console.log('Running upload');
 
 });
 
