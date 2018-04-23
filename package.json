@@ -1,0 +1,22 @@
+{
+  "name": "cogs121",
+  "version": "1.0.0",
+  "description": "COGS 121 Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyleburt11495/cogs121.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyleburt11495/cogs121/issues"
+  },
+  "homepage": "https://github.com/kyleburt11495/cogs121#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
