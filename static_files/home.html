@@ -57,42 +57,13 @@
 			<img class="project" id="image3" src="interior_design1.jpg">
 			<img class="project" id="image4" src="interior_design1.jpg">
 		</div>
-		<div class="tabcontent hide" id="popularContent">
-          <h4 class="category-title">STORIES</h4>
-			<div id="stories">
-				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
-				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
-				<img class="story img-responsive" id="story3" alt="story3" src="story3.jpg"/>
-				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
-				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
-			</div>
-			<h4 class="category-title">PROJECTS</h4>
-			<img class="popular img-responsive" id="image5" alt="popular1" src="interior_design1.jpg"/>
-			<img class="popular img-responsive" id="image6" alt="popular2" src="interior_design1.jpg"/>
-			<img class="popular img-responsive" id="image7" alt="popular3" src="interior_design1.jpg"/>
-			<img class="popular img-responsive" id="image8" alt="popular4" src="interior_design1.jpg"/>
-		</div>
-		<div class="tabcontent hide" id="followingContent">
-          <h4 class="category-title">STORIES</h4>
-			<div id="stories">
-				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
-				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
-				<img class="story img-responsive" id="story3" alt="story3" src="story3.jpg"/>
-				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
-				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
-			</div>
-			<h4 class="category-title">PROJECTS</h4>
-			<img class="follow img-responsive" id="image9" alt="Following1" src="interior_design1.jpg"/>
-			<img class="follow img-responsive" id="image10" alt="Following2" src="interior_design1.jpg"/>
-			<img class="follow img-responsive" id="image11" alt="Following3" src="interior_design1.jpg"/>
-			<img class="follow img-responsive" id="image12" alt="Following4" src="interior_design1.jpg"/>
-		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 	$('#popular').click(function(e){
+      /**
 		if($('#trendingContent').hasClass('hide')){
 			$('#trendingContent').removeClass('hide');
 		}
@@ -105,7 +76,11 @@
 		$('#following').removeClass('active');
 		$('#popularContent').removeClass('hide');
 		$('#popular').addClass('active');
+        */
 		//display popular images
+        $('#trending').removeClass('active');
+		$('#following').removeClass('active');
+		$('#popular').addClass('active');
 		const popularRequestUrl = '/popular';
 		console.log('Clicked popular');
 		$.ajax({
@@ -115,16 +90,25 @@
 			success: (data) => {
 				console.log('Received popular pictures');
 				console.log(data);
-				$('#image1').attr('src', data.img1);
-				$('#image2').attr('src', data.img2);
-				$('#image3').attr('src', data.img3);
-				$('#image4').attr('src', data.img4);
+                const popularProjects = data.popularProjects;
+                const popularStories = data.popularStories;
+				$('#image1').attr('src', popularProjects.img1);
+				$('#image2').attr('src', popularProjects.img2);
+				$('#image3').attr('src', popularProjects.img3);
+				$('#image4').attr('src', popularProjects.img4);
+                $('#story1').attr('src', popularStories.img1);
+                $('#story2').attr('src', popularStories.img2);
+                $('#story3').attr('src', popularStories.img3);
+                $('#story4').attr('src', popularStories.img4);
+                $('#story5').attr('src', popularStories.img5);
+
 
 			}
 		});
 
 	});
 	$('#following').click(function(e){
+        /**
 		if($('#trendingContent').hasClass('hide')){
 			$('#trendingContent').removeClass('hide');
 		}
@@ -137,6 +121,11 @@
 		$('#popular').removeClass('active');
 		$('#followingContent').removeClass('hide');
 		$('#following').addClass('active');
+        */
+  		$('#trending').removeClass('active');
+		$('#popular').removeClass('active');
+		$('#following').addClass('active');
+
 		//display followed images
 		const followingRequestUrl = '/following';
 		$.ajax({
@@ -146,15 +135,23 @@
 			success: (data) => {
 				console.log('Received followed pictures');
 				console.log(data);
-				$('#image5').attr('src', data.img1);
-				$('#image6').attr('src', data.img2);
-				$('#image7').attr('src', data.img3);
-				$('#image8').attr('src', data.img4);
+                const followingProjects = data.followingProjects;
+                const followingStories = data.followingStories;
+				$('#image1').attr('src', followingProjects.img1);
+				$('#image2').attr('src', followingProjects.img2);
+				$('#image3').attr('src', followingProjects.img3);
+				$('#image4').attr('src', followingProjects.img4);
+                $('#story1').attr('src', followingStories.img1);
+                $('#story2').attr('src', followingStories.img2);
+                $('#story3').attr('src', followingStories.img3);
+                $('#story4').attr('src', followingStories.img4);
+                $('#story5').attr('src', followingStories.img5);
 
 			}
 		});
 	});
 	$('#trending').click(function(e){
+      /**
 		if($('#popularContent').hasClass('hide')){
 			$('#popularContent').removeClass('hide');
 		}
@@ -167,6 +164,11 @@
 		$('#following').removeClass('active');
 		$('#trendingContent').removeClass('hide');
 		$('#trending').addClass('active');
+        */
+  		$('#popular').removeClass('active');
+		$('#following').removeClass('active');
+		$('#trending').addClass('active');
+
 		//display trending images
 		const trendingRequestUrl = '/trending';
 		$.ajax({
@@ -176,10 +178,17 @@
 			success: (data) => {
 				console.log('Received trending pictures');
 				console.log(data);
-				$('#image9').attr('src', data.img1);
-				$('#image10').attr('src', data.img2);
-				$('#image11').attr('src', data.img3);
-				$('#image12').attr('src', data.img4);
+                const trendingProjects = data.trendingProjects;
+                const trendingStories = data.trendingStories;
+				$('#image1').attr('src', trendingProjects.img1);
+				$('#image2').attr('src', trendingProjects.img2);
+				$('#image3').attr('src', trendingProjects.img3);
+				$('#image4').attr('src', trendingProjects.img4);
+                $('#story1').attr('src', trendingStories.img1);
+                $('#story2').attr('src', trendingStories.img2);
+                $('#story3').attr('src', trendingStories.img3);
+                $('#story4').attr('src', trendingStories.img4);
+                $('#story5').attr('src', trendingStories.img5);
 
 			}
 		});

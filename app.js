@@ -50,19 +50,38 @@ const following = {
   img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg', img4: 'interior_design6.jpg'
 };
 
-const stories = {
-  story1:'story1.jpg', story2:'story2.jpg', story3:'story3.jpg', story4:'story4.jpg',
-  story5:'story5.jpg'
+const trendingStories = {
+  img1:'story1.jpg', img2:'story2.jpg', img3:'story3.jpg', img4:'story4.jpg',
+  img5:'story5.jpg'
 };
 
+const popularStories = {
+  img1:'story3.jpg', img2:'story7.jpg', img3:'story8.jpg', img4:'story9.jpg',
+  img5:'story2.jpg'
+};
+
+const followingStories = {
+  img1:'story4.jpg', img2:'story1.jpg', img3:'story8.jpg', img4:'story6.jpg',
+  img5:'story5.jpg'
+};
+
+const database = {
+                  trendingProjects: trending, 
+                  popularProjects: popular, 
+                  followingProjects: following, 
+                  trendingStories: trendingStories,
+                  popularStories: popularStories,
+                  followingStories: followingStories 
+                 }
+
 app.get('/trending', (req, res) => {
-  res.send(trending);
+  res.send(database);
 });
 
 app.get('/popular', (req, res) =>{
-  res.send(popular);
+  res.send(database);
 });
 
 app.get('/following', (req, res) =>{
-  res.send(following);
+  res.send(database);
 });
