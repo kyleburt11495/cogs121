@@ -53,10 +53,10 @@
 				<div class="story"></div>
 			</div>
 			<h4 class="category-title">PROJECTS</h4>
-			<div class="project"></div>
-			<div class="project"></div>
-			<div class="project"></div>
-			<div class="project"></div>
+			<img class="project" id="image1" src="interior_design4.jpg">
+		    <img class="project" id="image2" src="interior_design3.jpg">
+			<img class="project" id="image3" src="interior_design7.jpg">
+		    <img class="project" id="image4" src="interior_design5.jpg">
 		</div>
 		<div class="tabcontent hide" id="popularContent">
 			<p>This is popular content</p>
@@ -92,6 +92,11 @@
               success: (data) => {
                 console.log('Received popular pictures');
                 console.log(data);
+                $('#image1').attr('src', data.img1);
+                $('#image2').attr('src', data.img2);
+                $('#image3').attr('src', data.img3);
+                $('#image4').attr('src', data.img4);
+
               }
             });
 
@@ -118,6 +123,11 @@
               success: (data) => {
                 console.log('Received followed pictures');
                 console.log(data);
+                $('#image1').attr('src', data.img1);
+                $('#image2').attr('src', data.img2);
+                $('#image3').attr('src', data.img3);
+                $('#image4').attr('src', data.img4);
+                
               }
             });
 		});
@@ -143,6 +153,11 @@
               success: (data) => {
                 console.log('Received trending pictures');
                 console.log(data);
+                $('#image1').attr('src', data.img1);
+                $('#image2').attr('src', data.img2);
+                $('#image3').attr('src', data.img3);
+                $('#image4').attr('src', data.img4);
+
               }
             });
 		});

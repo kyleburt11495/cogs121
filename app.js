@@ -39,15 +39,15 @@ app.get('/upload', (req, res) => {
 //Simulate database in memory
 //Trending, popular, following
 const trending = {
-  img1:'interior_design1.jpg', img2:'interior_design2.jpg', img3:'interior_design3.jpg'
+  img1:'interior_design1.jpg', img2:'interior_design2.jpg', img3:'interior_design3.jpg', img4:'interior_design5.jpg'
 };
 
 const popular = {
-  img1:'interior_design4.jpg', img2:'interior_design5.jpg', img3:'interior_design6.jpg'
+  img1:'interior_design4.jpg', img2:'interior_design5.jpg', img3:'interior_design6.jpg', img4: 'interior_design2.jpg'
 };
 
 const following = {
-  img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg'
+  img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg', img4: 'interior_design6.jpg'
 }
 
 app.get('/trending', (req, res) => {
