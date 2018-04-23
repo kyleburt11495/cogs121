@@ -56,16 +56,13 @@ const stories = {
 };
 
 app.get('/trending', (req, res) => {
-  const trends = Object.keys(trending);
-  res.send(trends);
+  res.send(trending);
 });
 
 app.get('/popular', (req, res) =>{
-  const pop = Object.keys(popular);
   res.send(popular);
 });
 
 app.get('/following', (req, res) =>{
-  const follow = Object.keys(following);
-  res.send(follow);
+  res.send(following);
 });

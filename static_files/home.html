@@ -58,18 +58,34 @@
 			<img class="project" id="image4" src="interior_design5.jpg">
 		</div>
 		<div class="tabcontent hide" id="popularContent">
-			<p>This is popular content</p>
-			<img class="popular img-responsive" id="image1" alt="popular1" src="interior_design1.jpg"/>
-			<img class="popular img-responsive" id="image2" alt="popular2" src="interior_design4.jpg"/>
-			<img class="popular img-responsive" id="image3" alt="popular3" src="interior_design2.jpg"/>
-			<img class="popular img-responsive" id="image4" alt="popular4" src="interior_design6.jpg"/>
+          <h4 class="category-title">STORIES</h4>
+			<div id="stories">
+				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
+				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
+				<img class="story img-responsive" id="story3" alt="story3" src="story3.jpg"/>
+				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
+				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
+			</div>
+			<h4 class="category-title">PROJECTS</h4>
+			<img class="popular img-responsive" id="image5" alt="popular1" src="interior_design1.jpg"/>
+			<img class="popular img-responsive" id="image6" alt="popular2" src="interior_design4.jpg"/>
+			<img class="popular img-responsive" id="image7" alt="popular3" src="interior_design2.jpg"/>
+			<img class="popular img-responsive" id="image8" alt="popular4" src="interior_design6.jpg"/>
 		</div>
 		<div class="tabcontent hide" id="followingContent">
-			<p>This is following content</p>
-			<img class="follow img-responsive" id="image1" alt="Following1" src="interior_design6.jpg"/>
-			<img class="follow img-responsive" id="image2" alt="Following2" src="interior_design7.jpg"/>
-			<img class="follow img-responsive" id="image3" alt="Following3" src="interior_design8.jpg"/>
-			<img class="follow img-responsive" id="image4" alt="Following4" src="interior_design9.jpg"/>
+          <h4 class="category-title">STORIES</h4>
+			<div id="stories">
+				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
+				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
+				<img class="story img-responsive" id="story3" alt="story3" src="story3.jpg"/>
+				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
+				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
+			</div>
+			<h4 class="category-title">PROJECTS</h4>
+			<img class="follow img-responsive" id="image9" alt="Following1" src="interior_design6.jpg"/>
+			<img class="follow img-responsive" id="image10" alt="Following2" src="interior_design7.jpg"/>
+			<img class="follow img-responsive" id="image11" alt="Following3" src="interior_design8.jpg"/>
+			<img class="follow img-responsive" id="image12" alt="Following4" src="interior_design9.jpg"/>
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -130,10 +146,10 @@
 			success: (data) => {
 				console.log('Received followed pictures');
 				console.log(data);
-				$('#image1').attr('src', data.img1);
-				$('#image2').attr('src', data.img2);
-				$('#image3').attr('src', data.img3);
-				$('#image4').attr('src', data.img4);
+				$('#image5').attr('src', data.img1);
+				$('#image6').attr('src', data.img2);
+				$('#image7').attr('src', data.img3);
+				$('#image8').attr('src', data.img4);
 
 			}
 		});
@@ -160,10 +176,10 @@
 			success: (data) => {
 				console.log('Received trending pictures');
 				console.log(data);
-				$('#image1').attr('src', data.img1);
-				$('#image2').attr('src', data.img2);
-				$('#image3').attr('src', data.img3);
-				$('#image4').attr('src', data.img4);
+				$('#image9').attr('src', data.img1);
+				$('#image10').attr('src', data.img2);
+				$('#image11').attr('src', data.img3);
+				$('#image12').attr('src', data.img4);
 
 			}
 		});
