@@ -8,7 +8,7 @@ __Screen #1 (App's home page)__
 ![](m3_images/homepage.png)
 
 __Screen #2__
-
+![](m3_images/screen2.png)
 
 
 __Explanation__
