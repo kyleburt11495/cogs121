@@ -63,6 +63,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
+      
 	$('#popular').click(function(e){
 		/**
 		if($('#trendingContent').hasClass('hide')){
@@ -194,6 +195,31 @@ $.ajax({
 	}
 });
 });
+      
+$(document).ready(function() {
+      const trendingRequestUrl = '/trending';
+      $.ajax({
+          url: trendingRequestUrl,
+          type: 'GET',
+          datatype: 'JSON',
+          success: (data) => {
+              console.log('Received trending pictures');
+              console.log(data);
+              const trendingProjects = data.trendingProjects;
+              const trendingStories = data.trendingStories;
+              $('#image1').attr('src', trendingProjects.img1);
+              $('#image2').attr('src', trendingProjects.img2);
+              $('#image3').attr('src', trendingProjects.img3);
+              $('#image4').attr('src', trendingProjects.img4);
+              $('#story1').attr('src', trendingStories.img1);
+              $('#story2').attr('src', trendingStories.img2);
+              $('#story3').attr('src', trendingStories.img3);
+              $('#story4').attr('src', trendingStories.img4);
+              $('#story5').attr('src', trendingStories.img5);
+
+          }
+      });
+    });
 </script>
 </body>
 </html>
