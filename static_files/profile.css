@@ -55,6 +55,7 @@ hr {
 
 /*profile sidebar*/
 .sidebar-profile-info{
+	text-align: center;
   max-width: 470px;
   background: #fff;
   border-radius: 6px;
@@ -64,6 +65,7 @@ hr {
   width: auto;
   float: none;
   border: 1px solid #ddd;
+	margin: 2rem;
 }
 
 .profpic{
@@ -72,9 +74,9 @@ hr {
   margin-top: 40px;
 }
 
-body{
+/* body{
   text-align: center;
-}
+}  */
 
 ul{
   list-style: none;
@@ -88,12 +90,18 @@ ul{
   padding: 8px 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
+	text-align: center;
 }
 
 
 /*profile content*/
 .sidebar-content{
-  display: grid;
+  display: inline-block;
+	margin: 2rem;
+}
+
+#info{
+	display: inline-block;
 }
 
 img{
