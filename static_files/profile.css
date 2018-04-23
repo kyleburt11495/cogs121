@@ -1,0 +1,94 @@
+
+#nav {
+	background-color: black;
+}
+
+.search {
+	float: right;
+	width: 15%;
+	margin-right: 1rem;
+}
+
+#navbarSupportedContent {
+	float: right;
+}
+
+.main {
+    padding: 0px 10px;
+}
+
+.navbar-brand {
+	margin-left: 0.3rem;
+	font-size: 1.75rem;
+}
+
+.tabcontent {
+    padding: 6px 12px;
+    border-top: none;
+    margin: 0 3.5rem;
+}
+
+.hide {
+	display: none;
+}
+
+.active {
+	text-decoration: underline;
+}
+
+a {
+	color: white;
+}
+
+a:hover {
+	color: red;
+}
+
+hr {
+	width: 85%;
+}
+
+.input-group {
+	width: 55%;
+	margin: auto;
+}
+
+/*profile sidebar*/
+.sidebar-profile-info{
+  max-width: 470px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+  margin: 30px 0px 30px 15px;
+  margin-right: auto;
+  width: auto;
+  float: none;
+  border: 1px solid #ddd;
+}
+
+img{
+  width: 100px;
+  height: auto;
+  margin-top: 40px;
+}
+
+body{
+  text-align: center;
+}
+
+ul{
+  list-style: none;
+}
+
+.sidebar-profile-info ul.skills-list li{
+  font-size:12px;
+  line-height: 1;
+  color: #444;
+  display: inline-block;
+  padding: 8px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+/*profile content*/

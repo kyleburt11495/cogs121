@@ -3,29 +3,75 @@
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-	<link rel="stylesheet" href="home.css">
+	<link rel="stylesheet" href="profile.css">
 </head>
 <body>
-	<nav class="navbar navbar-light bg-light" id="topNav">
-  		<a class="navbar-brand" href="home.html">InLook</a>
-		<div class="input-group md-form form-sm form-2 pl-0 search">
-    		<input class="form-control my-0 py-1 lime-border" type="text" placeholder="Search" aria-label="Search">
-    		<div class="input-group-append">
-        		<span class="input-group-text lime lighten-2" id="basic-text1"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
+	<nav class="navbar navbar-expand-lg" id="nav">
+   		<a class="navbar-brand" href="home.html">InLook</a>
+   		<a class="nav-item" href="explore.html">Explore</a>
+   		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+   			<span class="navbar-toggler-icon"></span>
+   		</button>
+   		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+   			<div class="input-group">
+     			<input type="text" class="form-control" placeholder="Search...">
+      			<span class="input-group-btn">
+        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+      			</span>
     		</div>
-		</div> 
+      		<ul class="navbar-nav ml-auto">
+      			<li class="nav-item">
+            		<a class="nav-link" href="#"><i class="fas fa-user-circle"></i> Sumedha Gupta </a>
+         		</li>
+         		<li class="nav-item">
+            		<a class="nav-link" href="#"><i class="far fa-envelope fa-lg"></i></a>
+         		</li>
+         		<li class="nav-item">
+            		<a class="nav-link" href="#"><i class="fas fa-upload"></i></a>
+         		</li>
+      		</ul>
+   		</div>
 	</nav>
-	<div class="sidenav">
-		<ul class="navbar-nav" id="leftMenu">
-			<li class="nav-item"><a href="home.html">Home</a></li>
-			<li class="nav-item"><a href="explore.html">Explore</a></li>
-			<li class="nav-item"><a href="messages.html">Messages</a></li>
-			<li class="nav-item"><a href="upload.html">Upload</a></li>
-			<li class="nav-item active">Profile</li>
-		</ul>
+
+	<!-- main content- bio, profile pic,
+	following button, message button, project number, followers/following number-->
+<div class="sidebar-profile-info">
+	<!-- Profile essential details -->
+	<div class="profile-important">
+		<div class="profile-photo">
+			<img src="profilepic.jpg" alt="">
+		</div>
+		<h3 class="username">Sumedha Gupta</h3>
+		<div class="bio">Hi, My name is Sumedha! Message me if you wanna work together!</div>
+		<div class="profile-buttons">
+			<button type="button" class="btn btn-success btn-sm">Follow</button>
+			<button type="button" class="btn btn-success btn-sm">Message</button>
+		</div>
 	</div>
-	<div class="main">
-		<h4>Profile</h4>
+
+	<!-- Skills list -->
+	<div class="sidebar-info-bar" style="display:block">
+		<div class="profile-important">
+			<h4>Skills</h4>
+			<ul class="skills-list">
+				<li>Modern</li>
+				<li>Contemporary</li>
+				<li>Rustic</li>
+			</ul>
+		</div>
 	</div>
+	<div class="sidebar-info-bar" style="display:block">
+		<div class="profile-important">
+			<h4>Social</h4>
+			<ul class="Links"></ul>
+		</div>
+	</div>
+</div>
+
+<!-- profile content -->
+<div class="sidebar-content">
+
+</div>
+
 </body>
 </html>
