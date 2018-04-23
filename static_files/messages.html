@@ -6,24 +6,32 @@
 	<link rel="stylesheet" href="home.css">
 </head>
 <body>
-	<nav class="navbar navbar-light bg-light" id="topNav">
-  		<a class="navbar-brand" href="home.html">InLook</a>
-		<div class="input-group md-form form-sm form-2 pl-0 search">
-    		<input class="form-control my-0 py-1 lime-border" type="text" placeholder="Search" aria-label="Search">
-    		<div class="input-group-append">
-        		<span class="input-group-text lime lighten-2" id="basic-text1"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
+	<nav class="navbar navbar-expand-lg" id="nav">
+   		<a class="navbar-brand" href="home.html">InLook</a>
+   		<a class="nav-item" href="explore.html">Explore</a>
+   		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+   			<span class="navbar-toggler-icon"></span>
+   		</button>
+   		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+   			<div class="input-group">
+     			<input type="text" class="form-control" placeholder="Search...">
+      			<span class="input-group-btn">
+        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+      			</span>
     		</div>
-		</div> 
+      		<ul class="navbar-nav ml-auto">
+      			<li class="nav-item">
+            		<a class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i> Sumedha Gupta </a>
+         		</li>
+         		<li class="nav-item">
+            		<a class="nav-link" href="#"><i class="far fa-envelope fa-lg"></i></a>
+         		</li>
+         		<li class="nav-item">
+            		<a class="nav-link" href="upload.html"><i class="fas fa-upload"></i></a>
+         		</li>
+      		</ul>
+   		</div>
 	</nav>
-	<div class="sidenav">
-		<ul class="navbar-nav" id="leftMenu">
-			<li class="nav-item"><a href="home.html">Home</a></li>
-			<li class="nav-item"><a href="explore.html">Explore</a></li>
-			<li class="nav-item active">Messages</li>
-			<li class="nav-item"><a href="upload.html">Upload</a></li>
-			<li class="nav-item"><a href="profile.html">Profile</a></li>
-		</ul>
-	</div>
 	<div class="main">
 		<h4>Messages</h4>
 	</div>
