@@ -7,30 +7,31 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
-   		<a class="navbar-brand" href="home.html">InLook</a>
-   		<a class="nav-item" href="explore.html">Explore</a>
-   		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-   			<span class="navbar-toggler-icon"></span>
-   		</button>
-   		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-   			<div class="input-group">
-     			<input type="text" class="form-control" placeholder="Search...">
-      			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
-      			</span>
-    		</div>
-      		<ul class="navbar-nav ml-auto">
-      			<li class="nav-item">
-            		<a class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i> Sumedha Gupta </a>
-         		</li>
-         		<li class="nav-item">
-            		<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-         		</li>
-         		<li class="nav-item">
-            		<a class="nav-link" href="upload.html"><i class="fas fa-upload"></i></a>
-         		</li>
-      		</ul>
-   		</div>
+
+		<a class="navbar-brand" href="home.html">InLook</a>
+		<a class="nav-item" href="explore.html">Explore</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+				</span>
+			</div>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i> Sumedha Gupta </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="upload.html"><i class="fas fa-upload"></i></a>
+				</li>
+			</ul>
+		</div>
 	</nav>
 
 	<div class="main">
@@ -45,107 +46,154 @@
 		<div class="tabcontent" id="trendingContent">
 			<h4 class="category-title">STORIES</h4>
 			<div id="stories">
-				<div class="story"></div>
-				<div class="story"></div>
-				<div class="story"></div>
-				<div class="story"></div>
-				<div class="story"></div>
-				<div class="story"></div>
+				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
+				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
+				<img class="story img-responsive" id="story3" alt="story3" src="story3.jpg"/>
+				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
+				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
 			</div>
 			<h4 class="category-title">PROJECTS</h4>
-			<div class="project"></div>
-			<div class="project"></div>
-			<div class="project"></div>
-			<div class="project"></div>
-		</div>
-		<div class="tabcontent hide" id="popularContent">
-			<p>This is popular content</p>
-		</div>
-		<div class="tabcontent hide" id="followingContent">
-			<p>This is following content</p>
+			<img class="project" id="image1" src="interior_design1.jpg">
+			<img class="project" id="image2" src="interior_design1.jpg">
+			<img class="project" id="image3" src="interior_design1.jpg">
+			<img class="project" id="image4" src="interior_design1.jpg">
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
-		$('#popular').click(function(e){
-			if($('#trendingContent').hasClass('hide')){
-				$('#trendingContent').removeClass('hide');
-			}
-			$('#trendingContent').addClass('hide');
-			$('#trending').removeClass('active');
-			if($('#followingContent').hasClass('hide')){
-				$('#followingContent').removeClass('hide');
-			}
-			$('#followingContent').addClass('hide');
-			$('#following').removeClass('active');
-			$('#popularContent').removeClass('hide');
-			$('#popular').addClass('active');
-            //display popular images
-            const popularRequestUrl = '/popular';
-            console.log('Clicked popular');
-            $.ajax({
-              url: popularRequestUrl,
-              type: 'GET',
-              datatype: 'JSON',
-              success: (data) => {
-                console.log('Received popular pictures');
-                console.log(data);
-              }
-            });
+	$('#popular').click(function(e){
+		/**
+		if($('#trendingContent').hasClass('hide')){
+		$('#trendingContent').removeClass('hide');
+	}
+	$('#trendingContent').addClass('hide');
+	$('#trending').removeClass('active');
+	if($('#followingContent').hasClass('hide')){
+	$('#followingContent').removeClass('hide');
+}
+$('#followingContent').addClass('hide');
+$('#following').removeClass('active');
+$('#popularContent').removeClass('hide');
+$('#popular').addClass('active');
+*/
+//display popular images
+$('#trending').removeClass('active');
+$('#following').removeClass('active');
+$('#popular').addClass('active');
+const popularRequestUrl = '/popular';
+console.log('Clicked popular');
+$.ajax({
+	url: popularRequestUrl,
+	type: 'GET',
+	datatype: 'JSON',
+	success: (data) => {
+		console.log('Received popular pictures');
+		console.log(data);
+		const popularProjects = data.popularProjects;
+		const popularStories = data.popularStories;
+		$('#image1').attr('src', popularProjects.img1);
+		$('#image2').attr('src', popularProjects.img2);
+		$('#image3').attr('src', popularProjects.img3);
+		$('#image4').attr('src', popularProjects.img4);
+		$('#story1').attr('src', popularStories.img1);
+		$('#story2').attr('src', popularStories.img2);
+		$('#story3').attr('src', popularStories.img3);
+		$('#story4').attr('src', popularStories.img4);
+		$('#story5').attr('src', popularStories.img5);
 
-		});
-		$('#following').click(function(e){
-			if($('#trendingContent').hasClass('hide')){
-				$('#trendingContent').removeClass('hide');
-			}
-			$('#trendingContent').addClass('hide');
-			$('#trending').removeClass('active');
-			if($('#popularContent').hasClass('hide')){
-				$('#popularContent').removeClass('hide');
-			}
-			$('#popularContent').addClass('hide');
-			$('#popular').removeClass('active');
-			$('#followingContent').removeClass('hide');
-			$('#following').addClass('active');
-            //display followed images
-            const followingRequestUrl = '/following';
-            $.ajax({
-              url: followingRequestUrl,
-              type: 'GET',
-              datatype: 'JSON',
-              success: (data) => {
-                console.log('Received followed pictures');
-                console.log(data);
-              }
-            });
-		});
-		$('#trending').click(function(e){
-			if($('#popularContent').hasClass('hide')){
-				$('#popularContent').removeClass('hide');
-			}
-			$('#popularContent').addClass('hide');
-			$('#popular').removeClass('active');
-			if($('#followingContent').hasClass('hide')){
-				$('#followingContent').removeClass('hide');
-			}
-			$('#followingContent').addClass('hide');
-			$('#following').removeClass('active');
-			$('#trendingContent').removeClass('hide');
-			$('#trending').addClass('active');
-            //display trending images
-            const trendingRequestUrl = '/trending';
-            $.ajax({
-              url: trendingRequestUrl,
-              type: 'GET',
-              datatype: 'JSON',
-              success: (data) => {
-                console.log('Received trending pictures');
-                console.log(data);
-              }
-            });
-		});
-		</script>
-	</body>
-	</html>
+
+	}
+});
+
+});
+$('#following').click(function(e){
+	/**
+	if($('#trendingContent').hasClass('hide')){
+	$('#trendingContent').removeClass('hide');
+}
+$('#trendingContent').addClass('hide');
+$('#trending').removeClass('active');
+if($('#popularContent').hasClass('hide')){
+$('#popularContent').removeClass('hide');
+}
+$('#popularContent').addClass('hide');
+$('#popular').removeClass('active');
+$('#followingContent').removeClass('hide');
+$('#following').addClass('active');
+*/
+$('#trending').removeClass('active');
+$('#popular').removeClass('active');
+$('#following').addClass('active');
+
+//display followed images
+const followingRequestUrl = '/following';
+$.ajax({
+	url: followingRequestUrl,
+	type: 'GET',
+	datatype: 'JSON',
+	success: (data) => {
+		console.log('Received followed pictures');
+		console.log(data);
+		const followingProjects = data.followingProjects;
+		const followingStories = data.followingStories;
+		$('#image1').attr('src', followingProjects.img1);
+		$('#image2').attr('src', followingProjects.img2);
+		$('#image3').attr('src', followingProjects.img3);
+		$('#image4').attr('src', followingProjects.img4);
+		$('#story1').attr('src', followingStories.img1);
+		$('#story2').attr('src', followingStories.img2);
+		$('#story3').attr('src', followingStories.img3);
+		$('#story4').attr('src', followingStories.img4);
+		$('#story5').attr('src', followingStories.img5);
+
+	}
+});
+});
+$('#trending').click(function(e){
+	/**
+	if($('#popularContent').hasClass('hide')){
+	$('#popularContent').removeClass('hide');
+}
+$('#popularContent').addClass('hide');
+$('#popular').removeClass('active');
+if($('#followingContent').hasClass('hide')){
+$('#followingContent').removeClass('hide');
+}
+$('#followingContent').addClass('hide');
+$('#following').removeClass('active');
+$('#trendingContent').removeClass('hide');
+$('#trending').addClass('active');
+*/
+$('#popular').removeClass('active');
+$('#following').removeClass('active');
+$('#trending').addClass('active');
+
+//display trending images
+const trendingRequestUrl = '/trending';
+$.ajax({
+	url: trendingRequestUrl,
+	type: 'GET',
+	datatype: 'JSON',
+	success: (data) => {
+		console.log('Received trending pictures');
+		console.log(data);
+		const trendingProjects = data.trendingProjects;
+		const trendingStories = data.trendingStories;
+		$('#image1').attr('src', trendingProjects.img1);
+		$('#image2').attr('src', trendingProjects.img2);
+		$('#image3').attr('src', trendingProjects.img3);
+		$('#image4').attr('src', trendingProjects.img4);
+		$('#story1').attr('src', trendingStories.img1);
+		$('#story2').attr('src', trendingStories.img2);
+		$('#story3').attr('src', trendingStories.img3);
+		$('#story4').attr('src', trendingStories.img4);
+		$('#story5').attr('src', trendingStories.img5);
+
+	}
+});
+});
+</script>
+</body>
+</html>

@@ -13,37 +13,37 @@
 }
 
 .main {
-    padding: 0px 10px;
+	padding: 0px 10px;
 }
 
 #innerNav {
 	margin-top: 2rem;
 	overflow: hidden;
-    padding-left: 0;
-    margin-bottom: 0;
-    width: 100%;
-    text-align: center;
+	padding-left: 0;
+	margin-bottom: 0;
+	width: 100%;
+	text-align: center;
 }
 
 #innerNav li {
 	display: inline;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	font-size: 17px;
 }
 
 /*.sidenav {
-    height: 100%;
-    width: 160px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #f8f9fa;
-    overflow-x: hidden;
-    padding-top: 20px;
+height: 100%;
+width: 160px;
+position: fixed;
+top: 0;
+left: 0;
+background-color: #f8f9fa;
+overflow-x: hidden;
+padding-top: 20px;
 }*/
 
 .navbar-brand {
@@ -52,9 +52,9 @@
 }
 
 .tabcontent {
-    padding: 6px 12px;
-    border-top: none;
-    margin: 0 3.5rem;
+	padding: 6px 12px;
+	border-top: none;
+	margin: 0 3.5rem;
 }
 
 .hide {
@@ -88,8 +88,8 @@ hr {
 
 .story {
 	background-color: #808080;
-	height: 10rem;
-	width: 10rem;
+	height: 7rem;
+	width: 7rem;
 	border-radius: 50%;
 	display: inline-block;
 	margin: 0 15px;
@@ -98,8 +98,8 @@ hr {
 #stories {
 	margin: 0 2rem;
 	overflow-x: scroll;
-  	overflow-y: hidden;
-  	white-space: nowrap;
+	overflow-y: hidden;
+	white-space: nowrap;
 }
 
 .project {
@@ -110,3 +110,40 @@ hr {
 	margin-right: 1rem;
 	margin-bottom: 1rem;
 }
+
+.project img {
+	min-height: 100%;
+	min-width: 100%;
+	object-fit: cover
+}
+
+.popular {
+	height: 20rem;
+	width: 48%;
+	background-color: #808080;
+	display: inline-block;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+
+.popular img {
+	min-height: 100%;
+	min-width: 100%;
+	object-fit: cover
+}
+
+.follow {
+	height: 20rem;
+	width: 48%;
+	background-color: #808080;
+	display: inline-block;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+
+.follow img {
+	min-height: 100%;
+	min-width: 100%;
+	object-fit: cover
+}
+
