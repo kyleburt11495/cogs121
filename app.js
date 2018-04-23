@@ -48,7 +48,12 @@ const popular = {
 
 const following = {
   img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg', img4: 'interior_design6.jpg'
-}
+};
+
+const stories = {
+  story1:'story1.jpg', story2:'story2.jpg', story3:'story3.jpg', story4:'story4.jpg',
+  story5:'story5.jpg'
+};
 
 app.get('/trending', (req, res) => {
   const trends = Object.keys(trending);
