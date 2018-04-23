@@ -4,10 +4,11 @@
 __Screenshots__
 UI Skeleton webpages
 
-__Screen #1 (App's home page)___
-
+__Screen #1 (App's home page)__
+![](m3_images/homepage.png)
 
 __Screen #2___
+
 
 
 __Explanation__
