@@ -1,6 +1,9 @@
-
 #nav {
 	background-color: black;
+}
+
+body {
+	box-sizing: content-box;
 }
 
 .search {
@@ -60,12 +63,13 @@ hr {
   background: #fff;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.07);
-  margin: 30px 0px 30px 15px;
-  margin-right: auto;
+  /* margin: 30px 0px 30px 15px; */
+  /* margin-right: auto; */
   width: auto;
   float: none;
   border: 1px solid #ddd;
 	margin: 2rem;
+	margin-top: 3rem;
 }
 
 .profpic{
@@ -79,7 +83,35 @@ hr {
 }  */
 
 ul{
-  list-style: none;
+  /* list-style: none; */
+}
+
+#socialMedia li{
+	display: inline;
+	border:	none;
+	outline: none;
+	text-align: center;
+}
+
+.fa:hover {
+    opacity: 0.7;
+		color: white;
+}
+.fa-twitter{
+	background: #55ACEE;
+}
+.fa-linkedin {
+	background: #007bb5;
+}
+.fa-instagram{
+	background: #bb0000;
+}
+.fa {
+  color: white;
+	font-size: 30px;
+	width: 30px;
+	text-decoration: none;
+	border-radius: 20%;
 }
 
 .sidebar-profile-info ul.skills-list li{
@@ -87,17 +119,10 @@ ul{
   line-height: 1;
   color: #444;
   display: inline-block;
-  padding: 8px 8px;
+  padding: 10px 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
 	text-align: center;
-}
-
-
-/*profile content*/
-.sidebar-content{
-  display: inline-block;
-	margin: 2rem;
 }
 
 #info{
@@ -106,4 +131,22 @@ ul{
 
 img{
   width: 300px;
+}
+
+#profileProjects {
+	display: inline-block;
+	overflow-x: scroll;
+	overflow-y: scroll;
+}
+
+#profile-content {
+	margin-top: 1rem;
+}
+
+.img-responsive{
+	width: 300px;
+	height: auto;
+	margin-right: 0.2rem;
+	margin-bottom: 0.5rem;
+	object-fit: cover;
 }

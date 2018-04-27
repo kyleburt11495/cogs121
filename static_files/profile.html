@@ -1,8 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="profile.css">
 </head>
 <body>
@@ -38,7 +41,7 @@
 	<!-- main content- bio, profile pic,
 	following button, message button, project number, followers/following number-->
 <div class="row">
-	<div class="col-md-5">
+	<div class="col-md-5 col-xs-3">
 <div class="sidebar-profile-info">
 	<!-- Profile essential details -->
 	<div class="profile-important">
@@ -67,25 +70,24 @@
 	<div class="sidebar-info-bar">
 		<div class="profile-important">
 			<h4>Social</h4>
-			<ul class="Links"></ul>
+			<div id="socialMedia">
+			<a href="wwww.twitter.com" class="fa fa-twitter"></a>
+			<a href="wwww.linkedin.com" class="fa fa-linkedin"></a>
+			<a href="www.instagram.com" class="fa fa-instagram"></a>
+		</div>
+
 		</div>
 	</div>
 </div>
 </div>
 <!-- profile content -->
-<div class="col-md-7">
-<div class="sidebar-content">
-	<div class="project1">
-		<img src="profile_interior.jpg" alt="">
-	</div>
-	<div class="project1">
-		<img src="profile_interior.jpg" alt="">
-	</div>
-	<div class="project1">
-		<img src="profile_interior.jpg" alt="">
-	</div>
-	<div class="project1">
-		<img src="profile_interior.jpg" alt="">
+<div class="col-md-7 col-xs-9">
+	<h4 class="text-center" id="profile-content"> Projects </h4>
+	<div class="project1" id="profileProjects">
+		<img class="img-responsive" src="profile_interior.jpg" alt="">
+		<img class="img-responsive" src="profile_interior.jpg" alt="">
+		<img class="img-responsive" src="profile_interior.jpg" alt="">
+		<img class="img-responsive" src="profile_interior.jpg" alt="">
 	</div>
 </div>
 </div>
