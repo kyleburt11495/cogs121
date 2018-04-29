@@ -1,5 +1,10 @@
 const express = require('express');
 const app = express();
+const sqlite3 = require('sqlite3').verbose();
+
+let db = new sqlite3.Database('database.db');
+
+
 
 app.use(express.static('static_files'));
 
@@ -85,3 +90,6 @@ app.get('/popular', (req, res) =>{
 app.get('/following', (req, res) =>{
   res.send(database);
 });
+
+//database routes
+
