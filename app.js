@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+const sqlite3 = require('sqlite3');
+const db = new sqlite3.Database('users.db');
+
 app.use(express.static('static_files'));
 
 app.listen(3000, () => {
@@ -66,13 +69,13 @@ const followingStories = {
 };
 
 const database = {
-                  trendingProjects: trending, 
-                  popularProjects: popular, 
-                  followingProjects: following, 
+                  trendingProjects: trending,
+                  popularProjects: popular,
+                  followingProjects: following,
                   trendingStories: trendingStories,
                   popularStories: popularStories,
-                  followingStories: followingStories 
-                 }
+                  followingStories: followingStories
+                };
 
 app.get('/trending', (req, res) => {
   res.send(database);
@@ -84,4 +87,31 @@ app.get('/popular', (req, res) =>{
 
 app.get('/following', (req, res) =>{
   res.send(database);
+});
+
+//to insert new accounts
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extented: true})); //hook to the app
+app.post('/signup', (req, res)=>{
+  console.log(req.body);
+
+  db.run(
+    'INSERT INTO users_account VALUES ($name, $email)',
+
+    {
+      $name: req.body.name,
+      $email: req.body.email,
+    },
+
+    (err) => {
+      if(err) {
+        res.send({message: 'error in app.post(/signup)'});
+      } else{
+        res.send({message:'successfuly run app.post(/signup)'});
+        db.each("SELECT name, email FROM users_account", (err,row)=>{
+          console.log(row.name + ":" + row.email + '.');
+        });
+      }
+    }
+  );
 });

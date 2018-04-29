@@ -1,0 +1,72 @@
+#nav {
+	background-color: black;
+}
+
+.search {
+	float: right;
+	width: 15%;
+	margin-right: 1rem;
+}
+
+#navbarSupportedContent {
+	float: right;
+}
+
+.navbar-brand {
+	margin-left: 0.3rem;
+	font-size: 1.75rem;
+}
+
+/* .tabcontent {
+	padding: 6px 12px;
+	border-top: none;
+	margin: 0 3.5rem;
+} */
+
+.hide {
+	display: none;
+}
+
+.active {
+	text-decoration: underline;
+  color: black;
+  font-weight: bold;
+}
+
+a {
+	color: white;
+}
+
+a:hover {
+	color: red;
+}
+
+hr {
+	width: 85%;
+}
+
+.input-group {
+	width: 55%;
+	margin: auto;
+}
+
+
+#nav-message{
+  margin: 2rem;
+}
+
+#message-tab li{
+  font-size: 17px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+ul{
+ list-style-type: none;
+ padding: 0;
+ margin: 0;
+}
+li:hover{
+  color:red;
+}
