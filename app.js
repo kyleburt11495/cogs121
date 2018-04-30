@@ -98,22 +98,29 @@ app.get('/following', (req, res) =>{
 app.post('/signup', (req, res)=>{
   console.log(req.body);
   db.run(
-    'INSERT INTO users_account VALUES ($firstName, $email, $lastName, $isDeveloper)',
-
+    'INSERT INTO users_account VALUES ($firstName, $email, $lastName, $isDeveloper)', (err,row) =>
     {
+      if(err) {
+        console.log('something is wrong here');
+      } else{
+        console.log('everything is ok');
+      }
       $firstName: req.body.firstName,
       $email: req.body.email,
       $lastName: req.body.lastName,
       $isDeveloper: req.body.developer,
     },
-
     (err) => {
       if(err) {
         res.send({message: 'error in app.post(/signup)'});
       } else{
         res.send({message:'successfuly run app.post(/signup)'});
         db.each("SELECT firstName, email FROM users_account", (err,row)=>{
+          if(err) {
+            console.log('something is wrong');
+          }else {
           console.log(row.name + ":" + row.email + '.');
+        }
         });
       }
     }

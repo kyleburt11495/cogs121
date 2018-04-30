@@ -42,7 +42,6 @@ db.serialize(() => {
   //   }
   // });
   //table of messages sent to users
-
   /**
   db.run("CREATE TABLE message_to_user(messageId INTEGER, receiverId INTEGER, FOREIGN KEY messageId REFERENCES messages(messageId), FOREIGN KEY receiverId REFERENCES users_account(userId), PRIMARY KEY(messageId, receiverId)))", (err, row) => {
     if(err) {
@@ -88,5 +87,4 @@ db.serialize(() => {
   */
 });
 
-//db.close();
-
+db.close();
