@@ -3,6 +3,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('users.db');
 
+
 db.serialize(() => {
   //user table
   db.run("CREATE TABLE users_account (userId INTEGER PRIMARY KEY, firstName TEXT, email TEXT, lastName TEXT, isDeveloper INTEGER)", (err, row) => {
@@ -58,10 +59,13 @@ db.serialize(() => {
     //get id of inserted user
     id = this.lastID + '';
     console.log(id);
-
+    db.run("INSERT INTO projects(projectTitle, projectDescription, userId) VALUES('Blue House', 'This is a blue house', $id)", {$id: id});
+    db.each("SELECT projectId, projectTitle, projectDescription, userId FROM projects", (err, row) => {
+    console.log(row.projectId + " " + row.projectTitle + " " + row.projectDescription + " " +row.userId);
+    });
   });
-  console.log(id);
-  db.run("INSERT INTO projects(projectTitle, projectDescription, userId) VALUES('Blue House', 'This is a blue house', $id)", {$id: id});
+  //console.log(id);
+  //db.run("INSERT INTO projects(projectTitle, projectDescription, userId) VALUES('Blue House', 'This is a blue house', $id)", {$id: id});
   db.run("END TRANSACTION;");
   
   db.each("SELECT userId, firstName, lastName, email, isDeveloper FROM users_account", (err,row) => {
@@ -84,5 +88,5 @@ db.serialize(() => {
   */
 });
 
+//db.close();
 
-db.close();
