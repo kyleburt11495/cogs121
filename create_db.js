@@ -58,9 +58,11 @@ db.serialize(() => {
     //get id of inserted user
     id = this.lastID + '';
     console.log(id);
+
   });
-  db.run("INSERT INTO projects(projectTitle, projectDescription, userId) VALUES('Blue House', 'This is a blue house', + 'id')");
-  db.run("END TRANSACTION;")
+  console.log(id);
+  db.run("INSERT INTO projects(projectTitle, projectDescription, userId) VALUES('Blue House', 'This is a blue house', $id)", {$id: id});
+  db.run("END TRANSACTION;");
   
   db.each("SELECT userId, firstName, lastName, email, isDeveloper FROM users_account", (err,row) => {
     console.log(row.userId + " " + row.firstName + " " + row.lastName + ":" + row.email + '.');
