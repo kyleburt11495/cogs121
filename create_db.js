@@ -41,7 +41,7 @@ db.serialize(() => {
   //   }
   // });
   //table of messages sent to users
-  
+
   /**
   db.run("CREATE TABLE message_to_user(messageId INTEGER, receiverId INTEGER, FOREIGN KEY messageId REFERENCES messages(messageId), FOREIGN KEY receiverId REFERENCES users_account(userId), PRIMARY KEY(messageId, receiverId)))", (err, row) => {
     if(err) {
@@ -63,7 +63,7 @@ db.serialize(() => {
   console.log(id);
   db.run("INSERT INTO projects(projectTitle, projectDescription, userId) VALUES('Blue House', 'This is a blue house', $id)", {$id: id});
   db.run("END TRANSACTION;");
-  
+
   db.each("SELECT userId, firstName, lastName, email, isDeveloper FROM users_account", (err,row) => {
     console.log(row.userId + " " + row.firstName + " " + row.lastName + ":" + row.email + '.');
   });
