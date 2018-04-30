@@ -6,7 +6,7 @@ const db = new sqlite3.Database('users.db');
 
 db.serialize(() => {
   //user table
-  db.run("CREATE TABLE users_account (userId INTEGER PRIMARY KEY, firstName TEXT, email TEXT, lastName TEXT, isDeveloper INTEGER)", (err, row) => {
+  db.run("CREATE TABLE users_account (userId INTEGER PRIMARY KEY, firstName TEXT, email TEXT, lastName TEXT, isDeveloper INTEGER, password TEXT)", (err, row) => {
     if(err) {
       console.log("first");
     }
@@ -42,7 +42,7 @@ db.serialize(() => {
      }
    });
   //table of messages sent to users
-  db.run("CREATE TABLE message_to_user(messageToUserId INTEGER PRIMARY KEY, messageId INTEGER, receiverId INTEGER, FOREIGN KEY(messageId) REFERENCES messages(messageId), FOREIGN KEY(receiverId) REFERENCES users_account(userId))")
+  db.run("CREATE TABLE message_to_user(messageToUserId INTEGER PRIMARY KEY, messageId INTEGER, receiverId INTEGER, FOREIGN KEY(messageId) REFERENCES messages(messageId), FOREIGN KEY(receiverId) REFERENCES users_account(userId))");
   /**
   db.run("CREATE TABLE message_to_user(messageId INTEGER, receiverId INTEGER, FOREIGN KEY messageId REFERENCES messages(messageId), FOREIGN KEY receiverId REFERENCES users_account(userId), PRIMARY KEY(messageId, receiverId)))", (err, row) => {
     if(err) {
@@ -51,11 +51,12 @@ db.serialize(() => {
   });
   */
 
+  /**
   //primary key of table
   let id;
   //insert 2 rows of data using sql codes:
   db.run("BEGIN TRANSACTION");
-  db.run("INSERT INTO users_account(firstName, email, lastName, isDeveloper) VALUES('Kyle', 'k1burt@ucsd.edu', 'Burt', '0')", function(err, row) {
+  db.run("INSERT INTO users_account(firstName, email, lastName, isDeveloper) VALUES('Kyle', 'k1burt@ucsd.edu', 'Burt', '0', 'weq872fUn')", function(err, row) {
     //get id of inserted user
     id = this.lastID + '';
     console.log(id);

@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 
-const sqlite3 = require('sqlite3');
+const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('users.db');
 
 app.use(express.static('static_files'));
@@ -98,23 +98,25 @@ app.get('/following', (req, res) =>{
 app.post('/signup', (req, res)=>{
   console.log(req.body);
   db.run(
-    'INSERT INTO users_account VALUES ($firstName, $email, $lastName, $isDeveloper)',
+    'INSERT INTO users_account(firstName, email, lastName, isDeveloper, password) VALUES ($firstName, $email, $lastName, $isDeveloper, $password)',
 
     {
       $firstName: req.body.firstName,
       $email: req.body.email,
       $lastName: req.body.lastName,
       $isDeveloper: req.body.developer,
+      $password: req.body.password,
     },
 
     (err) => {
       if(err) {
         res.send({message: 'error in app.post(/signup)'});
       } else{
-        res.send({message:'successfuly run app.post(/signup)'});
-        db.each("SELECT firstName, email FROM users_account", (err,row)=>{
-          console.log(row.name + ":" + row.email + '.');
+        console.log("hi");
+        db.each("SELECT userId, firstName, email, isDeveloper FROM users_account", (err,row)=>{
+          console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
         });
+        res.send({message:'successfuly run app.post(/signup)'});
       }
     }
   );
