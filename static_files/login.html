@@ -49,15 +49,20 @@ $(document).ready(()=>{
           password: $('#password').val(),
         },
         success: (data) => {
-          sessionStorage.setItem("id",data.userId);
-          $('#login').attr('href','home.html');
+          if(data.userId){
+            sessionStorage.setItem("id",data.userId);
+            window.top.location = "home.html";
+          }
+          else{
+            $('#error').html("Incorrect username or password!");
+          }
         }
       });
-    });
-}
-else {
-  $('#error').html('Missing field. Username and password required');
-}
+    }
+    else {
+      $('#error').html('Missing field. Username and password required');
+    }  
+  });
 $(document).ajaxError(() => {
   $('#error').html("Incorrect username or password!");
 });  

@@ -94,16 +94,38 @@ app.get('/following', (req, res) =>{
   res.send(database);
 });
 
-app.get('/loadProfile', (req, res) => {
-  db.get("SELECT * FROM users_account WHERE userId = 3", (err, row) => {
+app.get('/loadProfile/:userid', (req, res) => {
+  const userId = req.params.userid;
+  console.log(userId);
+  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
-    if (row.length > 1) {
+    if (row.length > 0) {
+      console.log(row[0]);
       res.send(row[0]);
     }
     else {
       res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+});
+
+//used to get userId of logged in user
+app.post('/users', (req,res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  
+  db.all("SELECT * FROM users_account WHERE (email = $username AND password = $password)", {$username: username, $password: password}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row.length > 0) {
+      console.log(row[0]);
+      res.send(row[0]);
+    }
+    else {
+      res.send({});
     }
   });
 });
