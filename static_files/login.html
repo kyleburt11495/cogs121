@@ -49,8 +49,12 @@
         },
         success: (data) => {
           sessionStorage.setItem("id",data.userId);
+          $('#login').attr('href','home.html');
         }
       });
+    });
+    $(document).ajaxError(() => {
+      $('#error').html("Incorrect username or password!");
     });  
    });
 </script>
