@@ -70,7 +70,8 @@
         firstName: $('#firstname').val(),
         email:$('#username').val(),
         lastName:$('#lastname').val(),
-        isDesigner:$('input[name=isDesigner]:checked', '#form').val()
+        isDesigner:$('input[name=isDesigner]:checked', '#form').val(),
+        password:$('#password').val()
       },
       success: (data)=>{
         $('#status').html(data.message);
