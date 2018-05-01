@@ -94,26 +94,39 @@ app.get('/following', (req, res) =>{
   res.send(database);
 });
 
+app.get('/loadProfile', (req, res) => {
+  db.get("SELECT * FROM users_account WHERE userId = 3", (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row.length > 1) {
+      res.send(row[0]);
+    }
+    else {
+      res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+});
+
 
 app.post('/signup', (req, res)=>{
   console.log(req.body);
   db.run(
-    'INSERT INTO users_account(firstName, email, lastName, isDeveloper, password) VALUES ($firstName, $email, $lastName, $isDeveloper, $password)',
-
+    'INSERT INTO users_account(firstName, email, lastName, isDesigner, password) VALUES ($firstName, $email, $lastName, $isDesigner, $password)',
     {
       $firstName: req.body.firstName,
       $email: req.body.email,
       $lastName: req.body.lastName,
-      $isDeveloper: req.body.developer,
+      $isDesigner: req.body.isDesigner,
       $password: req.body.password,
     },
 
     (err) => {
       if(err) {
-        res.send({message: 'error in app.post(/signup)'});
+        console.log('error creating new user');
       } else{
         console.log("hi");
-        db.each("SELECT userId, firstName, email, isDeveloper FROM users_account", (err,row)=>{
+        db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
           console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
         });
         res.send({message:'successfuly run app.post(/signup)'});

@@ -6,7 +6,7 @@ const db = new sqlite3.Database('users.db');
 
 db.serialize(() => {
   //user table
-  db.run("CREATE TABLE users_account (userId INTEGER PRIMARY KEY, firstName TEXT, email TEXT, lastName TEXT, isDeveloper INTEGER, password TEXT, profilePicture TEXT)", (err, row) => {
+  db.run("CREATE TABLE users_account (userId INTEGER PRIMARY KEY, firstName TEXT, email TEXT, lastName TEXT, bio TEXT isDesigner INTEGER, password TEXT, profilePicture TEXT)", (err, row) => {
     if(err) {
       console.log("first");
     }
