@@ -9,7 +9,6 @@
 	<nav class="navbar navbar-expand-lg" id="nav">
 
 		<a class="navbar-brand" href="home.html">InLook</a>
-		<a class="nav-item" href="explore.html">Explore</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -26,9 +25,6 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="upload.html"><i class="fas fa-upload"></i></a>
 				</li>
 			</ul>
 		</div>
@@ -86,13 +82,13 @@ $(document).ready(function() {
             $('#image2').attr('src', data[1].mainImg);
             $('#image3').attr('src', data[2].mainImg);
             $('#image4').attr('src', data[3].mainImg);
-           
+
 
         }
     });
 
   });
-  
+
   $('#following').click((e)=>{
     $('#trending').removeClass('active');
     $('#popular').removeClass('active');
@@ -100,7 +96,7 @@ $(document).ready(function() {
 
     //get userId from sessionStorage
     let userId = sessionStorage.getItem('id');
-    
+
     //display followed images
     const followingRequestUrl = '/following/' + userId;
     $.ajax({
@@ -122,11 +118,11 @@ $(document).ready(function() {
             $('#image2').attr('src', data[1].mainImg);
             $('#image3').attr('src', data[2].mainImg);
             $('#image4').attr('src', data[3].mainImg);
-            
+
         }
     });
   });
-  
+
   $('#trending').click((e)=>{
     $('#popular').removeClass('active');
     $('#following').removeClass('active');
@@ -149,7 +145,7 @@ $(document).ready(function() {
         }
     });
   });
-  
+
   //check which user is logged in and modify page
   //get userId from session storage
   let userId = sessionStorage.getItem('id');
