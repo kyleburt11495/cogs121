@@ -190,3 +190,15 @@ h4{
 	padding-top: 10px;
 	font-family: Lato;
 }
+
+.avatar{
+	width: 30px;
+	margin-right: 10px;
+}
+
+.design-pics{
+	border-radius: 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 600px;
+}
