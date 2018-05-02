@@ -106,8 +106,21 @@ app.get('/popular', (req, res) =>{
   });
 });
 
-app.get('/following', (req, res) =>{
-  res.send(database);
+app.get('/following/:userId', (req, res) =>{
+  //res.send(database);
+  let userId = req.params.userId;
+  
+  //perform query to get followed images
+   db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    else {
+      console.log(userId);
+      console.log(row);
+      res.send(row); //failed so return empty string instead of undefined
+    }
+  });
 });
 
 app.get('/loadProfile/:userid', (req, res) => {
