@@ -82,18 +82,11 @@ $(document).ready(function() {
         success: (data) => {
             console.log('Received popular pictures');
             console.log(data);
-            const popularProjects = data.popularProjects;
-            const popularStories = data.popularStories;
-            $('#image1').attr('src', popularProjects.img1);
-            $('#image2').attr('src', popularProjects.img2);
-            $('#image3').attr('src', popularProjects.img3);
-            $('#image4').attr('src', popularProjects.img4);
-            $('#story1').attr('src', popularStories.img1);
-            $('#story2').attr('src', popularStories.img2);
-            $('#story3').attr('src', popularStories.img3);
-            $('#story4').attr('src', popularStories.img4);
-            $('#story5').attr('src', popularStories.img5);
-
+            $('#image1').attr('src', data[0].mainImg );
+            $('#image2').attr('src', data[1].mainImg);
+            $('#image3').attr('src', data[2].mainImg);
+            $('#image4').attr('src', data[3].mainImg);
+           
 
         }
     });
@@ -120,11 +113,6 @@ $(document).ready(function() {
             $('#image2').attr('src', followingProjects.img2);
             $('#image3').attr('src', followingProjects.img3);
             $('#image4').attr('src', followingProjects.img4);
-            $('#story1').attr('src', followingStories.img1);
-            $('#story2').attr('src', followingStories.img2);
-            $('#story3').attr('src', followingStories.img3);
-            $('#story4').attr('src', followingStories.img4);
-            $('#story5').attr('src', followingStories.img5);
 
         }
     });
@@ -144,17 +132,10 @@ $(document).ready(function() {
         success: (data) => {
             console.log('Received trending pictures');
             console.log(data);
-            const trendingProjects = data.trendingProjects;
-            const trendingStories = data.trendingStories;
-            $('#image1').attr('src', trendingProjects.img1);
-            $('#image2').attr('src', trendingProjects.img2);
-            $('#image3').attr('src', trendingProjects.img3);
-            $('#image4').attr('src', trendingProjects.img4);
-            $('#story1').attr('src', trendingStories.img1);
-            $('#story2').attr('src', trendingStories.img2);
-            $('#story3').attr('src', trendingStories.img3);
-            $('#story4').attr('src', trendingStories.img4);
-            $('#story5').attr('src', trendingStories.img5);
+            $('#image1').attr('src', data[0].mainImg);
+            $('#image2').attr('src', data[1].mainImg);
+            $('#image3').attr('src', data[2].mainImg);
+            $('#image4').attr('src', data[3].mainImg);
 
         }
     });
@@ -167,17 +148,11 @@ $(document).ready(function() {
       success: (data) => {
           console.log('Received trending pictures');
           console.log(data);
-          const trendingProjects = data.trendingProjects;
-          const trendingStories = data.trendingStories;
-          $('#image1').attr('src', trendingProjects.img1);
-          $('#image2').attr('src', trendingProjects.img2);
-          $('#image3').attr('src', trendingProjects.img3);
-          $('#image4').attr('src', trendingProjects.img4);
-          $('#story1').attr('src', trendingStories.img1);
-          $('#story2').attr('src', trendingStories.img2);
-          $('#story3').attr('src', trendingStories.img3);
-          $('#story4').attr('src', trendingStories.img4);
-          $('#story5').attr('src', trendingStories.img5);
+          console.log(data[0].projectDescription);
+          $('#image1').attr('src', data[0].mainImg);
+          $('#image2').attr('src', data[1].mainImg);
+          $('#image3').attr('src', data[2].mainImg);
+          $('#image4').attr('src', data[3].mainImg);
 
       }
   });

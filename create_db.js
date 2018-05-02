@@ -12,7 +12,7 @@ db.serialize(() => {
     }
   });
   // //project table
-  db.run("CREATE TABLE projects(projectId INTEGER PRIMARY KEY, projectTitle TEXT, projectDescription TEXT, isTrending INTEGER, isPopular INTEGER, userId INTEGER, FOREIGN KEY(userId) REFERENCES users_account(userId))", (err, row) => {
+  db.run("CREATE TABLE projects(projectId INTEGER PRIMARY KEY, projectTitle TEXT, projectDescription TEXT, mainImg TEXT, isTrending INTEGER, isPopular INTEGER, userId INTEGER, FOREIGN KEY(userId) REFERENCES users_account(userId))", (err, row) => {
     if(err) {
       console.log("seocnd");
     }

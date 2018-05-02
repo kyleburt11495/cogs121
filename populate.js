@@ -2,18 +2,15 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('users.db');
 
 db.serialize(() => {
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('3', '7')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('3', '9')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('4', '1')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('4', '7')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('4', '3')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('5', '2')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('5', '9')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('5', '5')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('5', '8')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('6', '3')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('6', '6')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('6', '2')");
-  db.run("INSERT INTO following_projects(userId, projectId) VALUES('6', '7')");
+  db.run("UPDATE projects SET mainImg = 'interior_design1.jpg' WHERE projectId = 1");
+  db.run("UPDATE projects SET mainImg = 'interior_design2.jpg' WHERE projectId = 2");
+  db.run("UPDATE projects SET mainImg = 'interior_design3.jpg' WHERE projectId = 3");
+  db.run("UPDATE projects SET mainImg = 'interior_design4.jpg' WHERE projectId = 4");
+  db.run("UPDATE projects SET mainImg = 'interior_design5.jpg' WHERE projectId = 5");
+  db.run("UPDATE projects SET mainImg = 'interior_design6.jpg' WHERE projectId = 6");
+  db.run("UPDATE projects SET mainImg = 'interior_design7.jpg' WHERE projectId = 7");
+  db.run("UPDATE projects SET mainImg = 'interior_design8.jpg' WHERE projectId = 8");
+  db.run("UPDATE projects SET mainImg = 'interior_design9.jpg' WHERE projectId = 9");
+
 
 });
