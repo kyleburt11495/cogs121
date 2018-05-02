@@ -1,3 +1,6 @@
+*{
+	font-family: Lato;
+}
 #nav {
 	background-color: black;
 }
@@ -59,15 +62,14 @@ hr {
 /*profile sidebar*/
 .sidebar-profile-info{
 	text-align: center;
-  max-width: 470px;
-  background: #fff;
+  max-width: 350px;
+  background: #f2f2f2;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.07);
   /* margin: 30px 0px 30px 15px; */
   /* margin-right: auto; */
   width: auto;
   float: none;
-  border: 1px solid #ddd;
 	margin: 2rem;
 	margin-top: 3rem;
 }
@@ -149,4 +151,54 @@ img{
 	margin-right: 0.2rem;
 	margin-bottom: 0.5rem;
 	object-fit: cover;
+}
+
+.project1{
+	padding-top: 50px;
+}
+
+.btn-sm-message{
+	background:#4DA0D7;
+	border: none;
+	color: white;
+	border-radius: 12px;
+	padding: 5px;
+}
+
+.btn-sm-follow{
+	background: #B7B5B5;
+	border: none;
+	color: white;
+	border-radius: 12px;
+	padding: 5px;
+}
+
+.username{
+	font-size: 24px;
+	font-weight: bold;
+	padding-top: 20px;
+}
+
+.bio{
+	padding-left: 35px;
+	padding-right: 35px;
+	padding-bottom: 20px;
+}
+
+h4{
+	font-size: 18px;
+	padding-top: 10px;
+	font-family: Lato;
+}
+
+.avatar{
+	width: 30px;
+	margin-right: 10px;
+}
+
+.design-pics{
+	border-radius: 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 600px;
 }

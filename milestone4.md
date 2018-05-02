@@ -24,3 +24,4 @@ We added signup and login pages for users to create an account or login to their
 
 __User Privacy__
 Users of our site will agree to terms regarding their data when creating a profile. Agreeing to these terms will provide users consent to have the data that they voluntarily provide to be stored in our database. Access to their data will be protected by a username and password that they provide. We will attempt to secure our database by limiting access to the database file. We also have taken measures to authenticate users identity after a user logs in to ensure that they are only receiving data associated with their account. 
+

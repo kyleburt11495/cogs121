@@ -1,5 +1,13 @@
+*{
+	font-family: Lato;
+}
+
 #nav {
 	background-color: black;
+}
+
+body {
+	box-sizing: content-box;
 }
 
 .search {
@@ -12,16 +20,20 @@
 	float: right;
 }
 
+.main {
+    padding: 0px 10px;
+}
+
 .navbar-brand {
 	margin-left: 0.3rem;
 	font-size: 1.75rem;
 }
 
-/* .tabcontent {
-	padding: 6px 12px;
-	border-top: none;
-	margin: 0 3.5rem;
-} */
+.tabcontent {
+    padding: 6px 12px;
+    border-top: none;
+    margin: 0 3.5rem;
+}
 
 .hide {
 	display: none;
@@ -29,8 +41,6 @@
 
 .active {
 	text-decoration: underline;
-  color: black;
-  font-weight: bold;
 }
 
 a {
@@ -50,23 +60,97 @@ hr {
 	margin: auto;
 }
 
-
-#nav-message{
-  margin: 2rem;
+/* main content */
+.chat-container-main{
+  margin-top: 30px;
+  margin-left: 80px;
+  margin-right: 80px;
+  height: 100vh;
+  background: #f2f2f2;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: row;
 }
 
-#message-tab li{
-  font-size: 17px;
-  border: none;
-  outline: none;
-  cursor: pointer;
+.people-list{
+  background-color: #E4E4E4;
+  flex: 1;
+  min-width: 100px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
-ul{
- list-style-type: none;
- padding: 0;
- margin: 0;
+.chat-container{
+  flex: 3;
+  display: flex;
+  flex-direction: column;
 }
-li:hover{
-  color:red;
+
+.chat-messages{
+  flex: 1;
+  /* height: 100vh; */
+  /* overflow: auto; */
+}
+
+.chat-input{
+  padding: 10px;
+  background-color: white;
+}
+
+h4{
+  padding-top: 40px;
+  padding-left: 80px;
+}
+
+.person-name{
+  font-weight: bold;
+}
+
+.person{
+  border-bottom: 1px solid;
+  padding: 5px;
+}
+
+.container-msg{
+  background-color:
+  padding: 10px;
+  margin: 10px 15px;
+  background-color: white;
+}
+
+.diff{
+  background-color: white;
+}
+
+.container-msg::after{
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container-msg img{
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.container-msg img.right{
+  float: right;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.current-time-right{
+  float: right;
+  font-size: 10px;
+  padding-right: 10px;
+}
+
+.current-time-left{
+  float: left;
+  font-size: 10px;
+  padding-left: 10px;
 }
