@@ -83,11 +83,27 @@ const database = {
                 };
 
 app.get('/trending', (req, res) => {
-  res.send(database);
+  db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    else {
+      console.log(row);
+      res.send(row);
+    }
+  });
 });
 
 app.get('/popular', (req, res) =>{
-  res.send(database);
+  db.all("SELECT * FROM projects WHERE isPopular = 1", (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    else {
+      console.log(row);
+      res.send(row);
+    }
+  });
 });
 
 app.get('/following', (req, res) =>{
@@ -116,7 +132,7 @@ app.post('/users', (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
   
-  db.all("SELECT * FROM users_account WHERE (username = $username AND password = $password)", {$username: username, $password: password}, (err, row) => {
+  db.all("SELECT * FROM users_account WHERE (email = $username AND password = $password)", {$username: username, $password: password}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
