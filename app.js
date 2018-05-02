@@ -140,6 +140,22 @@ app.get('/loadProfile/:userid', (req, res) => {
   });
 });
 
+app.get('/loadProjects/:userid', (req, res) => {
+  const userId = req.params.userid;
+  db.all("SELECT mainImg FROM projects WHERE userId=$userId", {$userId: userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row.length > 0) {
+      console.log(row);
+      res.send(row);
+    }
+    else {
+      res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+});
+
 //used to get userId of logged in user
 app.post('/users', (req,res) => {
   const username = req.body.username;
@@ -184,3 +200,4 @@ app.post('/signup', (req, res)=>{
     }
   );
 });
+
