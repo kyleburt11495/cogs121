@@ -10,10 +10,10 @@ __Screen #2(Profile)__
 ![](m4_images/profile.png)
 
 __Screen #3(Login)__
-![](m4_images/m4_login)
+![](m4_images/m4_login.png)
 
 __Screen #4(Signup)__
-![](m4_images/m4_signup)
+![](m4_images/m4_signup.png)
 
 __Explanation__
 Our messages and profile page are significantly changed in terms of the layout. We made the messages page responsive using flexbox and we will continue to work on the layout a little more. The messages page currently shows a skeleton of the final product. It is an informal look similar to facebook messenger rather than Gmail.
