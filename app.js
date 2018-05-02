@@ -1,7 +1,15 @@
 const express = require('express');
 const app = express();
 
+const bodyParser = require('body-parser');
+
+
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('users.db');
+
 app.use(express.static('static_files'));
+//to insert new accounts
+app.use(bodyParser.urlencoded({extented: true})); //hook to the app
 
 app.listen(3000, () => {
   console.log('Server started');
@@ -66,22 +74,113 @@ const followingStories = {
 };
 
 const database = {
-                  trendingProjects: trending, 
-                  popularProjects: popular, 
-                  followingProjects: following, 
+                  trendingProjects: trending,
+                  popularProjects: popular,
+                  followingProjects: following,
                   trendingStories: trendingStories,
                   popularStories: popularStories,
-                  followingStories: followingStories 
-                 }
+                  followingStories: followingStories
+                };
 
 app.get('/trending', (req, res) => {
-  res.send(database);
+  db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    else {
+      console.log(row);
+      res.send(row);
+    }
+  });
 });
 
 app.get('/popular', (req, res) =>{
-  res.send(database);
+  db.all("SELECT * FROM projects WHERE isPopular = 1", (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    else {
+      console.log(row);
+      res.send(row);
+    }
+  });
 });
 
-app.get('/following', (req, res) =>{
-  res.send(database);
+app.get('/following/:userId', (req, res) =>{
+  //res.send(database);
+  let userId = req.params.userId;
+  
+  //perform query to get followed images
+   db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    else {
+      console.log(userId);
+      console.log(row);
+      res.send(row); //failed so return empty string instead of undefined
+    }
+  });
+});
+
+app.get('/loadProfile/:userid', (req, res) => {
+  const userId = req.params.userid;
+  console.log(userId);
+  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row.length > 0) {
+      console.log(row[0]);
+      res.send(row[0]);
+    }
+    else {
+      res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+});
+
+//used to get userId of logged in user
+app.post('/users', (req,res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  
+  db.all("SELECT * FROM users_account WHERE (email = $username AND password = $password)", {$username: username, $password: password}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row.length > 0) {
+      console.log(row[0]);
+      res.send(row[0]);
+    }
+    else {
+      res.send({});
+    }
+  });
+});
+
+
+app.post('/signup', (req, res)=>{
+  console.log(req.body);
+  db.run(
+    'INSERT INTO users_account(firstName, email, lastName, isDesigner, password) VALUES ($firstName, $email, $lastName, $isDesigner, $password)',
+    {
+      $firstName: req.body.firstName,
+      $email: req.body.email,
+      $lastName: req.body.lastName,
+      $isDesigner: req.body.isDesigner,
+      $password: req.body.password,
+    },
+    (err) => {
+      if(err) {
+        console.log('error creating new user');
+      } else{
+        console.log("hi");
+        db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
+          console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
+        });
+        res.send({message:'successfuly run app.post(/signup)'});
+      }
+    }
+  );
 });

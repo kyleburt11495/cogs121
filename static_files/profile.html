@@ -125,6 +125,21 @@
 </div>
 </div>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(() => {
+    const userId = sessionStorage.getItem('userId');
+    const loadProfileRequestUrl = '/loadProfile/:' + userId;
+    $.ajax({
+      url: loadProfileRequestUrl,
+      type: 'GET',
+      datatype: 'JSON',
+      success: (row) => {
+        console.log("Recieved profile information");
+        
+      }
+    });
+  });
+</script>
 </body>
 </html>
