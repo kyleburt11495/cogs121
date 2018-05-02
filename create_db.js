@@ -66,17 +66,17 @@ db.serialize(() => {
     });
   });
   db.run("END TRANSACTION;");
-  
+
   db.each("SELECT userId, firstName, lastName, email, isDeveloper FROM users_account", (err,row) => {
     console.log(row.userId + " " + row.firstName + " " + row.lastName + ":" + row.email + '.');
   });
-  
+
   /**
   db.each("SELECT projectId, projectTitle, projectDescription, userId FROM projects", (err, row) => {
     console.log(row.projectId + " " + row.projectTitle + " " + row.projectDescription + " " +row.userId);
   });
   */
-  
+
   /**
   db.run("BEGIN TRANSACTION");
   db.run("INSERT INTO users_account(firstName, email, lastName, isDeveloper) VALUES('Tom', 'tksmith@ucsd.edu', 'Tierra', '1')");
@@ -89,5 +89,4 @@ db.serialize(() => {
   */
 });
 
-//db.close();
-
+db.close();

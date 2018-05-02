@@ -158,7 +158,6 @@ app.post('/signup', (req, res)=>{
       $isDesigner: req.body.isDesigner,
       $password: req.body.password,
     },
-
     (err) => {
       if(err) {
         console.log('error creating new user');
