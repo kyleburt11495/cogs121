@@ -191,7 +191,7 @@ app.post('/signup', (req, res)=>{
     // console.log(match);
     if(match){
       console.log('user already exist');
-      res.send({});
+      // res.send({});
       return;
     }
     else{
