@@ -177,7 +177,22 @@ app.post('/users', (req,res) => {
 
 
 app.post('/signup', (req, res)=>{
-  console.log(req.body);
+  let match = false;
+  db.all("SELECT email FROM users_account", (err,row)=>{
+      row.forEach((e)=> {
+      if(e.email == req.body.email){
+        console.log("match");
+        res.send({});
+
+      }
+      }; 
+    /*if(req.body.email == row.email){
+      console.log("match");
+      return false;
+    } */
+    if(match){
+      res.send({});
+    } else {
   db.run(
     'INSERT INTO users_account(firstName, email, lastName, isDesigner, password) VALUES ($firstName, $email, $lastName, $isDesigner, $password)',
     {
@@ -199,5 +214,7 @@ app.post('/signup', (req, res)=>{
       }
     }
   );
+}
+});
 });
 
