@@ -15,6 +15,7 @@
   <div class="home">
     <div class="item">
       <div class="content">
+        <div id="error"></div>
         <form id='form' class="form-horizontal">
           <!-- <form id='form' method='POST' action="#"> -->
           <label for="firstname">First Name</label>
@@ -50,19 +51,18 @@
           </div>
           <div class="form-group in">
             <button id="submitButton" type="submit" class="btn btn-primary btn-sm btn-block">Create Account</button></br>
-            <a href="home.html">Have an account? Log in!</a>
+            <a href="login.html">Have an account? Log in!</a>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <div id="#status"> </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
   <script type="text/javascript">
   $('#submitButton').click(()=>{
-    console.log("clicked");
+    if($('#firstname').val() && $('#lastname').val() && $('#username').val() && $('#password').val() ){
     $.ajax({
       url:'signup',
       type: 'POST',
@@ -74,10 +74,16 @@
         password:$('#password').val()
       },
       success: (data)=>{
-        $('#status').html(data.message);
-        console.log('yes success');
+        console.log("DATA: " + data);
+        sessionStorage.setItem("id",data.userId);
+        window.top.location = "home.html";
+
       }
     });
+  }
+  else {
+    $('#error').html("Please enter all fields!");
+  }
   });
   </script>
 </body>
