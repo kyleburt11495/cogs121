@@ -9,7 +9,7 @@ const db = new sqlite3.Database('users.db');
 
 app.use(express.static('static_files'));
 //to insert new accounts
-app.use(bodyParser.urlencoded({extented: true})); //hook to the app
+app.use(bodyParser.urlencoded({extended: true})); //hook to the app
 
 app.listen(3000, () => {
   console.log('Server started');
@@ -40,47 +40,47 @@ app.get('/project', (req, res) => {
 });
 
 app.get('/upload', (req, res) => {
-    console.log('Running upload');
+  console.log('Running upload');
 
 });
 
 //Simulate database in memory
 //Trending, popular, following
-const trending = {
-  img1:'interior_design1.jpg', img2:'interior_design2.jpg', img3:'interior_design3.jpg', img4:'interior_design5.jpg'
-};
-
-const popular = {
-  img1:'interior_design4.jpg', img2:'interior_design5.jpg', img3:'interior_design6.jpg', img4: 'interior_design2.jpg'
-};
-
-const following = {
-  img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg', img4: 'interior_design6.jpg'
-};
-
-const trendingStories = {
-  img1:'story1.jpg', img2:'story2.jpg', img3:'story3.jpg', img4:'story4.jpg',
-  img5:'story5.jpg'
-};
-
-const popularStories = {
-  img1:'story3.jpg', img2:'story7.jpg', img3:'story8.jpg', img4:'story9.jpg',
-  img5:'story2.jpg'
-};
-
-const followingStories = {
-  img1:'story4.jpg', img2:'story1.jpg', img3:'story8.jpg', img4:'story6.jpg',
-  img5:'story5.jpg'
-};
-
-const database = {
-                  trendingProjects: trending,
-                  popularProjects: popular,
-                  followingProjects: following,
-                  trendingStories: trendingStories,
-                  popularStories: popularStories,
-                  followingStories: followingStories
-                };
+// const trending = {
+//   img1:'interior_design1.jpg', img2:'interior_design2.jpg', img3:'interior_design3.jpg', img4:'interior_design5.jpg'
+// };
+//
+// const popular = {
+//   img1:'interior_design4.jpg', img2:'interior_design5.jpg', img3:'interior_design6.jpg', img4: 'interior_design2.jpg'
+// };
+//
+// const following = {
+//   img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg', img4: 'interior_design6.jpg'
+// };
+//
+// const trendingStories = {
+//   img1:'story1.jpg', img2:'story2.jpg', img3:'story3.jpg', img4:'story4.jpg',
+//   img5:'story5.jpg'
+// };
+//
+// const popularStories = {
+//   img1:'story3.jpg', img2:'story7.jpg', img3:'story8.jpg', img4:'story9.jpg',
+//   img5:'story2.jpg'
+// };
+//
+// const followingStories = {
+//   img1:'story4.jpg', img2:'story1.jpg', img3:'story8.jpg', img4:'story6.jpg',
+//   img5:'story5.jpg'
+// };
+//
+// const database = {
+//   trendingProjects: trending,
+//   popularProjects: popular,
+//   followingProjects: following,
+//   trendingStories: trendingStories,
+//   popularStories: popularStories,
+//   followingStories: followingStories
+// };
 
 app.get('/trending', (req, res) => {
   db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
@@ -109,9 +109,9 @@ app.get('/popular', (req, res) =>{
 app.get('/following/:userId', (req, res) =>{
   //res.send(database);
   let userId = req.params.userId;
-  
+
   //perform query to get followed images
-   db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
+  db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -160,7 +160,7 @@ app.get('/loadProjects/:userid', (req, res) => {
 app.post('/users', (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
-  
+
   db.all("SELECT * FROM users_account WHERE (email = $username AND password = $password)", {$username: username, $password: password}, (err, row) => {
     if (err) {
       console.error(err.message);
@@ -177,44 +177,45 @@ app.post('/users', (req,res) => {
 
 
 app.post('/signup', (req, res)=>{
-  let match = false;
-  db.all("SELECT email FROM users_account", (err,row)=>{
-      row.forEach((e)=> {
+  // let match = false;
+  db.all('SELECT email from users_account', (err,row)=> {
+    let match = false;
+    row.forEach((e) =>{
       if(e.email == req.body.email){
-        console.log("match");
-        res.send({});
-
+        console.log('match');
+        match = true;
+        return match;
       }
-      }; 
-    /*if(req.body.email == row.email){
-      console.log("match");
-      return false;
-    } */
+    })
+    console.log('it exists', match);
+    // console.log(match);
     if(match){
-      res.send({});
-    } else {
-  db.run(
-    'INSERT INTO users_account(firstName, email, lastName, isDesigner, password) VALUES ($firstName, $email, $lastName, $isDesigner, $password)',
-    {
-      $firstName: req.body.firstName,
-      $email: req.body.email,
-      $lastName: req.body.lastName,
-      $isDesigner: req.body.isDesigner,
-      $password: req.body.password,
-    },
-    (err) => {
-      if(err) {
-        console.log('error creating new user');
-      } else{
-        console.log("hi");
-        db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
-          console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
-        });
-        res.send({message:'successfuly run app.post(/signup)'});
-      }
+      console.log('user already exists');
+      // res.send({});
+      return;
     }
-  );
-}
+    else{
+      db.run(
+        'INSERT INTO users_account(firstName, email, lastName, isDesigner, password) VALUES ($firstName, $email, $lastName, $isDesigner, $password)',
+        {
+          $firstName: req.body.firstName,
+          $email: req.body.email,
+          $lastName: req.body.lastName,
+          $isDesigner: req.body.isDesigner,
+          $password: req.body.password,
+        },
+        (err) => {
+          if(err) {
+            console.log('error creating new user');
+          } else{
+            console.log("hi");
+            db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
+              console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
+            });
+            res.send({message:'successfuly run app.post(/signup)'});
+          }
+        }
+      );
+    }
+  });
 });
-});
-
