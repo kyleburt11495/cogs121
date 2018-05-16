@@ -1,6 +1,23 @@
 const express = require('express');
 const app = express();
 
+//multer for file upload
+const multer = require('multer');
+
+//const upload = multer({dest: 'static_files/'});
+
+//set file destination to static_files and give each file unique name
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'static_files/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname)
+  }
+});
+
+const upload = multer({storage: storage});
+
 const bodyParser = require('body-parser');
 
 
@@ -39,48 +56,52 @@ app.get('/project', (req, res) => {
 
 });
 
+
 app.get('/upload', (req, res) => {
     console.log('Running upload');
 
 });
 
-//Simulate database in memory
-//Trending, popular, following
-const trending = {
-  img1:'interior_design1.jpg', img2:'interior_design2.jpg', img3:'interior_design3.jpg', img4:'interior_design5.jpg'
-};
-
-const popular = {
-  img1:'interior_design4.jpg', img2:'interior_design5.jpg', img3:'interior_design6.jpg', img4: 'interior_design2.jpg'
-};
-
-const following = {
-  img1:'interior_design7.jpg', img2:'interior_design8.jpg', img3: 'interior_design9.jpg', img4: 'interior_design6.jpg'
-};
-
-const trendingStories = {
-  img1:'story1.jpg', img2:'story2.jpg', img3:'story3.jpg', img4:'story4.jpg',
-  img5:'story5.jpg'
-};
-
-const popularStories = {
-  img1:'story3.jpg', img2:'story7.jpg', img3:'story8.jpg', img4:'story9.jpg',
-  img5:'story2.jpg'
-};
-
-const followingStories = {
-  img1:'story4.jpg', img2:'story1.jpg', img3:'story8.jpg', img4:'story6.jpg',
-  img5:'story5.jpg'
-};
-
-const database = {
-                  trendingProjects: trending,
-                  popularProjects: popular,
-                  followingProjects: following,
-                  trendingStories: trendingStories,
-                  popularStories: popularStories,
-                  followingStories: followingStories
-                };
+//multer file upload
+app.post('/uploadFile', upload.single('image'), (req, res) => {
+  console.log(req.file.filename);
+  //TODO get userId
+  const userId = 0;
+  //
+  db.serialize(() => {
+    
+    //insert project into the databaser
+    db.run('INSERT INTO projects(projectTitle, projectDescription, mainImg, isTrending, isPopular, userId) VALUES($projectTitle, $projectDescription, $mainImg, $isTrending, $isPopular, $userId)',{
+      $projectTitle: req.body.projectTitle,
+      $projectDescription: req.body.projectDescription,
+      $mainImg: req.file.filename,
+      $isTrending: 0,
+      $isPopular: 0,
+      $userId: req.body.userId
+    }, (err, row) => {
+      if(err) {
+        console.err(err.message);
+      }
+      //get last inserted project id
+      const projectId = this.lastID + '';
+      //insert project mainImg into the database
+      db.run('INSERT INTO pictures(picture, projectID) VALUES($picture, $projectId)', {
+        $picture: req.file.filename,
+        $projectId: projectId
+      }, (err) => {
+        console.err(err.message);
+      });
+    });
+    
+    //insert project mainImg into the database
+    db.run('INSERT INTO pictures(picture, projectID) VALUES($picture, $projectId)', {
+      $picture: req.file.filename
+    }, (err) => {
+      
+    });
+  });
+  
+});
 
 app.get('/trending', (req, res) => {
   db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
@@ -142,7 +163,7 @@ app.get('/loadProfile/:userid', (req, res) => {
 
 app.get('/loadProjects/:userid', (req, res) => {
   const userId = req.params.userid;
-  db.all("SELECT mainImg FROM projects WHERE userId=$userId", {$userId: userId}, (err, row) => {
+  db.all("SELECT * FROM projects WHERE userId=$userId", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -151,6 +172,7 @@ app.get('/loadProjects/:userid', (req, res) => {
       res.send(row);
     }
     else {
+	  console.log("no projects found");
       res.send({}); //failed so return empty string instead of undefined
     }
   });
@@ -185,7 +207,7 @@ app.post('/signup', (req, res)=>{
         res.send({});
 
       }
-      }; 
+      }); 
     /*if(req.body.email == row.email){
       console.log("match");
       return false;

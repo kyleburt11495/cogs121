@@ -36,7 +36,7 @@ db.serialize(() => {
      }
    });
    //table of messages
-   db.run("CREATE TABLE messages(messageId INTEGER PRIMARY KEY, subject TEXT, content TEXT, senderId INTEGER, FOREIGN KEY(senderId) REFERENCES users_account(userId))", (err, row) => {
+   db.run("CREATE TABLE messages(messageId INTEGER PRIMARY KEY, subject TEXT, content TEXT, senderId INTEGER, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY(senderId) REFERENCES users_account(userId))", (err, row) => {
      if(err) {
        console.log("sixth");
      }

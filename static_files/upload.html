@@ -34,6 +34,12 @@
 	</nav>
 	<div class="main">
 		<h4>Upload</h4>
+		<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data">
+			<input type="file" name="image" id="image" class="form-control">
+            <input type="hidden" name="hiddenUserId" id="hiddenUserId">
+			<input type="submit">
+		</form>
 	</div>
+  
 </body>
 </html>
