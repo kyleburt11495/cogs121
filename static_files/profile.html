@@ -242,9 +242,9 @@
                 }
                 
                 $('.project').click(() => {
-                  console.log('hello');
-                  console.log($(this).find('.design-pics'));
-                  $('#projectImgModal').attr('src', 'interior_design3.jpg'); //= "interior_design3.jpg";
+                  const image = $(this).find('#')
+                  $('#projectImgModal').attr('src', 'interior_design2.jpg'); //= "interior_design3.jpg";
+                  /**
                   console.log($(this).find('.design-pics').attr('src'));
                   console.log($(this).find('#projectTitle').text());
                   document.querySelector('.design-pics').src = $(this).find('.design-pics').attr('src');
@@ -252,6 +252,7 @@
                   document.querySelector('#projectTitle').textContent = $(this).find('#projectTitle').text();
                   document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
                   projectClicked = $(this).find('#projectId').text();
+                  */
 
                   $('#projectViewModal').modal();
                 });
