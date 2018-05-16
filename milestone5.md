@@ -4,8 +4,8 @@ __Screenshots__
 UI Skeleton Webpages
 
 __Screen #1(Messages)__
-![](m5_images/messages.png)
 ![](m5_images/chat.png)
+![](m5_images/messages.png)
 
 
 __Screen #2(Profile)__
