@@ -4,13 +4,16 @@ html{
 }
 
 #nav {
-	background-color: black;
+	background-color: #212121;
+    padding: 0;
 }
 
 .navbar-brand {
 	margin-left: 0.3rem;
 	font-size: 2.5rem;
 	color: white;
+    max-width: 5rem;
+    padding: 0;
 }
 
 .active {
@@ -64,4 +67,12 @@ hr{
     color: white;
     /* font-family: 'Roboto Condensed', sans-serif; */
     color: #727272;
+}
+
+#logo {
+    max-width: 100%;
+}
+
+.input-group .form-control {
+    width: 50%;
 }
