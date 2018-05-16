@@ -6,6 +6,8 @@ UI Skeleton Webpages
 __Screen #1(Messages)__
 
 __Screen #2(Profile)__
+![](m5_images/profile.png)
+![](m5_images/profile1.png)
 
 __Screen #3(Login)__
 ![](m5_images/login.png)
