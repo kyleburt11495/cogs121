@@ -9,7 +9,7 @@ const db = new sqlite3.Database('users.db');
 
 app.use(express.static('static_files'));
 //to insert new accounts
-app.use(bodyParser.urlencoded({extented: true})); //hook to the app
+app.use(bodyParser.urlencoded({extended: true})); //hook to the app
 
 app.listen(3000, () => {
   console.log('Server started');
@@ -109,7 +109,7 @@ app.get('/popular', (req, res) =>{
 app.get('/following/:userId', (req, res) =>{
   //res.send(database);
   let userId = req.params.userId;
-  
+
   //perform query to get followed images
    db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
     if (err) {
@@ -160,7 +160,7 @@ app.get('/loadProjects/:userid', (req, res) => {
 app.post('/users', (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
-  
+
   db.all("SELECT * FROM users_account WHERE (email = $username AND password = $password)", {$username: username, $password: password}, (err, row) => {
     if (err) {
       console.error(err.message);
@@ -200,4 +200,3 @@ app.post('/signup', (req, res)=>{
     }
   );
 });
-
