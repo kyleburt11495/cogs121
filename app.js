@@ -67,7 +67,10 @@ app.get('/upload', (req, res) => {
 app.post('/uploadFile', upload.single('image'), (req, res) => {
   console.log(req.file.filename);
   //TODO get userId
-  const userId = 0;
+  const userId = req.body.userId;
+  console.log(req.body.userId);
+  console.log(req.body.projectDescription);
+  console.log(req.body.projectTitle);
   //
   db.serialize(() => {
     
@@ -83,8 +86,9 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       if(err) {
         console.err(err.message);
       }
+      /**
       //get last inserted project id
-      const projectId = this.lastID + '';
+      const projectId = this.lastID;
       //insert project mainImg into the database
       db.run('INSERT INTO pictures(picture, projectID) VALUES($picture, $projectId)', {
         $picture: req.file.filename,
@@ -92,13 +96,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       }, (err) => {
         console.err(err.message);
       });
-    });
-    
-    //insert project mainImg into the database
-    db.run('INSERT INTO pictures(picture, projectID) VALUES($picture, $projectId)', {
-      $picture: req.file.filename
-    }, (err) => {
-      
+      */
     });
   });
   

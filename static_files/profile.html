@@ -18,17 +18,31 @@
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+			<h5 class="modal-title" id="exampleModalLongTitle">Create New Project</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-			...
+			<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="projectTitle">Project Title</label>
+                <input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Enter a title for your project">
+              </div>
+              <div class="form-group">
+                <label for="projectDescription">Project Description</label>
+                <input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Enter a description for your project">
+              </div>
+              <div class="form-group">
+                <label for="image">Upload Image</label>
+                <input type="file" name="image" id="image" class="form-control">
+              </div>
+              <input type="hidden" name="userId" id="userId">
+              <input type="submit" class="btn btn-primary">
+		    </form>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Create Project</button>
 		  </div>
 		</div>
 	  </div>
@@ -137,51 +151,40 @@
 </div> -->
 
 <div class="projects-main">
-	<!-- project1 -->
+    <template class="projectTemplate">
+      <div class="project">
+		<div class="project-pic">
+			<img src="interior_design4.jpg" alt="" class="design-pics" id="projectImg">
+		</div>
+	</div>
+    </template>
+    <!--
 	<div class="project">
 		<div class="project-pic">
 			<img src="interior_design4.jpg" alt="" class="design-pics" id="project-1">
 		</div>
-		<!--<div class="description">
-			<span class="meta"><img src="profpic.png" class="avatar"/>Sumedha Gupta</span>
-		</div>-->
 	</div>
-	<!-- project2 -->
 	<div class="project">
 		<div class="project-pic">
 			<img src="interior_design6.jpg" alt=""class="design-pics" id="project-2">
 		</div>
-		<!--<div class="description">
-			<span class="meta"><img src="profpic.png" class="avatar"/>Lynley Yamaguchi</span>
-		</div>-->
 	</div>
-	<!-- project3 -->
 	<div class="project">
 		<div class="project-pic">
 			<img src="interior_design8.jpg" alt="" class="design-pics" id="project-3">
 		</div>
-		<!--<div class="description">
-			<span class="meta"><img src="profpic.png" class="avatar"/>Vince Tierra</span>
-		</div>-->
 	</div>
-	<!-- project4 -->
 	<div class="project">
 		<div class="project-pic">
 			<img src="interior_design5.jpg" alt=""class="design-pics" id="project-4">
 		</div>
-		<!--<div class="description">
-			<span class="meta"><img src="profpic.png" class="avatar"/>Kyle Burt</span>
-		</div>-->
 	</div>
-
 	<div class="project">
 		<div class="project-pic">
 			<img src="interior_design5.jpg" alt=""class="design-pics" id="project-5">
 		</div>
-		<!--<div class="description">
-			<span class="meta"><img src="profpic.png" class="avatar"/>Kyle Burt</span>
-		</div>-->
 	</div>
+    -->
 
 </div>
 </div>
@@ -190,7 +193,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(() => {
+    //get userId and store in modal form field
 	const userId = sessionStorage.getItem('id');
+    $('#userId').val(userId);
+    console.log("userId " + userId);
 	const getUserProfileUrl = '/loadProfile/' + userId;
 	console.log(getUserProfileUrl);
 	$.ajax({
@@ -213,11 +219,16 @@ $(document).ready(() => {
 		success: (data) => {
 			//console.log(data);
 			if (data[0] != null) {
-              $('#project-1').attr('src',data[0].mainImg);
-              $('#project-2').attr('src',data[1].mainImg);
-              $('#project-3').attr('src',data[2].mainImg);
-              $('#project-4').attr('src',data[3].mainImg);
-              $('#project-5').attr('src',data[4].mainImg);
+              const template = document.querySelector('.projectTemplate');
+              const projectsMain = document.querySelector('.projects-main');
+              
+              for(let i = 0; i < data.length; i++) {
+                template.content.querySelector('.design-pics').src = data[i].mainImg;
+                console.log(data[i].mainImg);
+                let clone = document.importNode(template.content, true);
+                projectsMain.appendChild(clone);
+              }
+              
 			}
 		}
 	});
@@ -229,5 +240,9 @@ $(document).ready(() => {
 
 });
 	</script>
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 </body>
 </html>
