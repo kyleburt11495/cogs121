@@ -53,13 +53,15 @@
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+			<h5 class="modal-title" id="exampleModalLongTitle"></h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-			...
+		    <img src="interior_design3.jpg" alt="Project Image" class="design-pics" id="projectImgModal">
+            <p id="projectTitleModal"></p>
+            <p id="projectDescriptionModal"></p>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -111,7 +113,7 @@
 		<h3 class="username profileName" id="profileName">User</h3>
 		<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
 		<div class="profile-buttons">
-			<button type="button" class="btn-sm-follow">Follow</button>
+			<button type="button" class="btn-sm-follow" id="followUser">Follow</button>
 			<button type="button" class="btn-sm-message" id="messageButton">Message</button>
 		</div>
 	</div>
@@ -156,6 +158,9 @@
 		<div class="project-pic">
 			<img src="interior_design4.jpg" alt="" class="design-pics" id="projectImg">
 		</div>
+        <p class="projectInfo" id="projectTitle">Hesw</p>
+        <p class="projectInfo" id="projectDescription"></p>
+        <p class="projectInfo" id="projectId"></p>
 	</div>
     </template>
     <!--
@@ -192,54 +197,76 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-$(document).ready(() => {
-    //get userId and store in modal form field
-	const userId = sessionStorage.getItem('id');
-    $('#userId').val(userId);
-    console.log("userId " + userId);
-	const getUserProfileUrl = '/loadProfile/' + userId;
-	console.log(getUserProfileUrl);
-	$.ajax({
-		url: getUserProfileUrl,
-		type: 'GET',
-		datatype: 'JSON',
-		success: (data) => {
-			console.log('Recieved user profile info');
-			console.log(data);
-			$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-			$('.profileName').html(data.firstName + ' ' + data.lastName);
-		}
-	});
-	
-	const getUserProjectsUrl = '/loadProjects/' + userId;
-	$.ajax({
-		url: getUserProjectsUrl,
-		type: 'GET',
-		datatype: 'JSON',
-		success: (data) => {
-			//console.log(data);
-			if (data[0] != null) {
-              const template = document.querySelector('.projectTemplate');
-              const projectsMain = document.querySelector('.projects-main');
-              
-              for(let i = 0; i < data.length; i++) {
-                template.content.querySelector('.design-pics').src = data[i].mainImg;
-                console.log(data[i].mainImg);
-                let clone = document.importNode(template.content, true);
-                projectsMain.appendChild(clone);
-              }
-              
-			}
-		}
-	});
-	
-	$('#logout').click(() => {
-		sessionStorage.clear();
-		console.log(sessionStorage.getItem('id'));
-	});
+  let projectClicked;
+  
+  const projectInfo = [];
+  $(document).ready(() => {
+      //get userId and store in modal form field
+      const userId = sessionStorage.getItem('id');
+      $('#userId').val(userId);
+      console.log("userId " + userId);
+      const getUserProfileUrl = '/loadProfile/' + userId;
+      console.log(getUserProfileUrl);
+      $.ajax({
+          url: getUserProfileUrl,
+          type: 'GET',
+          datatype: 'JSON',
+          success: (data) => {
+              console.log('Recieved user profile info');
+              console.log(data);
+              $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+              $('.profileName').html(data.firstName + ' ' + data.lastName);
+          }
+      });
 
-});
-	</script>
+      const getUserProjectsUrl = '/loadProjects/' + userId;
+      $.ajax({
+          url: getUserProjectsUrl,
+          type: 'GET',
+          datatype: 'JSON',
+          success: (data) => {
+              //console.log(data);
+              if (data[0] != null) {
+                const template = document.querySelector('.projectTemplate');
+                const projectsMain = document.querySelector('.projects-main');
+
+                for(let i = 0; i < data.length; i++) {
+                  template.content.querySelector('.design-pics').src = data[i].mainImg;
+                  template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
+                  template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
+                  template.content.querySelector('#projectId').textContent = data[i].projectId;
+                  
+                  console.log(data[i].mainImg);
+                  let clone = document.importNode(template.content, true);
+                  projectsMain.appendChild(clone);
+                }
+                
+                $('.project').click(() => {
+                  console.log('hello');
+                  console.log($(this).find('.design-pics'));
+                  $('#projectImgModal').attr('src', 'interior_design3.jpg'); //= "interior_design3.jpg";
+                  console.log($(this).find('.design-pics').attr('src'));
+                  console.log($(this).find('#projectTitle').text());
+                  document.querySelector('.design-pics').src = $(this).find('.design-pics').attr('src');
+                  
+                  document.querySelector('#projectTitle').textContent = $(this).find('#projectTitle').text();
+                  document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
+                  projectClicked = $(this).find('#projectId').text();
+
+                  $('#projectViewModal').modal();
+                });
+
+              }
+          }
+      });
+      document.querySelector('#projectTitleModal').text = "Hello";
+      $('#logout').click(() => {
+          sessionStorage.clear();
+          console.log(sessionStorage.getItem('id'));
+      });
+
+  });
+</script>
   
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
