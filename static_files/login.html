@@ -10,32 +10,26 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
 </head>
 <body>
   <nav class="navbar navbar-expand-lg" id="nav">
-    <a class="navbar-brand" href="#"><img src="inlook.png" alt="logo" id="logo"></a>
+    <a class="navbar-brand" href="#" id="imgLogo"><img src="inlook.png" class="img-responsive" alt="logo" id="logoImg"></a>
   </nav>
-  <div class="home">
-   <div class="item">
-    <div class="content">
+    <div class="container">
      <form action="#" class="form-horizontal" name="form" id="form">
       <div class="logo">
        <h1 id="logintext">Login</h1>
      </div>
      <div id="error"></div>
-     <div class="input-group span-3"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" placeholder="Email" id="username"></div>
-     <br><br>
+     <div id="userLogin">
+     <div class="input-group span-1"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" placeholder="Email" id="username"></div>
+     <br/><br/>
      <div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i></span><input type="password" class="form-control" placeholder="Password" id="password"></div>
-     <br><br>
-     <a class="facebookLogin" id="fblogin">
-       <fb:login-button scope="public_profile,email" onlogin="checkLoginState()">
-     </fb:login-button>
-   </a>
-   <div class="form-group in"><a class="btn btn-primary" id="login" href="#">Log In</a><a href="/signup">New user? Create a new account!</a></div>
+     <br/>
+   </div>
+   <a class="btn btn-primary" id="login" href="#">Log In</a><br/><a href="/signup" id="newUser">New user? Create a new account!</a> 
  </form>
-</div>
-</div>
 </div>
 <script>
 $(document).ready(()=>{
@@ -61,11 +55,11 @@ $(document).ready(()=>{
     }
     else {
       $('#error').html('Missing field. Username and password required');
-    }  
+    }
   });
 $(document).ajaxError(() => {
   $('#error').html("Incorrect username or password!");
-});  
+});
 });
 </script>
 

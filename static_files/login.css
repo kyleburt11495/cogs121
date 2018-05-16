@@ -1,78 +1,64 @@
 html{
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #nav {
-	background-color: #212121;
-    padding: 0;
+  background-color: #212121;
+  padding: 0;
+  width: 100%;
 }
 
 .navbar-brand {
-	margin-left: 0.3rem;
-	font-size: 2.5rem;
-	color: white;
-    max-width: 5rem;
-    padding: 0;
+  margin-left: 0.3rem;
+  font-size: 2.5rem;
+  color: white;
+  max-width: 7rem;
+  padding: 0;
 }
 
-.active {
-	text-decoration: underline;
+#newUser:hover{
+  font-style: underline;
 }
-
-.navbar-brand:hover {
-	color: red;
-}
-
-.content{
-    height: 100%;
-    padding: 3rem;
-    padding-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-.in{
-    padding: 15px;
-    text-align: center;
+/* .in{
+  padding: 15px;
+  text-align: center;
 }
 .lg{
-    margin-bottom: 20px;
-}
-hr{
-    border: none;
-    height: 2px;
-    color: #333;
-    background-color: #333;
-}
+  margin-bottom: 20px;
+} */
+/* hr{
+  border: none;
+  height: 2px;
+  color: #333;
+  background-color: #333;
+} */
 #login-title{
-/*    background:rgba(114, 114, 114, .65);*/
-    background: #386F9A;
-    height: 11rem;
-    text-align: center;
-    margin-bottom: 2rem;
+  /*    background:rgba(114, 114, 114, .65);*/
+  background: #386F9A;
+  height: 11rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
-#back {
-    margin-top: 25px;
+
+#login {
+  margin: 2rem;
+  width: 10rem;
 }
-#navgoicon{
-    height: 9rem;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1rem;
-}
+
 #logintext{
-    color: white;
-    /* font-family: 'Roboto Condensed', sans-serif; */
-    color: #727272;
+  color: white;
+  /* font-family: 'Roboto Condensed', sans-serif; */
+  color: #727272;
 }
 
-#logo {
-    max-width: 100%;
+
+.container{
+  text-align: center;
 }
 
+
+/*
 .input-group .form-control {
-    width: 50%;
-}
+  width: 50%;
+} */
