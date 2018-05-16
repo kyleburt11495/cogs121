@@ -9,10 +9,10 @@
 	<link rel="stylesheet" href="profile.css">
 </head>
 <body>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
   		Create New Project
-	</button>
-	
+	</button> -->
+
 	<!--Project Creation Modal -->
 	<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -47,7 +47,7 @@
 		</div>
 	  </div>
 	</div>
-	
+
 	<!--Project View Modal -->
 	<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -68,9 +68,9 @@
 		</div>
 	  </div>
 	</div>
-	
-	
-	
+
+
+
 	<nav class="navbar navbar-expand-lg" id="nav">
    		<a class="navbar-brand" href="home.html">InLook</a>
    		<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -95,7 +95,7 @@
    		</div>
 	</nav>
 	<div class="main">
-		
+
 
 
 	<!-- main content- bio, profile pic,
@@ -151,6 +151,9 @@
 </div> -->
 
 <div class="projects-main">
+	<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+			Create New Project &nbsp; &nbsp; +
+	</button>
     <template class="projectTemplate">
       <div class="project">
 		<div class="project-pic">
@@ -210,7 +213,7 @@ $(document).ready(() => {
 			$('.profileName').html(data.firstName + ' ' + data.lastName);
 		}
 	});
-	
+
 	const getUserProjectsUrl = '/loadProjects/' + userId;
 	$.ajax({
 		url: getUserProjectsUrl,
@@ -221,18 +224,18 @@ $(document).ready(() => {
 			if (data[0] != null) {
               const template = document.querySelector('.projectTemplate');
               const projectsMain = document.querySelector('.projects-main');
-              
+
               for(let i = 0; i < data.length; i++) {
                 template.content.querySelector('.design-pics').src = data[i].mainImg;
                 console.log(data[i].mainImg);
                 let clone = document.importNode(template.content, true);
                 projectsMain.appendChild(clone);
               }
-              
+
 			}
 		}
 	});
-	
+
 	$('#logout').click(() => {
 		sessionStorage.clear();
 		console.log(sessionStorage.getItem('id'));
@@ -240,7 +243,7 @@ $(document).ready(() => {
 
 });
 	</script>
-  
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>

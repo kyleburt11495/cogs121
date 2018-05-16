@@ -6,6 +6,20 @@ body {
 	box-sizing: content-box;
 }
 
+#createProject{
+	margin-top:2.5em;
+	width: 600px;
+	height: 40px;
+	position: relative;
+	background-color: #D3D3D3;
+	border-style: none;
+	color: black;
+	font-weight: bold;
+	/* margin-right: 0.2rem; */
+	/* margin-bottom: 0.5rem; */
+
+}
+
 .search {
 	float: right;
 	width: 15%;
@@ -195,7 +209,7 @@ h4{
 
 .design-pics{
 	border-radius: 5px;
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 20px;
 	width: 600px;
 }
