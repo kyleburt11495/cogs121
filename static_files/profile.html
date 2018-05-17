@@ -58,8 +58,8 @@
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
-		  <div class="modal-body">
-		    <img src="interior_design3.jpg" alt="Project Image" class="design-pics" id="projectImgModal">
+		  <div id="project-view-modal" class="modal-body">
+		    <img src="" alt="Project Image" class="design-pics" id="projectImgModal">
             <p id="projectTitleModal"></p>
             <p id="projectDescriptionModal"></p>
 		  </div>
@@ -158,9 +158,10 @@
 		<div class="project-pic">
 			<img src="interior_design4.jpg" alt="" class="design-pics" id="projectImg">
 		</div>
-        <p class="projectInfo" id="projectTitle">Hesw</p>
+        <p class="projectInfo" id="projectTitle"></p>
         <p class="projectInfo" id="projectDescription"></p>
         <p class="projectInfo" id="projectId"></p>
+        <button>Click me</button>
 	</div>
     </template>
     <!--
@@ -194,13 +195,26 @@
 </div>
 </div>
 </div>
+<button>Click me</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   let projectClicked;
   
-  const projectInfo = [];
   $(document).ready(() => {
+      
+      $(document).on('click', 'button', function(){
+        console.log($(this));
+        $(this).hide();
+      });
+    
+      $(document).on('click', 'img', () => {
+                  //console.log($(this));
+                  //$(this).hide();
+                  $('#projectViewModal').modal();
+                });
+    
+    
       //get userId and store in modal form field
       const userId = sessionStorage.getItem('id');
       $('#userId').val(userId);
@@ -241,10 +255,10 @@
                   projectsMain.appendChild(clone);
                 }
                 
+                /**
                 $('.project').click(() => {
-                  const image = $(this).find('#')
-                  $('#projectImgModal').attr('src', 'interior_design2.jpg'); //= "interior_design3.jpg";
-                  /**
+                                                      
+                  $('#projectImgModal').attr('src', 'interior_design7.jpg'); //= "interior_design3.jpg";
                   console.log($(this).find('.design-pics').attr('src'));
                   console.log($(this).find('#projectTitle').text());
                   document.querySelector('.design-pics').src = $(this).find('.design-pics').attr('src');
@@ -252,10 +266,27 @@
                   document.querySelector('#projectTitle').textContent = $(this).find('#projectTitle').text();
                   document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
                   projectClicked = $(this).find('#projectId').text();
-                  */
+                  
 
                   $('#projectViewModal').modal();
                 });
+                */
+                $(".design-pics").click(function(event){
+                  //project div
+                  projectDiv = $(event.target).parent();
+                  console.log($(event.target).parent().text());
+                  console.log($(event.target).attr("src"));
+                  $("#projectImgModal").attr("src", $(event.target).attr("src"));
+                  console.log($(projectDiv).find('#projectTitle').text());
+                  $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
+                  $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());     
+                  
+                });
+//                $(document).on('click', 'img', () => {
+//                  console.log($(this));
+//                  $(this).hide();
+//                  $('#projectViewModal').modal();
+//                });
 
               }
           }
@@ -267,6 +298,7 @@
       });
 
   });
+  
 </script>
   
 
