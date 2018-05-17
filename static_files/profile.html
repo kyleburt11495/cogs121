@@ -273,7 +273,7 @@
                 */
                 $(".design-pics").click(function(event){
                   //project div
-                  projectDiv = $(event.target).parent();
+                  projectDiv = $(event.target).parent().parent();
                   console.log($(event.target).parent().text());
                   console.log($(event.target).attr("src"));
                   $("#projectImgModal").attr("src", $(event.target).attr("src"));
