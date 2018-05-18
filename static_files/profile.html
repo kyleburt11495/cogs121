@@ -9,45 +9,43 @@
 	<link rel="stylesheet" href="profile.css">
 </head>
 <body>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
   		Create New Project
-	</button>
-	
+	</button> -->
+
 	<!--Project Creation Modal -->
 	<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">Create New Project</h5>
+			<h5 class="modal-title" id="exampleModalLongTitle">Add a New Project</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data">
+			<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data" target="_self">
               <div class="form-group">
-                <label for="projectTitle">Project Title</label>
-                <input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Enter a title for your project">
+                <label for="projectTitle">Name Your Project</label>
+                <input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Project Title">
               </div>
               <div class="form-group">
-                <label for="projectDescription">Project Description</label>
-                <input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Enter a description for your project">
+                <label for="projectDescription">What does your project show?</label>
+                <input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Project Description">
               </div>
               <div class="form-group">
                 <label for="image">Upload Image</label>
                 <input type="file" name="image" id="image" class="form-control">
               </div>
               <input type="hidden" name="userId" id="userId">
-              <input type="submit" class="btn btn-primary">
+              <input type="submit" class="btn btn-primary" id="submitProject">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		    </form>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		  </div>
 		</div>
 	  </div>
 	</div>
-	
+
 	<!--Project View Modal -->
 	<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -70,9 +68,9 @@
 		</div>
 	  </div>
 	</div>
-	
-	
-	
+
+
+
 	<nav class="navbar navbar-expand-lg" id="nav">
    		<a class="navbar-brand" href="home.html">InLook</a>
    		<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -97,7 +95,7 @@
    		</div>
 	</nav>
 	<div class="main">
-		
+
 
 
 	<!-- main content- bio, profile pic,
@@ -153,6 +151,9 @@
 </div> -->
 
 <div class="projects-main">
+	<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+			<i class="fas fa-plus"></i>
+	</button>
     <template class="projectTemplate">
       <div class="project">
 		<div class="project-pic">
@@ -161,37 +162,8 @@
         <p class="projectInfo" id="projectTitle"></p>
         <p class="projectInfo" id="projectDescription"></p>
         <p class="projectInfo" id="projectId"></p>
-        <button>Click me</button>
 	</div>
     </template>
-    <!--
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design4.jpg" alt="" class="design-pics" id="project-1">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design6.jpg" alt=""class="design-pics" id="project-2">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design8.jpg" alt="" class="design-pics" id="project-3">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design5.jpg" alt=""class="design-pics" id="project-4">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design5.jpg" alt=""class="design-pics" id="project-5">
-		</div>
-	</div>
-    -->
-
 </div>
 </div>
 </div>
@@ -300,7 +272,7 @@
   });
   
 </script>
-  
+ 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>

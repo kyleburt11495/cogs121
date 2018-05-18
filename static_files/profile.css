@@ -6,6 +6,24 @@ body {
 	box-sizing: content-box;
 }
 
+#createProject{
+	margin-top: 2.5em;
+	margin-bottom: 1em;
+	width: 600px;
+	height: 60px;
+	position: relative;
+	background-color: #f2f2f2;
+	border: 1px solid #C1C1C1;
+	color: black;
+	font-weight: bold;
+	/* margin-right: 0.2rem; */
+	/* margin-bottom: 0.5rem; */
+
+}
+#createProject:hover {
+	background-color: #C1C1C1;
+}
+
 .search {
 	float: right;
 	width: 15%;
@@ -195,11 +213,17 @@ h4{
 
 .design-pics{
 	border-radius: 5px;
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-bottom: 20px;
 	width: 600px;
 }
 
+
 .projectInfo {
   display: none
+
+.modal .btn {
+	margin-left: 10px;
+	float: right;
+
 }

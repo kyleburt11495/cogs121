@@ -62,7 +62,6 @@ app.get('/upload', (req, res) => {
 
 });
 
-
 //multer file upload
 app.post('/uploadFile', upload.single('image'), (req, res) => {
   console.log(req.file.filename);
@@ -86,6 +85,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       if(err) {
         console.err(err.message);
       }
+      return res.redirect('/profile.html');
       /**
       //get last inserted project id
       const projectId = this.lastID;
