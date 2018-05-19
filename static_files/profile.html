@@ -163,53 +163,22 @@
         <p class="projectInfo" id="projectId"></p>
 	</div>
     </template>
-    <!--
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design4.jpg" alt="" class="design-pics" id="project-1">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design6.jpg" alt=""class="design-pics" id="project-2">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design8.jpg" alt="" class="design-pics" id="project-3">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design5.jpg" alt=""class="design-pics" id="project-4">
-		</div>
-	</div>
-	<div class="project">
-		<div class="project-pic">
-			<img src="interior_design5.jpg" alt=""class="design-pics" id="project-5">
-		</div>
-	</div>
-    -->
+</div>
+</div>
+</div>
+<button>Click me</button>
 
-</div>
-</div>
-</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   let projectClicked;
 
   $(document).ready(() => {
 
-      // $(document).on('click', 'button', function(){
-      //   console.log($(this));
-      //   $(this).hide();
-      // });
-			//
-      // $(document).on('click', 'img', () => {
-      //             //console.log($(this));
-      //             //$(this).hide();
-      //             $('#projectViewModal').modal();
-      //           });
+
+
+      $(document).on('click', 'img', () => {
+                  $('#projectViewModal').modal();
+                });
 
 
       //get userId and store in modal form field
@@ -229,6 +198,7 @@
               $('.profileName').html(data.firstName + ' ' + data.lastName);
           }
       });
+
       const getUserProjectsUrl = '/loadProjects/' + userId;
       $.ajax({
           url: getUserProjectsUrl,
@@ -239,6 +209,7 @@
               if (data[0] != null) {
                 const template = document.querySelector('.projectTemplate');
                 const projectsMain = document.querySelector('.projects-main');
+
                 for(let i = 0; i < data.length; i++) {
                   template.content.querySelector('.design-pics').src = data[i].mainImg;
                   template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
@@ -262,6 +233,7 @@
                   document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
                   projectClicked = $(this).find('#projectId').text();
 
+
                   $('#projectViewModal').modal();
                 });
                 */
@@ -281,6 +253,7 @@
 //                  $(this).hide();
 //                  $('#projectViewModal').modal();
 //                });
+
               }
           }
       });
@@ -289,6 +262,7 @@
           sessionStorage.clear();
           console.log(sessionStorage.getItem('id'));
       });
+
   });
 
 </script>

@@ -218,7 +218,13 @@ h4{
 	width: 600px;
 }
 
+
+.projectInfo {
+  display: none
+}
+
 .modal .btn {
 	margin-left: 10px;
 	float: right;
+
 }
