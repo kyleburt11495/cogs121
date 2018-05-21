@@ -72,7 +72,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
   console.log(req.body.projectTitle);
   //
   db.serialize(() => {
-    
+
     //insert project into the databaser
     db.run('INSERT INTO projects(projectTitle, projectDescription, mainImg, isTrending, isPopular, userId) VALUES($projectTitle, $projectDescription, $mainImg, $isTrending, $isPopular, $userId)',{
       $projectTitle: req.body.projectTitle,
@@ -99,7 +99,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       */
     });
   });
-  
+
 });
 
 
@@ -208,13 +208,13 @@ app.post('/signup', (req, res)=>{
         match = true;
         return match;
       }
-      }); 
+      });
     /*if(req.body.email == row.email){
       console.log("match");
       return false;
     } */
 
- 
+
     if(match){
       console.log('user already exists');
       // res.send({});

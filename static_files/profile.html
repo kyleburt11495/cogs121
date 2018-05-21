@@ -9,40 +9,38 @@
 	<link rel="stylesheet" href="profile.css">
 </head>
 <body>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
   		Create New Project
-	</button>
+	</button> -->
 
 	<!--Project Creation Modal -->
 	<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">Create New Project</h5>
+			<h5 class="modal-title" id="exampleModalLongTitle">Add a New Project</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data">
+			<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data" target="_self">
               <div class="form-group">
-                <label for="projectTitle">Project Title</label>
-                <input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Enter a title for your project">
+                <label for="projectTitle">Name Your Project</label>
+                <input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Project Title">
               </div>
               <div class="form-group">
-                <label for="projectDescription">Project Description</label>
-                <input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Enter a description for your project">
+                <label for="projectDescription">What does your project show?</label>
+                <input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Project Description">
               </div>
               <div class="form-group">
                 <label for="image">Upload Image</label>
                 <input type="file" name="image" id="image" class="form-control">
               </div>
               <input type="hidden" name="userId" id="userId">
-              <input type="submit" class="btn btn-primary">
+              <input type="submit" class="btn btn-primary" id="submitProject">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		    </form>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		  </div>
 		</div>
 	  </div>
@@ -59,7 +57,7 @@
 			</button>
 		  </div>
 		  <div id="project-view-modal" class="modal-body">
-		    <img src="" alt="Project Image" class="design-pics" id="projectImgModal">
+		    <img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
             <p id="projectTitleModal"></p>
             <p id="projectDescriptionModal"></p>
 		  </div>
@@ -102,13 +100,13 @@
 
 	<!-- main content- bio, profile pic,
 	following button, message button, project number, followers/following number-->
-<div class="row">
+<div class="row" id="sideinfo">
 	<div class="col-md-5 col-xs-3">
 <div class="sidebar-profile-info">
 	<!-- Profile essential details -->
 	<div class="profile-important">
 		<div class="profile-photo">
-			<img src="profpic.png"  class="profpic" alt="">
+			<img src="profpic.png"  class="profpic img-responsive" alt="">
 		</div>
 		<h3 class="username profileName" id="profileName">User</h3>
 		<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
@@ -153,10 +151,13 @@
 </div> -->
 
 <div class="projects-main">
+	<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+			<i class="fas fa-plus"></i>
+	</button>
     <template class="projectTemplate">
       <div class="project">
 		<div class="project-pic">
-			<img src="interior_design4.jpg" alt="" class="design-pics" id="projectImg">
+			<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
 		</div>
         <p class="projectInfo" id="projectTitle"></p>
         <p class="projectInfo" id="projectDescription"></p>
@@ -176,9 +177,9 @@
 
 
 
-      $(document).on('click', 'img', () => {
-                  $('#projectViewModal').modal();
-                });
+      // $(document).on('click', 'img', () => {
+      //             $('#projectViewModal').modal();
+      //           });
 
 
       //get userId and store in modal form field
@@ -198,7 +199,6 @@
               $('.profileName').html(data.firstName + ' ' + data.lastName);
           }
       });
-
       const getUserProjectsUrl = '/loadProjects/' + userId;
       $.ajax({
           url: getUserProjectsUrl,
@@ -209,7 +209,6 @@
               if (data[0] != null) {
                 const template = document.querySelector('.projectTemplate');
                 const projectsMain = document.querySelector('.projects-main');
-
                 for(let i = 0; i < data.length; i++) {
                   template.content.querySelector('.design-pics').src = data[i].mainImg;
                   template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
@@ -233,7 +232,6 @@
                   document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
                   projectClicked = $(this).find('#projectId').text();
 
-
                   $('#projectViewModal').modal();
                 });
                 */
@@ -247,13 +245,14 @@
                   $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
                   $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
 
+									$('#projectViewModal').modal();
+
                 });
 //                $(document).on('click', 'img', () => {
 //                  console.log($(this));
 //                  $(this).hide();
 //                  $('#projectViewModal').modal();
 //                });
-
               }
           }
       });
@@ -262,7 +261,6 @@
           sessionStorage.clear();
           console.log(sessionStorage.getItem('id'));
       });
-
   });
 
 </script>
