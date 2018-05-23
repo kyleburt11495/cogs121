@@ -10,139 +10,140 @@
 </head>
 <body>
 	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-  		Create New Project
-	</button> -->
+	Create New Project
+</button> -->
 
-	<!--Project Creation Modal -->
-	<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
+<!--Project Creation Modal -->
+<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">Add a New Project</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data" target="_self">
-              <div class="form-group">
-                <label for="projectTitle">Name Your Project</label>
-                <input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Project Title">
-              </div>
-              <div class="form-group">
-                <label for="projectDescription">What does your project show?</label>
-                <input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Project Description">
-              </div>
-              <div class="form-group">
-                <label for="image">Upload Image</label>
-                <input type="file" name="image" id="image" class="form-control">
-              </div>
-              <input type="hidden" name="userId" id="userId">
-              <input type="submit" class="btn btn-primary" id="submitProject">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-		    </form>
-		  </div>
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Add a New Project</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data" target="_self">
+					<div class="form-group">
+						<label for="projectTitle">Name Your Project</label>
+						<input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Project Title">
+					</div>
+					<div class="form-group">
+						<label for="projectDescription">What does your project show?</label>
+						<input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Project Description">
+					</div>
+					<div class="form-group">
+						<label for="image">Upload Image</label>
+						<input type="file" name="image" id="image" class="form-control">
+					</div>
+					<input type="hidden" name="userId" id="userId">
+					<input type="submit" class="btn btn-primary" id="submitProject">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</form>
+			</div>
 		</div>
-	  </div>
 	</div>
+</div>
 
-	<!--Project View Modal -->
-	<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
+<!--Project View Modal -->
+<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle"></h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div id="project-view-modal" class="modal-body">
-		    <img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
-            <p id="projectTitleModal"></p>
-            <p id="projectDescriptionModal"></p>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Follow</button>
-		  </div>
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="project-view-modal" class="modal-body">
+				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
+				<p id="projectTitleModal"></p>
+				<p id="projectDescriptionModal"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Follow</button>
+			</div>
 		</div>
-	  </div>
 	</div>
+</div>
 
 
-
+<div class="container-fluid" id="navcontainer">
 	<nav class="navbar navbar-expand-lg" id="nav">
-   		<a class="navbar-brand" href="home.html">InLook</a>
-   		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-   			<div class="input-group">
-     			<input type="text" class="form-control" placeholder="Search...">
-      			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
-      			</span>
-    		</div>
-      		<ul class="navbar-nav ml-auto">
-      			<li class="nav-item">
-            		<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
-         		</li>
-         		<li class="nav-item">
-            		<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-         		</li>
-         		|
+		<a class="navbar-brand" href="home.html">InLook</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+				</span>
+			</div>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
+				</li>
+				|
 				<li class="nav-item">
 					<a class="nav-link" href="login.html" id="logout"><i class="fas fa-sign-out-alt"></i></a>
 				</li>
-      		</ul>
-   		</div>
+			</ul>
+		</div>
 	</nav>
-	<div class="main">
+</div>
+<div class="main">
 
 
 
 	<!-- main content- bio, profile pic,
 	following button, message button, project number, followers/following number-->
-<div class="row" id="sideinfo">
-	<div class="col-md-5 col-xs-3">
-<div class="sidebar-profile-info">
-	<!-- Profile essential details -->
-	<div class="profile-important">
-		<div class="profile-photo">
-			<img src="profpic.png"  class="profpic img-responsive" alt="">
-		</div>
-		<h3 class="username profileName" id="profileName">User</h3>
-		<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
-		<div class="profile-buttons">
-			<button type="button" class="btn-sm-follow" id="followUser">Follow</button>
-			<button type="button" class="btn-sm-message" id="messageButton">Message</button>
-		</div>
-	</div>
+	<div class="row" id="sideinfo">
+		<div class="col-md-5 col-xs-3">
+			<div class="sidebar-profile-info" id="userinfo">
+				<!-- Profile essential details -->
+				<div class="profile-important">
+					<div class="profile-photo">
+						<img src="profpic.png"  id="profpic" alt="">
+					</div>
+					<h3 class="username profileName" id="profileName">User</h3>
+					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
+					<div class="profile-buttons">
+						<button type="button" class="btn-sm-follow" id="followUser">Follow</button>
+						<button type="button" class="btn-sm-message" id="messageButton">Message</button>
+					</div>
+				</div>
 
-	<!-- Skills list -->
-	<div class="sidebar-info-bar">
-		<div class="profile-important">
-			<h4>Skills & Styles </h4>
-			<ul class="skills-list">
-				<li>Modern</li>
-				<li>Contemporary</li>
-				<li>Rustic</li>
-			</ul>
-		</div>
-	</div>
-	<div class="sidebar-info-bar">
-		<div class="profile-important">
-			<h4>Social</h4>
-			<div id="socialMedia">
-			<a href="wwww.twitter.com" class="fa fa-twitter"></a>
-			<a href="wwww.linkedin.com" class="fa fa-linkedin"></a>
-			<a href="www.instagram.com" class="fa fa-instagram"></a>
+				<!-- Skills list -->
+				<!-- <div class="sidebar-info-bar"> -->
+					<!-- <div class="profile-important"> -->
+						<h4>Skills & Styles </h4>
+						<ul class="skills-list">
+							<li>Modern</li>
+							<li>Contemporary</li>
+							<li>Rustic</li>
+						</ul>
+					<!-- </div> -->
+					<!-- </div> -->
+					<!-- <div class="sidebar-info-bar"> -->
+					<!-- <div class="profile-important"> -->
+						<h4>Social</h4>
+						<div id="socialMedia">
+							<a href="wwww.twitter.com" class="fa fa-twitter"></a>
+							<a href="wwww.linkedin.com" class="fa fa-linkedin"></a>
+							<a href="www.instagram.com" class="fa fa-instagram"></a>
+						</div>
+
+					<!-- </div> -->
+				<!-- </div> -->
+			</div>
 		</div>
 
-		</div>
-	</div>
-</div>
-</div>
-
-<!-- <div class="col-md-7 col-xs-9">
-	<div class="project1" id="profileProjects">
+		<!-- <div class="col-md-7 col-xs-9">
+		<div class="project1" id="profileProjects">
 		<img class="img-responsive" src="profile_interior.jpg" alt="">
 		<img class="img-responsive" src="profile_interior.jpg" alt="">
 		<img class="img-responsive" src="profile_interior.jpg" alt="">
@@ -152,116 +153,114 @@
 
 <div class="projects-main">
 	<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-			<i class="fas fa-plus"></i>
+		<i class="fas fa-plus"></i>
 	</button>
-    <template class="projectTemplate">
-      <div class="project">
-		<div class="project-pic">
-			<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+	<template class="projectTemplate">
+		<div class="project">
+			<div class="project-pic">
+				<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+			</div>
+			<p class="projectInfo" id="projectTitle"></p>
+			<p class="projectInfo" id="projectDescription"></p>
+			<p class="projectInfo" id="projectId"></p>
 		</div>
-        <p class="projectInfo" id="projectTitle"></p>
-        <p class="projectInfo" id="projectDescription"></p>
-        <p class="projectInfo" id="projectId"></p>
-	</div>
-    </template>
+	</template>
 </div>
 </div>
 </div>
-<button>Click me</button>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-  let projectClicked;
+let projectClicked;
 
-  $(document).ready(() => {
-
-
-
-      // $(document).on('click', 'img', () => {
-      //             $('#projectViewModal').modal();
-      //           });
+$(document).ready(() => {
 
 
-      //get userId and store in modal form field
-      const userId = sessionStorage.getItem('id');
-      $('#userId').val(userId);
-      console.log("userId " + userId);
-      const getUserProfileUrl = '/loadProfile/' + userId;
-      console.log(getUserProfileUrl);
-      $.ajax({
-          url: getUserProfileUrl,
-          type: 'GET',
-          datatype: 'JSON',
-          success: (data) => {
-              console.log('Recieved user profile info');
-              console.log(data);
-              $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-              $('.profileName').html(data.firstName + ' ' + data.lastName);
-          }
-      });
-      const getUserProjectsUrl = '/loadProjects/' + userId;
-      $.ajax({
-          url: getUserProjectsUrl,
-          type: 'GET',
-          datatype: 'JSON',
-          success: (data) => {
-              //console.log(data);
-              if (data[0] != null) {
-                const template = document.querySelector('.projectTemplate');
-                const projectsMain = document.querySelector('.projects-main');
-                for(let i = 0; i < data.length; i++) {
-                  template.content.querySelector('.design-pics').src = data[i].mainImg;
-                  template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
-                  template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
-                  template.content.querySelector('#projectId').textContent = data[i].projectId;
 
-                  console.log(data[i].mainImg);
-                  let clone = document.importNode(template.content, true);
-                  projectsMain.appendChild(clone);
-                }
+	// $(document).on('click', 'img', () => {
+	//             $('#projectViewModal').modal();
+	//           });
 
-                /**
-                $('.project').click(() => {
 
-                  $('#projectImgModal').attr('src', 'interior_design7.jpg'); //= "interior_design3.jpg";
-                  console.log($(this).find('.design-pics').attr('src'));
-                  console.log($(this).find('#projectTitle').text());
-                  document.querySelector('.design-pics').src = $(this).find('.design-pics').attr('src');
+	//get userId and store in modal form field
+	const userId = sessionStorage.getItem('id');
+	$('#userId').val(userId);
+	console.log("userId " + userId);
+	const getUserProfileUrl = '/loadProfile/' + userId;
+	console.log(getUserProfileUrl);
+	$.ajax({
+		url: getUserProfileUrl,
+		type: 'GET',
+		datatype: 'JSON',
+		success: (data) => {
+			console.log('Recieved user profile info');
+			console.log(data);
+			$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+			$('.profileName').html(data.firstName + ' ' + data.lastName);
+		}
+	});
+	const getUserProjectsUrl = '/loadProjects/' + userId;
+	$.ajax({
+		url: getUserProjectsUrl,
+		type: 'GET',
+		datatype: 'JSON',
+		success: (data) => {
+			//console.log(data);
+			if (data[0] != null) {
+				const template = document.querySelector('.projectTemplate');
+				const projectsMain = document.querySelector('.projects-main');
+				for(let i = 0; i < data.length; i++) {
+					template.content.querySelector('.design-pics').src = data[i].mainImg;
+					template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
+					template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
+					template.content.querySelector('#projectId').textContent = data[i].projectId;
 
-                  document.querySelector('#projectTitle').textContent = $(this).find('#projectTitle').text();
-                  document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
-                  projectClicked = $(this).find('#projectId').text();
+					console.log(data[i].mainImg);
+					let clone = document.importNode(template.content, true);
+					projectsMain.appendChild(clone);
+				}
 
-                  $('#projectViewModal').modal();
-                });
-                */
-                $(".design-pics").click(function(event){
-                  //project div
-                  projectDiv = $(event.target).parent().parent();
-                  console.log($(event.target).parent().text());
-                  console.log($(event.target).attr("src"));
-                  $("#projectImgModal").attr("src", $(event.target).attr("src"));
-                  console.log($(projectDiv).find('#projectTitle').text());
-                  $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
-                  $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
+				/**
+				$('.project').click(() => {
 
-									$('#projectViewModal').modal();
+				$('#projectImgModal').attr('src', 'interior_design7.jpg'); //= "interior_design3.jpg";
+				console.log($(this).find('.design-pics').attr('src'));
+				console.log($(this).find('#projectTitle').text());
+				document.querySelector('.design-pics').src = $(this).find('.design-pics').attr('src');
 
-                });
-//                $(document).on('click', 'img', () => {
-//                  console.log($(this));
-//                  $(this).hide();
-//                  $('#projectViewModal').modal();
-//                });
-              }
-          }
-      });
-      document.querySelector('#projectTitleModal').text = "Hello";
-      $('#logout').click(() => {
-          sessionStorage.clear();
-          console.log(sessionStorage.getItem('id'));
-      });
-  });
+				document.querySelector('#projectTitle').textContent = $(this).find('#projectTitle').text();
+				document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
+				projectClicked = $(this).find('#projectId').text();
+
+				$('#projectViewModal').modal();
+			});
+			*/
+			$(".design-pics").click(function(event){
+				//project div
+				projectDiv = $(event.target).parent().parent();
+				console.log($(event.target).parent().text());
+				console.log($(event.target).attr("src"));
+				$("#projectImgModal").attr("src", $(event.target).attr("src"));
+				console.log($(projectDiv).find('#projectTitle').text());
+				$('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
+				$('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
+
+				$('#projectViewModal').modal();
+
+			});
+			//                $(document).on('click', 'img', () => {
+			//                  console.log($(this));
+			//                  $(this).hide();
+			//                  $('#projectViewModal').modal();
+			//                });
+		}
+	}
+});
+document.querySelector('#projectTitleModal').text = "Hello";
+$('#logout').click(() => {
+	sessionStorage.clear();
+	console.log(sessionStorage.getItem('id'));
+});
+});
 
 </script>
 
