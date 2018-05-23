@@ -86,9 +86,12 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
         console.err(err.message);
       }
       return res.redirect('/profile.html');
+      
       /**
       //get last inserted project id
       const projectId = this.lastID;
+      console.log(projectId);
+      console.log("hello");
       //insert project mainImg into the database
       db.run('INSERT INTO pictures(picture, projectID) VALUES($picture, $projectId)', {
         $picture: req.file.filename,
@@ -100,6 +103,15 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
     });
   });
 
+});
+
+//follow project
+app.get('/followProject', (req, res) => {
+  const userId = req.body.userId;
+  const projectId = req.body.projectId;
+  const timeFollowed = req.body.timeFollowed;
+  
+  db.run('INSERT INTO')
 });
 
 
