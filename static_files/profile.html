@@ -63,7 +63,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Follow</button>
+				<i id="likeButton" class="far fa-heart fa-lg"></i>
 			</div>
 		</div>
 	</div>
@@ -252,19 +252,24 @@ $(document).ready(() => {
       //send userId and projectId to database when like button is clicked
       const likeProjectUrl = '/likeProject';
       $('#likeButton').click(() => {
-        $.ajax({
-          url: likeProjectUrl,
-          type: 'POST',
-          datatype: 'JSON',
-          data: {
-            userId: userId,
-            projectId: projectClickedId
-          },
-          success: (data) => {
-            //change appearance of like button
-            console.log('Like button should change now');
-          }
-        });
+      	if($('#likeButton').hasClass('fas')){
+      		$('#likeButton').removeClass('fas').addClass('far');
+      	} else {
+      		$.ajax({
+      			url: likeProjectUrl,
+      			type: 'POST',
+      			datatype: 'JSON',
+      			data: {
+      				userId: userId,
+      				projectId: projectClickedId
+      			},
+      			success: (data) => {
+            	//change appearance of like button
+            	console.log('Liked');
+            	$('#likeButton').removeClass('far').addClass('fas');
+        		}
+    		});
+      	}
       });
     
       //send userId's to database when follow button is clicked
