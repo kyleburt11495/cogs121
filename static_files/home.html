@@ -67,6 +67,15 @@
 
 
 $(document).ready(function() {
+   //get userId from session storage
+  let userId = sessionStorage.getItem('id');
+  //redirect to profile page of logged in user
+  const profileUrl = '/profile'
+  $('#userName').click((e) => {
+    sessionStorage.setItem('profileClickedId', userId);
+    window.location.href = 'profile.html';
+  });
+  
   $('#popular').click((e)=>{
     //display popular images
     $('#trending').removeClass('active');
@@ -155,8 +164,6 @@ $(document).ready(function() {
   });
 
   //check which user is logged in and modify page
-  //get userId from session storage
-  let userId = sessionStorage.getItem('id');
   //perform ajax request to get user name on topbar
   const getUserProfileUrl = '/loadProfile/' + userId;
   console.log(getUserProfileUrl);

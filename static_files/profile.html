@@ -63,7 +63,7 @@
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Follow</button>
+			<button type="button" class="btn btn-primary" id="likeButton">Like</button>
 		  </div>
 		</div>
 	  </div>
@@ -167,11 +167,10 @@
 </div>
 </div>
 </div>
-<button>Click me</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-  let projectClicked;
+  let projectClickedId;
 
   $(document).ready(() => {
 
@@ -184,6 +183,9 @@
 
       //get userId and store in modal form field
       const userId = sessionStorage.getItem('id');
+      //get id of viewed profile
+      const profileClickedId = sessionStorage.getItem('profileClickedId');
+      console.log("hello" + profileClickedId);
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + userId;
@@ -244,8 +246,9 @@
                   console.log($(projectDiv).find('#projectTitle').text());
                   $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
                   $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
-
-									$('#projectViewModal').modal();
+                  //set projectClickedId to projectId of clicked project 
+                  projectClickedId = $(projectDiv).find('#projectId').text();
+                  $('#projectViewModal').modal();
 
                 });
 //                $(document).on('click', 'img', () => {
@@ -255,6 +258,42 @@
 //                });
               }
           }
+      });
+    
+      //send userId and projectId to database when like button is clicked
+      const likeProjectUrl = '/likeProject';
+      $('#likeButton').click(() => {
+        $.ajax({
+          url: likeProjectUrl,
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: projectClickedId
+          },
+          success: (data) => {
+            //change appearance of like button
+            console.log('Like button should change now');
+          }
+        });
+      });
+    
+      //send userId's to database when follow button is clicked
+      const followPersonUrl = '/followPerson';
+      $('#followButton').click(() => {
+        $.ajax({
+          url: followPersonUrl,
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userFollowingId: userId,
+            userFollowedId: userPageId
+          },
+          success: (data) => {
+            //change appearance of follow button
+            console.log('Follow button should change now');
+          }
+        });
       });
       document.querySelector('#projectTitleModal').text = "Hello";
       $('#logout').click(() => {

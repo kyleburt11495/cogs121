@@ -24,11 +24,17 @@ db.serialize(() => {
      }
    });
    //table of projects followed by users
-   db.run("CREATE TABLE following_projects(followRelationshipId INTEGER PRIMARY KEY, userId  INTEGER, projectId  INTEGER, FOREIGN KEY(userId) REFERENCES users_account(userId), FOREIGN KEY(projectId) REFERENCES projects(projectId))", (err, row) => {
+   db.run("CREATE TABLE following_projects(followRelationshipId INTEGER PRIMARY KEY, userId  INTEGER, projectId  INTEGER, date REAL, FOREIGN KEY(userId) REFERENCES users_account(userId), FOREIGN KEY(projectId) REFERENCES projects(projectId))", (err, row) => {
      if(err) {
        console.log("fourth");
      }
    });
+  
+  //table of people followed by other people
+  db.run("CREATE TABLE followed_people(followedPeopleId INTEGER PRIMARY KEY, userFollowingId INTEGER, userFollowedId INTEGER, date REAL, FOREIGN KEY(userFollowingId) REFERENCES users_account(userId), FOREIGN KEY(userFollowed) REFERENCES users_account(userId))");
+  
+  //table of likes
+  db.run("CREATE TABLE likes(likeId INTEGER PRIMARY KEY, userId INTEGER, projectId INTEGER, date REAL, FOREIGN KEY(userId) REFERENCES users_account(userId), FOREIGN KEY(projectId) REFERENCES projects(projectId)");
    //table of projects created by users
    db.run("CREATE TABLE created_projects(createdRelationshipId INTEGER PRIMARY KEY, userId  INTEGER, projectId  INTEGER, FOREIGN KEY(userId) REFERENCES users_account(userId), FOREIGN KEY(projectId) REFERENCES projects(projectId))", (err, row) => {
      if(err) {
