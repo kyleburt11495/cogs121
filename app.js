@@ -102,7 +102,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 //follow project
 app.post('/likeProject', (req, res) => { 
-  db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now'))", {
+  db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now')) WHERE NOT EXISTS(SELECT 1 FROM likes WHERE userId = $userId AND projectId = $projectId)", {
     $userId: req.body.userId,
     $projectId: req.body.projectId
   }, (err, row) => {

@@ -63,7 +63,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Follow</button>
+				<button id="likeButton" type="button" class="btn btn-primary">Like</button>
 			</div>
 		</div>
 	</div>
@@ -188,9 +188,10 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
+      
       $('#userId').val(userId);
       console.log("userId " + userId);
-      const getUserProfileUrl = '/loadProfile/' + userId;
+      const getUserProfileUrl = '/loadProfile/' + profileClickedId;
       console.log(getUserProfileUrl);
       $.ajax({
           url: getUserProfileUrl,
