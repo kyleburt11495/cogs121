@@ -4,45 +4,30 @@ html{
 }
 
 #nav {
-	background-color: black;
+	background-color: #212121;
+  padding: 0;
+  width: 100%;
 }
 
 .navbar-brand {
 	margin-left: 0.3rem;
-	font-size: 2.5rem;
-	color: white;
+  max-width: 7rem;
+  padding: 0;
 }
 
-.active {
-	text-decoration: underline;
+.img-responsive{
+  width: 7rem;
 }
 
 .navbar-brand:hover {
 	color: red;
 }
 
-.content{
-    height: 100%;
-    padding: 3rem;
-    padding-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+#login {
+  margin: 2rem;
+  width: 10rem;
 }
-.in{
-    padding: 15px;
-    text-align: center;
-}
-.lg{
-    margin-bottom: 20px;
-}
-hr{
-    border: none;
-    height: 2px;
-    color: #333;
-    background-color: #333;
-}
+
 #login-title{
 /*    background:rgba(114, 114, 114, .65);*/
     background: #386F9A;
@@ -50,18 +35,14 @@ hr{
     text-align: center;
     margin-bottom: 2rem;
 }
-#back {
-    margin-top: 25px;
-}
-#navgoicon{
-    height: 9rem;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1rem;
-}
+
 #logintext{
+    /* text-align: center; */
     color: white;
     /* font-family: 'Roboto Condensed', sans-serif; */
     color: #727272;
+}
+
+.container{
+  text-align: center;
 }
