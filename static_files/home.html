@@ -20,7 +20,7 @@
 			</div>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i> User </a>
+					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i>User</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
@@ -52,10 +52,16 @@
 				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
 			</div>
 			<h4 class="category-title">PROJECTS</h4>
-			<img class="project" id="image1" src="interior_design1.jpg">
-			<img class="project" id="image2" src="interior_design1.jpg">
-			<img class="project" id="image3" src="interior_design1.jpg">
-			<img class="project" id="image4" src="interior_design1.jpg">
+      <div id="projects-list">
+      </div>
+
+      <div id="projectTemplate">
+        <div class="project-hover">
+          <img class="project hidden" src="" alt="">
+          <span id="projectOwner"></span>
+          <span id="like"></span>
+        </div>
+      </div>
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -63,9 +69,17 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 
-
-
 $(document).ready(function() {
+   //get userId from session storage
+  let userId = sessionStorage.getItem('id');
+  //redirect to profile page of logged in user
+  const profileUrl = '/profile'
+  $('#userName').click((e) => {
+    sessionStorage.setItem('profileClickedId', userId);
+    window.location.href = 'profile.html';
+  });
+
+  
   $('#popular').click((e)=>{
     //display popular images
     $('#trending').removeClass('active');
@@ -80,15 +94,15 @@ $(document).ready(function() {
         success: (data) => {
             console.log('Received popular pictures');
             console.log(data);
-            $('#image1').attr('src', data[0].mainImg );
-            $('#image2').attr('src', data[1].mainImg);
-            $('#image3').attr('src', data[2].mainImg);
-            $('#image4').attr('src', data[3].mainImg);
-
-
+            $('#projects-list').empty();
+            $(data).each((e)=>{
+              let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+              clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+              clone.find('#projectOwner').html(data[e].userId);
+              $('#projects-list').append(clone);
+            });
         }
     });
-
   });
 
   $('#following').click((e)=>{
@@ -108,19 +122,13 @@ $(document).ready(function() {
         success: (data) => {
             console.log('Received followed pictures');
             console.log(data);
-            /**
-            const followingProjects = data.followingProjects;
-            const followingStories = data.followingStories;
-            $('#image1').attr('src', followingProjects.img1);
-            $('#image2').attr('src', followingProjects.img2);
-            $('#image3').attr('src', followingProjects.img3);
-            $('#image4').attr('src', followingProjects.img4);
-            */
-            $('#image1').attr('src', data[0].mainImg);
-            $('#image2').attr('src', data[1].mainImg);
-            $('#image3').attr('src', data[2].mainImg);
-            $('#image4').attr('src', data[3].mainImg);
-
+            $('#projects-list').empty();
+            $(data).each((e)=>{
+              let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+              clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+              clone.find('#projectOwner').html(data[e].userId);
+              $('#projects-list').append(clone);
+            });
         }
     });
   });
@@ -139,11 +147,13 @@ $(document).ready(function() {
         success: (data) => {
             console.log('Received trending pictures');
             console.log(data);
-            $('#image1').attr('src', data[0].mainImg);
-            $('#image2').attr('src', data[1].mainImg);
-            $('#image3').attr('src', data[2].mainImg);
-            $('#image4').attr('src', data[3].mainImg);
-
+            $('#projects-list').empty();
+            $(data).each((e)=>{
+              let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+              clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+              clone.find('#projectOwner').html(data[e].userId);
+              $('#projects-list').append(clone);
+            });
         }
     });
   });
@@ -154,8 +164,6 @@ $(document).ready(function() {
   });
 
   //check which user is logged in and modify page
-  //get userId from session storage
-  let userId = sessionStorage.getItem('id');
   //perform ajax request to get user name on topbar
   const getUserProfileUrl = '/loadProfile/' + userId;
   console.log(getUserProfileUrl);
@@ -178,13 +186,17 @@ $(document).ready(function() {
       success: (data) => {
           console.log('Received trending pictures');
           console.log(data);
-          console.log(data[0].projectDescription);
-          $('#image1').attr('src', data[0].mainImg);
-          $('#image2').attr('src', data[1].mainImg);
-          $('#image3').attr('src', data[2].mainImg);
-          $('#image4').attr('src', data[3].mainImg);
-
+          $('#projects-list').empty();
+          $(data).each((e)=>{
+            let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+            clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+            clone.find('#projectOwner').html(data[e].userId);
+            $('#projects-list').append(clone);
+          });
       }
+  });
+  $('body').on('mouseenter', '.project',(e)=>{
+    $(event.target).next().css('display','inline-block');
   });
 });
 </script>

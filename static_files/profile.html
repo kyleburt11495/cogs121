@@ -168,9 +168,12 @@
 </div>
 </div>
 </div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-let projectClicked;
+  let projectClickedId;
+
 
 $(document).ready(() => {
 
@@ -180,87 +183,114 @@ $(document).ready(() => {
 	//             $('#projectViewModal').modal();
 	//           });
 
+      //get userId and store in modal form field
+      const userId = sessionStorage.getItem('id');
+      //get id of viewed profile
+      const profileClickedId = sessionStorage.getItem('profileClickedId');
+      console.log("hello" + profileClickedId);
+      $('#userId').val(userId);
+      console.log("userId " + userId);
+      const getUserProfileUrl = '/loadProfile/' + userId;
+      console.log(getUserProfileUrl);
+      $.ajax({
+          url: getUserProfileUrl,
+          type: 'GET',
+          datatype: 'JSON',
+          success: (data) => {
+              console.log('Recieved user profile info');
+              console.log(data);
+              $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+              $('.profileName').html(data.firstName + ' ' + data.lastName);
+          }
+      });
+      const getUserProjectsUrl = '/loadProjects/' + userId;
+      $.ajax({
+          url: getUserProjectsUrl,
+          type: 'GET',
+          datatype: 'JSON',
+          success: (data) => {
+              //console.log(data);
+              if (data[0] != null) {
+                const template = document.querySelector('.projectTemplate');
+                const projectsMain = document.querySelector('.projects-main');
+                for(let i = 0; i < data.length; i++) {
+                  template.content.querySelector('.design-pics').src = data[i].mainImg;
+                  template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
+                  template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
+                  template.content.querySelector('#projectId').textContent = data[i].projectId;
 
-	//get userId and store in modal form field
-	const userId = sessionStorage.getItem('id');
-	$('#userId').val(userId);
-	console.log("userId " + userId);
-	const getUserProfileUrl = '/loadProfile/' + userId;
-	console.log(getUserProfileUrl);
-	$.ajax({
-		url: getUserProfileUrl,
-		type: 'GET',
-		datatype: 'JSON',
-		success: (data) => {
-			console.log('Recieved user profile info');
-			console.log(data);
-			$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-			$('.profileName').html(data.firstName + ' ' + data.lastName);
-		}
-	});
-	const getUserProjectsUrl = '/loadProjects/' + userId;
-	$.ajax({
-		url: getUserProjectsUrl,
-		type: 'GET',
-		datatype: 'JSON',
-		success: (data) => {
-			//console.log(data);
-			if (data[0] != null) {
-				const template = document.querySelector('.projectTemplate');
-				const projectsMain = document.querySelector('.projects-main');
-				for(let i = 0; i < data.length; i++) {
-					template.content.querySelector('.design-pics').src = data[i].mainImg;
-					template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
-					template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
-					template.content.querySelector('#projectId').textContent = data[i].projectId;
 
 					console.log(data[i].mainImg);
 					let clone = document.importNode(template.content, true);
 					projectsMain.appendChild(clone);
 				}
 
-				/**
-				$('.project').click(() => {
+			
+                $(".design-pics").click(function(event){
+                  //project div
+                  projectDiv = $(event.target).parent().parent();
+                  console.log($(event.target).parent().text());
+                  console.log($(event.target).attr("src"));
+                  $("#projectImgModal").attr("src", $(event.target).attr("src"));
+                  console.log($(projectDiv).find('#projectTitle').text());
+                  $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
+                  $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
+                  //set projectClickedId to projectId of clicked project 
+                  projectClickedId = $(projectDiv).find('#projectId').text();
+                  $('#projectViewModal').modal();
 
-				$('#projectImgModal').attr('src', 'interior_design7.jpg'); //= "interior_design3.jpg";
-				console.log($(this).find('.design-pics').attr('src'));
-				console.log($(this).find('#projectTitle').text());
-				document.querySelector('.design-pics').src = $(this).find('.design-pics').attr('src');
+                });
+//                $(document).on('click', 'img', () => {
+//                  console.log($(this));
+//                  $(this).hide();
+//                  $('#projectViewModal').modal();
+//                });
+              }
+          }
+      });
+    
+      //send userId and projectId to database when like button is clicked
+      const likeProjectUrl = '/likeProject';
+      $('#likeButton').click(() => {
+        $.ajax({
+          url: likeProjectUrl,
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: projectClickedId
+          },
+          success: (data) => {
+            //change appearance of like button
+            console.log('Like button should change now');
+          }
+        });
+      });
+    
+      //send userId's to database when follow button is clicked
+      const followPersonUrl = '/followPerson';
+      $('#followButton').click(() => {
+        $.ajax({
+          url: followPersonUrl,
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userFollowingId: userId,
+            userFollowedId: userPageId
+          },
+          success: (data) => {
+            //change appearance of follow button
+            console.log('Follow button should change now');
+          }
+        });
+      });
+      document.querySelector('#projectTitleModal').text = "Hello";
+      $('#logout').click(() => {
+          sessionStorage.clear();
+          console.log(sessionStorage.getItem('id'));
+      });
+  });
 
-				document.querySelector('#projectTitle').textContent = $(this).find('#projectTitle').text();
-				document.querySelector('#projectDescription').textContent = $(this).find('#projectDescription').text();
-				projectClicked = $(this).find('#projectId').text();
-
-				$('#projectViewModal').modal();
-			});
-			*/
-			$(".design-pics").click(function(event){
-				//project div
-				projectDiv = $(event.target).parent().parent();
-				console.log($(event.target).parent().text());
-				console.log($(event.target).attr("src"));
-				$("#projectImgModal").attr("src", $(event.target).attr("src"));
-				console.log($(projectDiv).find('#projectTitle').text());
-				$('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
-				$('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
-
-				$('#projectViewModal').modal();
-
-			});
-			//                $(document).on('click', 'img', () => {
-			//                  console.log($(this));
-			//                  $(this).hide();
-			//                  $('#projectViewModal').modal();
-			//                });
-		}
-	}
-});
-document.querySelector('#projectTitleModal').text = "Hello";
-$('#logout').click(() => {
-	sessionStorage.clear();
-	console.log(sessionStorage.getItem('id'));
-});
-});
 
 </script>
 

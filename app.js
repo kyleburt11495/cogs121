@@ -85,33 +85,44 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       if(err) {
         console.err(err.message);
       }
-      return res.redirect('/profile.html');
-      
       /**
-      //get last inserted project id
-      const projectId = this.lastID;
-      console.log(projectId);
-      console.log("hello");
-      //insert project mainImg into the database
-      db.run('INSERT INTO pictures(picture, projectID) VALUES($picture, $projectId)', {
-        $picture: req.file.filename,
-        $projectId: projectId
-      }, (err) => {
-        console.err(err.message);
+      db.get('SELECT * FROM projects WHERE projectId = (SELECT MAX(projectId))', (err, row) => {
+        if(err) {
+          console.err(err.message);
+        }
+        let lastInsertedId = row.projectId;
+        console.log(lastInsertedId);
       });
       */
+      return res.redirect('/profile.html');
     });
   });
 
 });
 
 //follow project
-app.get('/followProject', (req, res) => {
-  const userId = req.body.userId;
-  const projectId = req.body.projectId;
-  const timeFollowed = req.body.timeFollowed;
-  
-  db.run('INSERT INTO')
+app.post('/likeProject', (req, res) => { 
+  db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now'))", {
+    $userId: req.body.userId,
+    $projectId: req.body.projectId
+  }, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    return res.redirect('/profile.html');
+  });
+});
+
+app.post('/followPerson', (req, res) => {
+  db.run("INSERT INTO followed_people(userFollowingId, userFollowedId, date) VALUES($userFollowingId, $userFollowedId, julianday('now'))", {
+    $userFollowingId: req.body.userFollowingId,
+    $userFollowedId: req.body.userFollowedId
+  }, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    return res.redirect('/profile.html');
+  });
 });
 
 
