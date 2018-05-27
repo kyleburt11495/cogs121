@@ -18,6 +18,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
+// //send bird api
+// import * as SendBird from 'SendBird';
+// const sb = new SendBird({'appId': '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
+// });
+//
+// sb.connect(userId, (user, error) => {
+//
+// });
+
+
+
 const bodyParser = require('body-parser');
 
 
@@ -101,7 +112,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 });
 
 //follow project
-app.post('/likeProject', (req, res) => { 
+app.post('/likeProject', (req, res) => {
   db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now'))", {
     $userId: req.body.userId,
     $projectId: req.body.projectId
