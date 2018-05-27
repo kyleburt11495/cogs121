@@ -255,5 +255,8 @@ h4{
 .modal .btn {
 	margin-left: 10px;
 	float: right;
+}
 
+#likeButton:hover {
+	color: red;
 }

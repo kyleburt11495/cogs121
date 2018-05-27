@@ -63,7 +63,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Follow</button>
+				<i id="likeButton" class="far fa-heart fa-lg"></i>
 			</div>
 		</div>
 	</div>
@@ -188,9 +188,10 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
+      
       $('#userId').val(userId);
       console.log("userId " + userId);
-      const getUserProfileUrl = '/loadProfile/' + userId;
+      const getUserProfileUrl = '/loadProfile/' + profileClickedId;
       console.log(getUserProfileUrl);
       $.ajax({
           url: getUserProfileUrl,
@@ -203,7 +204,7 @@ $(document).ready(() => {
               $('.profileName').html(data.firstName + ' ' + data.lastName);
           }
       });
-      const getUserProjectsUrl = '/loadProjects/' + userId;
+      const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
           url: getUserProjectsUrl,
           type: 'GET',
@@ -235,48 +236,83 @@ $(document).ready(() => {
                   console.log($(projectDiv).find('#projectTitle').text());
                   $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
                   $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
+                  
                   //set projectClickedId to projectId of clicked project 
                   projectClickedId = $(projectDiv).find('#projectId').text();
-                  $('#projectViewModal').modal();
+                  
+                  //make query to database to determine whether this project was liked by user or not
+                  const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projectClickedId;
+                  $.ajax({
+                    url: isProjectLikedUrl,
+                    type: 'GET',
+                    datatype: 'JSON',
+                    success: (data) => {
+                      console.log('Checked if disliked or not');
+                      //if data exists then project was disliked
+                      if (data) {
+                        //set appearance of like button to already liked
+                        $('#likeButton').removeClass('far').addClass('fas');
+                      }
+                      else {
+                        $('#likeButton').removeClass('fas').addClass('far');
+                      }
+                      //display modal
+                      $('#projectViewModal').modal();
+                    }
+                  });
+                  
 
                 });
-//                $(document).on('click', 'img', () => {
-//                  console.log($(this));
-//                  $(this).hide();
-//                  $('#projectViewModal').modal();
-//                });
               }
           }
       });
     
       //send userId and projectId to database when like button is clicked
       const likeProjectUrl = '/likeProject';
+      const dislikeProjectUrl = '/dislikeProject';
       $('#likeButton').click(() => {
-        $.ajax({
-          url: likeProjectUrl,
-          type: 'POST',
-          datatype: 'JSON',
-          data: {
-            userId: userId,
-            projectId: projectClickedId
-          },
-          success: (data) => {
-            //change appearance of like button
-            console.log('Like button should change now');
-          }
-        });
+      	if($('#likeButton').hasClass('fas')){
+            $.ajax({
+              url: dislikeProjectUrl,
+              type: 'POST',
+              datatype: 'JSON',
+              data: {
+                userId: userId,
+                projectId: projectClickedId
+              },
+              success: (data) => {
+                console.log('disliked');
+                $('#likeButton').removeClass('fas').addClass('far');
+              }
+            });
+      	} else {
+      		$.ajax({
+      			url: likeProjectUrl,
+      			type: 'POST',
+      			datatype: 'JSON',
+      			data: {
+      				userId: userId,
+      				projectId: projectClickedId
+      			},
+      			success: (data) => {
+            	//change appearance of like button
+            	console.log('Liked');
+            	$('#likeButton').removeClass('far').addClass('fas');
+        		}
+    		});
+      	}
       });
     
       //send userId's to database when follow button is clicked
       const followPersonUrl = '/followPerson';
-      $('#followButton').click(() => {
+      $('#followUser').click(() => {
         $.ajax({
           url: followPersonUrl,
           type: 'POST',
           datatype: 'JSON',
           data: {
             userFollowingId: userId,
-            userFollowedId: userPageId
+            userFollowedId: profileClickedId
           },
           success: (data) => {
             //change appearance of follow button

@@ -111,8 +111,9 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 });
 
-//follow project
-app.post('/likeProject', (req, res) => {
+
+//like project
+app.post('/likeProject', (req, res) => { 
   db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now'))", {
     $userId: req.body.userId,
     $projectId: req.body.projectId
@@ -121,6 +122,39 @@ app.post('/likeProject', (req, res) => {
       console.error(err.message);
     }
     return res.redirect('/profile.html');
+  });
+});
+
+//dislike project
+app.post('/dislikeProject', (req, res) => {
+  db.run("DELETE FROM likes WHERE userId = $userId AND projectId = $projectId", {
+    $userId: req.body.userId,
+    $projectId: req.body.projectId
+  }, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    console.log("deleted");
+    return res.redirect('/profile.html');
+  });
+});
+
+app.get('/isProjectLiked/:userId/:projectId', (req, res) => {
+  const userId = req.params.userId;
+  const projectId = req.params.projectId;
+  db.all("SELECT * FROM likes WHERE userId = $userId AND projectId = $projectId", {
+    $userId: userId,
+    $projectId: projectId
+  }, (err, row) => {
+    if (err) {
+      console.err(err.message);
+    }
+    if(row.length > 0) {
+      res.send(row[0]);
+    }
+    else {
+      res.send(null);
+    }
   });
 });
 
