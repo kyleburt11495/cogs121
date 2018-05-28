@@ -230,35 +230,11 @@ app.get('/loadProfile/:userid', (req, res) => {
 });
 
 
-// app.get('/searchForUsers/:searchValue', (req, res) => {
-//   const userId = req.params.searchValue;
-//   console.log(userId);
-//   db.all("SELECT * FROM users_account WHERE firstName=$userId", {$userId: userId}, (err, row) => {
-//     if (err) {
-//       console.error(err.message);
-//     }
-//     if (row.length > 0) {
-//       console.log(row[0]);
-//       res.send(row[0]);
-//     }
-//     else {
-//       res.send({}); //failed so return empty string instead of undefined
-//     }
-//   });
-// })
-
-app.get('firstName/:lastName', (req, res) => {
-  const firstName = req.params.firstName;
-  const lastName = req.params.lastName;
-
-  console.log(firstName);
-  console.log(lastName);
-
-  db.all('SELECT * FROM users_account WHERE (firstName = $firstName AND lastName =$lastName',{
-    $firstName:firstName,
-    $lastName:lastName
-  },(err, row) => {
-    if(err) {
+app.get('/searchForUsers/:searchValue', (req, res) => {
+  const userId = req.params.searchValue;
+  console.log(userId);
+  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+    if (err) {
       console.error(err.message);
     }
     if (row.length > 0) {
@@ -266,10 +242,38 @@ app.get('firstName/:lastName', (req, res) => {
       res.send(row[0]);
     }
     else {
-      res.send({}); //failed so return empty string
+      res.send({}); //failed so return empty string instead of undefined
     }
   });
 })
+
+// app.get('firstName/:lastName', (req, res) => {
+//   const firstName = req.params.firstName;
+//   const lastName = req.params.lastName;
+//
+//   console.log(firstName);
+//   console.log(lastName);
+//
+//   db.all('SELECT * FROM users_account WHERE (firstName = $firstName OR lastName = $lastName',{
+//     $firstName:firstName,
+//     $lastName:lastName
+//   },(err, row) => {
+//     if(err) {
+//       console.error(err.message);
+//       console.log('err');
+//     }
+//     if (row.length > 0) {
+//       console.log(row[0]);
+//       res.send(row[0]);
+//
+//       console.log('hello');
+//     }
+//     else {
+//       res.send({}); //failed so return empty string
+//       console.log('failed');
+//     }
+//   });
+// })
 
 
 
