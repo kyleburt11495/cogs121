@@ -151,18 +151,13 @@
 			});
 				
 			
-				let messageChannel;
-				sb.GroupChannel.createChannelWithUserIds([2], true, "Lynley", null, null, null, (channel, error) => {
-					if (error) {
-						console.error(error);
-					}
-					channel.sendUserMessage('hello', null, null, (message, err) => {
-						if(error) {
-							console.error(error);
-						}
-						console.log(message);
-					});
-				});
+			let messageChannel;
+			sb.GroupChannel.createChannelWithUserIds([2], true, "Lynley", null, null, null, (channel, error) => {
+				if (error) {
+					console.error(error);
+				}
+				messageChannel = channel;
+			});
 			
 			let channelHandler = new sb.ChannelHandler();
 			channelHandler.onMessageReceived = (channel, message) => {
