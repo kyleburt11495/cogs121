@@ -127,6 +127,7 @@
 
 			const userId = sessionStorage.getItem('id');
 			let otherUserId;
+			let messageChannel;
 
 
 			sb.connect(userId, (user, error) => {
@@ -135,6 +136,13 @@
 				}
 				else {
 					console.log('connected to sendbird');
+
+					sb.GroupChannel.createChannelWithUserIds([2], true, "Lynley", null, null, null, (channel, error) => {
+					if (error) {
+						console.error(error);
+					}
+					messageChannel = channel;
+					});
 				}
 			});
 			const getUserProfileUrl = '/loadProfile/' + userId;
@@ -148,15 +156,6 @@
 					console.log(data);
 					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
 				}
-			});
-				
-
-			let messageChannel;
-			sb.GroupChannel.createChannelWithUserIds([2], true, "Lynley", null, null, null, (channel, error) => {
-				if (error) {
-					console.error(error);
-				}
-				messageChannel = channel;
 			});
 
 			let channelHandler = new sb.ChannelHandler();

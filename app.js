@@ -113,7 +113,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 
 //like project
-app.post('/likeProject', (req, res) => { 
+app.post('/likeProject', (req, res) => {
   db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now'))", {
     $userId: req.body.userId,
     $projectId: req.body.projectId
@@ -228,6 +228,49 @@ app.get('/loadProfile/:userid', (req, res) => {
     }
   });
 });
+
+// app.get('/searchForUsers/:searchValue', (req, res) => {
+//   const userId = req.params.searchValue;
+//   console.log(userId);
+//   db.all("SELECT * FROM users_account WHERE firstName=$userId", {$userId: userId}, (err, row) => {
+//     if (err) {
+//       console.error(err.message);
+//     }
+//     if (row.length > 0) {
+//       console.log(row[0]);
+//       res.send(row[0]);
+//     }
+//     else {
+//       res.send({}); //failed so return empty string instead of undefined
+//     }
+//   });
+// })
+
+app.get('firstName/:lastName', (req, res) => {
+  const firstName = req.params.firstName;
+  const lastName = req.params.lastName;
+
+  console.log(firstName);
+  console.log(lastName);
+
+  db.all('SELECT * FROM users_account WHERE (firstName = $firstName AND lastName =$lastName',{
+    $firstName:firstName,
+    $lastName:lastName
+  },(err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    if (row.length > 0) {
+      console.log(row[0]);
+      res.send(row[0]);
+    }
+    else {
+      res.send({}); //failed so return empty string
+    }
+  });
+})
+
+
 
 app.get('/loadProjects/:userid', (req, res) => {
   const userId = req.params.userid;

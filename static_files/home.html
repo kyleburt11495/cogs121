@@ -13,9 +13,9 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" id="searchValue" placeholder="Search...">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchBtn"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -70,6 +70,31 @@
 	<script>
 
 $(document).ready(function() {
+
+	$('#searchBtn').click( () =>{
+		// let searchValue = $('#searchValue').val().toLowerCase();
+		let searchValue = $('#searchValue').val();
+		let i = searchValue.indexOf(' ');
+		let firstName = searchValue.slice(0,i).trim();
+		let lastName = searchValue.slice(i+1, searchValue.length).trim();
+
+		console.log(searchValue);
+		console.log(firstName);
+		console.log(lastName);
+
+		$.ajax({
+			url: firstName +'/'+lastName,
+			type: 'GET',
+			datatype: 'JSON',
+			data: {firstName: firstName, lastName:lastName},
+			success: (data) =>{
+				const userSearchId = data.userId;
+				sessionStorage.setItem('profileClickedId', userSearchId);
+				window.location.href = 'profile.html';
+			}
+		});
+	});
+
    //get userId from session storage
   let userId = sessionStorage.getItem('id');
   //redirect to profile page of logged in user
@@ -79,7 +104,7 @@ $(document).ready(function() {
     window.location.href = 'profile.html';
   });
 
-  
+
   $('#popular').click((e)=>{
     //display popular images
     $('#trending').removeClass('active');
