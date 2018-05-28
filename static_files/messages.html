@@ -8,6 +8,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<script src="SendBird.min.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
@@ -46,6 +47,7 @@
 						<div class="chat-ongoing">
 							<span>Hi! I was wondering if you're free for a job right now?</span>
 						</div>
+						<p class="personId"></p>
 					</div>
 				</template>
 				<!-- list of people -->
@@ -116,20 +118,81 @@
 	</div>
 
 	<script>
-	$(document).ready(() => {
-		const userId = sessionStorage.getItem('id');
-		const getUserProfileUrl = '/loadProfile/' + userId;
-		console.log(getUserProfileUrl);
-		$.ajax({
-			url: getUserProfileUrl,
-			type: 'GET',
-			datatype: 'JSON',
-			success: (data) => {
-				console.log('Recieved user profile info');
-				console.log(data);
-				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+		$(document).ready(() => {
+			//initialize and connect to sendbird
+			let sb = new SendBird({
+				appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
+			});
+			//channel handler to receive messages
+			let channelHandler = new sb.ChannelHandler();
+
+			channelHandler.onMessageReceived = (channel, message) => {
+				console.log(channel, message);
 			}
-		});
+
+
+			const userId = sessionStorage.getItem('id');
+			let otherUserId;
+			//check again
+			sb.addChannelHandler(1, channelHandler);
+
+			sb.connect(userId, (user, error) => {
+				if (error) {
+					console.error(error.message);
+				}
+				else {
+					console.log('connected to sendbird');
+				}
+			});
+			const getUserProfileUrl = '/loadProfile/' + userId;
+			console.log(getUserProfileUrl);
+			$.ajax({
+				url: getUserProfileUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log('Recieved user profile info');
+					console.log(data);
+					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+				}
+			});
+
+			//send message button click handler
+			$('#send-message-button').click(() => {
+
+			});
+
+			$('.person').click((event) => {
+				const clickedPersonDiv = $(event.target);
+				otherUserId = $(clickedPersonDiv).find('.personId').text();
+				//get name of otherUser
+
+				//connect to channel
+				sb.GroupChannel.createChannelWithUserIds([otherUserId], true, name, coverFile, data, customType, (channel, error) => {
+					//get previous messages and display
+					let messageListQuery = channel.createPreviousMessageListQuery();
+					messageListQuery.load(1, true, (messageList, err) => {
+						if (err) {
+							console.error(err.message);
+							return;
+						}
+						console.log(messageList);
+						//display messages in chat-messages div
+
+					});
+
+
+				});
+
+				//display chat history
+
+
+			});
+
+			$('#logout').click(() => {
+				sessionStorage.clear();
+				console.log(sessionStorage.getItem('id'));
+			});
 
 		const sb = new SendBird( {
 			appID: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF';

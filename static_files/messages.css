@@ -154,3 +154,7 @@ h4{
 .chat-text-field {
 	width: 93%;
 }
+
+.personId {
+	display: hidden
+}
