@@ -229,6 +229,7 @@ app.get('/loadProfile/:userid', (req, res) => {
   });
 });
 
+
 // app.get('/searchForUsers/:searchValue', (req, res) => {
 //   const userId = req.params.searchValue;
 //   console.log(userId);
@@ -271,6 +272,23 @@ app.get('firstName/:lastName', (req, res) => {
 })
 
 
+
+app.get('/getConversations/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.all("SELECT * FROM conversations WHERE (userId1 = $userId OR userId2 = $userId)", {$userId: userId}, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (rows.length > 0) {
+      console.log(rows);
+      res.send(rows);
+    }
+    else {
+	  console.log("no projects found");
+      res.send([]); //failed so return empty string instead of undefined
+    }
+  });
+});
 
 app.get('/loadProjects/:userid', (req, res) => {
   const userId = req.params.userid;
