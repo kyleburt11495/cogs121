@@ -123,18 +123,11 @@
 			let sb = new SendBird({
 				appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
 			});
-			//channel handler to receive messages
-			let channelHandler = new sb.ChannelHandler();
-
-			channelHandler.onMessageReceived = (channel, message) => {
-				console.log(channel, message);
-			}
 
 
 			const userId = sessionStorage.getItem('id');
 			let otherUserId;
-			//check again
-			sb.addChannelHandler(1, channelHandler);
+
 
 			sb.connect(userId, (user, error) => {
 				if (error) {
@@ -157,18 +150,58 @@
 				}
 			});
 
+			let messageChannel;
 			//send message button click handler
 			$('#send-message-button').click(() => {
 
-			});
 
+				const message = $('.chat-text-field').val();
+				messageChannel.sendUserMessage(message, null, null, (messageSent, err) => {
+					if (err) {
+						console.error(err);
+						return;
+					}
+					console.log(messageSent);
+				});
+
+				/*
+				sb.GroupChannel.createChannelWithUserIds([2], true, "Lynley", null, null, null, (channel, error) => {
+					if (error) {
+						console.error(error);
+					}
+					channel.sendUserMessage('hello', null, null, (message, err) => {
+						if(error) {
+							console.error(error);
+						}
+						console.log(message);
+					});
+				});
+				*/
+			});
+			let channelHandler = new sb.ChannelHandler();
+			channelHandler.onMessageReceived = (channel, message) => {
+				console.log(channel, message);
+			}
+			sb.addChannelHandler(1, channelHandler);
+
+			/**
 			$('.person').click((event) => {
 				const clickedPersonDiv = $(event.target);
+				//channel handler to receive messages
+				let channelHandler = new sb.ChannelHandler();
+
+				channelHandler.onMessageReceived = (channel, message) => {
+				console.log(channel, message);
+				}
 				otherUserId = $(clickedPersonDiv).find('.personId').text();
+				//WHAT DOES THIS DO
+				sb.addChannelHandler(otherUserId, channelHandler);
+
 				//get name of otherUser
 
 				//connect to channel
 				sb.GroupChannel.createChannelWithUserIds([otherUserId], true, name, coverFile, data, customType, (channel, error) => {
+					messageChannel = channel;
 					//get previous messages and display
 					let messageListQuery = channel.createPreviousMessageListQuery();
 					messageListQuery.load(1, true, (messageList, err) => {
@@ -183,11 +216,8 @@
 
 
 				});
-
-				//display chat history
-
-
 			});
+			*/
 
 			$('#logout').click(() => {
 				sessionStorage.clear();
