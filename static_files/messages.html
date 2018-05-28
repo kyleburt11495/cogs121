@@ -149,8 +149,27 @@
 					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
 				}
 			});
+				
 			
-			let messageChannel;
+				let messageChannel;
+				sb.GroupChannel.createChannelWithUserIds([2], true, "Lynley", null, null, null, (channel, error) => {
+					if (error) {
+						console.error(error);
+					}
+					channel.sendUserMessage('hello', null, null, (message, err) => {
+						if(error) {
+							console.error(error);
+						}
+						console.log(message);
+					});
+				});
+			
+			let channelHandler = new sb.ChannelHandler();
+			channelHandler.onMessageReceived = (channel, message) => {
+				console.log(channel, message);
+			}			
+			sb.addChannelHandler(1, channelHandler);
+			
 			//send message button click handler
 			$('#send-message-button').click(() => {
 				
@@ -178,11 +197,7 @@
 				});
 				*/
 			});
-			let channelHandler = new sb.ChannelHandler();
-			channelHandler.onMessageReceived = (channel, message) => {
-				console.log(channel, message);
-			}			
-			sb.addChannelHandler(1, channelHandler);
+			
 
 			/**
 			$('.person').click((event) => {
