@@ -11,34 +11,34 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
-   		<a class="navbar-brand" href="home.html">InLook</a>
-   		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-   			<div class="input-group">
-     			<input type="text" class="form-control" placeholder="Search...">
-      			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
-      			</span>
-    		</div>
-      		<ul class="navbar-nav ml-auto">
-      			<li class="nav-item">
-            		<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
-         		</li>
-         		<li class="nav-item">
-            		<a class="nav-link" href="#"><i class="far fa-envelope fa-lg"></i></a>
-         		</li>
-         		|
+		<a class="navbar-brand" href="home.html">InLook</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+				</span>
+			</div>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#"><i class="far fa-envelope fa-lg"></i></a>
+				</li>
+				|
 				<li class="nav-item">
 					<a class="nav-link" href="login.html" id="logout"><i class="fas fa-sign-out-alt"></i></a>
 				</li>
-      		</ul>
-   		</div>
+			</ul>
+		</div>
 	</nav>
 	<div class="main">
 		<h4>Messages</h4>
 		<!-- message container -->
 		<div class="chat-container-main">
 			<div class="people-list">
-              	<template>
+				<template>
 					<div class="person">
 						<div class="person-name">
 							<span class="person-name-1">Sumedha Gupta</span>
@@ -77,13 +77,13 @@
 			</div>
 			<div class="chat-container">
 				<div class="chat-messages">
-                  <template id="chat-message-template">
-                    <div class="container-msg">
-                      <img class="chat-profile-pic" src="" alt="avatar">
-                      <p class="chat-message-text"></p>
-                      <span class="current-time-right"></span>
-					</div>
-                  </template>
+					<template id="chat-message-template">
+						<div class="container-msg">
+							<img class="chat-profile-pic" src="" alt="avatar">
+							<p class="chat-message-text"></p>
+							<span class="current-time-right"></span>
+						</div>
+					</template>
 					<!-- a bunch of messages exchanged back and forth by two people lol -->
 					<div class="container-msg">
 						<img src="profpic.png" alt="avatar">
@@ -116,36 +116,40 @@
 	</div>
 
 	<script>
-		$(document).ready(() => {
-			const userId = sessionStorage.getItem('id');
-			const getUserProfileUrl = '/loadProfile/' + userId;
-			console.log(getUserProfileUrl);
-			$.ajax({
-				url: getUserProfileUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved user profile info');
-					console.log(data);
-					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-				}
-			});
-			
-			//send message button click handler
-			$('#send-message-button').click(() => {
-				
-			});
-			
-			$('.person').click(() => {
-				
-			});
-			
-			$('#logout').click(() => {
-				sessionStorage.clear();
-				console.log(sessionStorage.getItem('id'));
-			});
+	$(document).ready(() => {
+		const userId = sessionStorage.getItem('id');
+		const getUserProfileUrl = '/loadProfile/' + userId;
+		console.log(getUserProfileUrl);
+		$.ajax({
+			url: getUserProfileUrl,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				console.log('Recieved user profile info');
+				console.log(data);
+				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+			}
+		});
+
+		const sb = new SendBird( {
+			appID: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF';
+		});
+
+		//send message button click handler
+		$('#send-message-button').click(() => {
 
 		});
+
+		$('.person').click(() => {
+
+		});
+
+		$('#logout').click(() => {
+			sessionStorage.clear();
+			console.log(sessionStorage.getItem('id'));
+		});
+
+	});
 	</script>
 </body>
 </html>
