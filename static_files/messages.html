@@ -40,11 +40,8 @@
 		<!-- message container -->
 		<div class="chat-container-main">
 			<div class="people-list">
-<<<<<<< HEAD
-				<template>
-=======
-              	<template class="person-template">
->>>>>>> 412299ce1d7b39f644d4b45b654f280baf4143bd
+
+				<template class="person-template">
 					<div class="person">
 						<div class="person-name">
 							<span class="person-name-1">Sumedha Gupta</span>
@@ -123,172 +120,172 @@
 	</div>
 
 	<script>
-		$(document).ready(() => {
+	$(document).ready(() => {
 
 
-			//initialize and connect to sendbird
-			let sb = new SendBird({
-				appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
-			});
+		//initialize and connect to sendbird
+		let sb = new SendBird({
+			appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
+		});
 
-			const userId = sessionStorage.getItem('id');
-            //id of other user in currently selected conversation
-			let otherUserId;
-            //the current channel
-			let messageChannel;
-            // array of userId's of other users that have started conversations with current user
-            const conversationsArray = [];
-			//index of current conversation in conversationsArray
-			let currentConversationIndex;
+		const userId = sessionStorage.getItem('id');
+		//id of other user in currently selected conversation
+		let otherUserId;
+		//the current channel
+		let messageChannel;
+		// array of userId's of other users that have started conversations with current user
+		const conversationsArray = [];
+		//index of current conversation in conversationsArray
+		let currentConversationIndex;
 
 
 
-			sb.connect(userId, (user, error) => {
-				if (error) {
-					console.error(error.message);
-				}
-				else {
-					console.log('connected to sendbird');
-					//load conversations into conversationsArray
-					//then populate people-list bar with conversations using cloned templates
-					const getConversationsUrl = '/getConversations/' + userId;
-					$.ajax({
-						url: getConversationsUrl,
-						type: 'GET',
-						datatype: 'JSON',
-						success: (data) => {
-							console.log(data);
-							for (let i = 0; i < data.length; i++) {
-								//declare conversation object
-								let conversation;
-								//declare id of user holding conversation with
-								let otherUserId;
-								//add the userId in whichever column is not the current user's id
-								if(data[i].userId1 == userId) {
-									otherUserId = data[i].userId2;
-								}
-								else {
-									otherUserId = data[i].userId1;
-								}
-                              	console.log(otherUserId);
-								//open channel with other user
-								sb.GroupChannel.createChannelWithUserIds([otherUserId], true, "name", null, null, null, (channel, error) => {
-									if (error) {
-										console.error(error);
-										return;
-									}
-									//create conversation object and store in conversation array
-									conversation = {otherUserId: channel};
-									console.log(conversation.otherUserId.lastMessage.sender.userId);
-									conversationsArray.push(conversation);
-
-									//clone template and store
-									const template = document.querySelector('.person-template');
-									const peopleList = document.querySelector('.people-list');
-									template.content.querySelector('.personId').textContent = otherUserId;
-									//CHANGE LATER TO USER'S NAME
-									template.content.querySelector('.person-name-1').textContent = otherUserId;
-									//CHANGE LATER TO LAST MESSAGE IN CONVERSATION
-									template.content.querySelector('.lastMessage').textContent = "Hi! I was wondering if you're free for a job right now?";
-									//clone template and append to people-list
-									let clone = document.importNode(template.content, true);
-									peopleList.appendChild(clone);
-
-									$('.person').click((event) => {
-										console.log("Clicked person");
-										//get clicked conversation
-										const clickedPersonDiv = $(event.target);
-										//get id of otherUser
-										otherUserId = $(clickedPersonDiv).find('.personId').text();
-										//get position in people-list which is also index of conversation object in conversationsArray
-										currentConversationIndex = clickedPersonDiv.index();
-										//get conversation object from conversationsArray
-										let currentConversation = conversationsArray[currentConversationIndex];
-										//access channel of other user
-										messageChannel = currentConversation.otherUserId;
-										//access chat history of channel
-										let messageListQuery = messageChannel.createPreviousMessageListQuery();
-										messageListQuery.load(30, true, (messageList, err) => {
-											if(err) {
-												console.error(err);
-												return;
-											}
-											console.log(messageList);
-										});
-									});
-
-								});
-							}
-						}
-					});
-				}
-			});
-			const getUserProfileUrl = '/loadProfile/' + userId;
-			console.log(getUserProfileUrl);
-			$.ajax({
-				url: getUserProfileUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved user profile info');
-					console.log(data);
-					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-				}
-			});
-
-			let channelHandler = new sb.ChannelHandler();
-			channelHandler.onMessageReceived = (channel, message) => {
-				console.log(channel, message);
-
-				//use channel to determine which chat window message will be displayed in
+		sb.connect(userId, (user, error) => {
+			if (error) {
+				console.error(error.message);
 			}
-			sb.addChannelHandler(1, channelHandler);
+			else {
+				console.log('connected to sendbird');
+				//load conversations into conversationsArray
+				//then populate people-list bar with conversations using cloned templates
+				const getConversationsUrl = '/getConversations/' + userId;
+				$.ajax({
+					url: getConversationsUrl,
+					type: 'GET',
+					datatype: 'JSON',
+					success: (data) => {
+						console.log(data);
+						for (let i = 0; i < data.length; i++) {
+							//declare conversation object
+							let conversation;
+							//declare id of user holding conversation with
+							let otherUserId;
+							//add the userId in whichever column is not the current user's id
+							if(data[i].userId1 == userId) {
+								otherUserId = data[i].userId2;
+							}
+							else {
+								otherUserId = data[i].userId1;
+							}
+							console.log(otherUserId);
+							//open channel with other user
+							sb.GroupChannel.createChannelWithUserIds([otherUserId], true, "name", null, null, null, (channel, error) => {
+								if (error) {
+									console.error(error);
+									return;
+								}
+								//create conversation object and store in conversation array
+								conversation = {otherUserId: channel};
+								console.log(conversation.otherUserId.lastMessage.sender.userId);
+								conversationsArray.push(conversation);
 
-			//send message button click handler
-			$('#send-message-button').click(() => {
-				const message = $('.chat-text-field').val();
-				messageChannel.sendUserMessage(message, null, null, (messageSent, err) => {
-					if (err) {
-						console.error(err);
-						return;
+								//clone template and store
+								const template = document.querySelector('.person-template');
+								const peopleList = document.querySelector('.people-list');
+								template.content.querySelector('.personId').textContent = otherUserId;
+								//CHANGE LATER TO USER'S NAME
+								template.content.querySelector('.person-name-1').textContent = otherUserId;
+								//CHANGE LATER TO LAST MESSAGE IN CONVERSATION
+								template.content.querySelector('.lastMessage').textContent = "Hi! I was wondering if you're free for a job right now?";
+								//clone template and append to people-list
+								let clone = document.importNode(template.content, true);
+								peopleList.appendChild(clone);
+
+								$('.person').click((event) => {
+									console.log("Clicked person");
+									//get clicked conversation
+									const clickedPersonDiv = $(event.target);
+									//get id of otherUser
+									otherUserId = $(clickedPersonDiv).find('.personId').text();
+									//get position in people-list which is also index of conversation object in conversationsArray
+									currentConversationIndex = clickedPersonDiv.index();
+									//get conversation object from conversationsArray
+									let currentConversation = conversationsArray[currentConversationIndex];
+									//access channel of other user
+									messageChannel = currentConversation.otherUserId;
+									//access chat history of channel
+									let messageListQuery = messageChannel.createPreviousMessageListQuery();
+									messageListQuery.load(30, true, (messageList, err) => {
+										if(err) {
+											console.error(err);
+											return;
+										}
+										console.log(messageList);
+									});
+								});
+
+							});
+						}
 					}
-					console.log(messageSent);
 				});
+			}
+		});
+		const getUserProfileUrl = '/loadProfile/' + userId;
+		console.log(getUserProfileUrl);
+		$.ajax({
+			url: getUserProfileUrl,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				console.log('Recieved user profile info');
+				console.log(data);
+				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+			}
+		});
+
+		let channelHandler = new sb.ChannelHandler();
+		channelHandler.onMessageReceived = (channel, message) => {
+			console.log(channel, message);
+
+			//use channel to determine which chat window message will be displayed in
+		}
+		sb.addChannelHandler(1, channelHandler);
+
+		//send message button click handler
+		$('#send-message-button').click(() => {
+			const message = $('.chat-text-field').val();
+			messageChannel.sendUserMessage(message, null, null, (messageSent, err) => {
+				if (err) {
+					console.error(err);
+					return;
+				}
+				console.log(messageSent);
 			});
+		});
 
 
 
-			$('.person').click((event) => {
-				console.log("Clicked person");
-				//get clicked conversation
-				const clickedPersonDiv = $(event.target);
-				//get id of otherUser
-				otherUserId = $(clickedPersonDiv).find('.personId').text();
-				//get position in people-list which is also index of conversation object in conversationsArray
-				currentConversationIndex = clickedPersonDiv.index();
-				//get conversation object from conversationsArray
-				let currentConversation = conversationsArray[currentConversationIndex];
-				//access channel of other user
-				messageChannel = currentConversation[otherUserId];
-				//access chat history of channel
-				let messageListQuery = messageChannel.createPreviousMessageListQuery();
-				messageListQuery.load(30, true, (messageList, err) => {
-					if(err) {
-						console.error(err);
-						return;
-					}
-					console.log(messageList);
+		$('.person').click((event) => {
+			console.log("Clicked person");
+			//get clicked conversation
+			const clickedPersonDiv = $(event.target);
+			//get id of otherUser
+			otherUserId = $(clickedPersonDiv).find('.personId').text();
+			//get position in people-list which is also index of conversation object in conversationsArray
+			currentConversationIndex = clickedPersonDiv.index();
+			//get conversation object from conversationsArray
+			let currentConversation = conversationsArray[currentConversationIndex];
+			//access channel of other user
+			messageChannel = currentConversation[otherUserId];
+			//access chat history of channel
+			let messageListQuery = messageChannel.createPreviousMessageListQuery();
+			messageListQuery.load(30, true, (messageList, err) => {
+				if(err) {
+					console.error(err);
+					return;
+				}
+				console.log(messageList);
 
 
-				});
 			});
+		});
 
 
 
-			$('#logout').click(() => {
-				sessionStorage.clear();
-				console.log(sessionStorage.getItem('id'));
-			});
+		$('#logout').click(() => {
+			sessionStorage.clear();
+			console.log(sessionStorage.getItem('id'));
+		});
 
 
 		//send message button click handler
@@ -304,7 +301,7 @@
 			sessionStorage.clear();
 			console.log(sessionStorage.getItem('id'));
 		});
-});
+	});
 	</script>
 </body>
 </html>
