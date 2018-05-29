@@ -237,6 +237,14 @@
 										}
 										console.log(messageSent);
 										
+										//append message to chatMessagesDiv
+										let chatMessagesDiv = document.querySelector('.chat-messages');
+										let messageTemplate = document.querySelector('.chat-message-template');
+										messageTemplate.content.querySelector('.chat-message-text').textContent = message;
+										messageTemplate.content.querySelector('span').textContent = '11:00 PM';
+										
+										let messageTemplateClone = document.importNode(messageTemplate.content, true);
+										chatMessagesDiv.appendChild(messageTemplateClone);
 									});
 								});
 							});
