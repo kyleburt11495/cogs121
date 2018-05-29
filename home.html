@@ -14,9 +14,9 @@
    		</button>
    		<div class="collapse navbar-collapse" id="navbarSupportedContent">
    			<div class="input-group">
-     			<input type="text" class="form-control" placeholder="Search...">
+     			<input type="text" class="form-control" id="searchValue" placeholder="Search...">
       			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+        			<button class="btn btn-default" type="button" id="searchBtn"><i class="fas fa-search"></i></button>
       			</span>
     		</div>
       		<ul class="navbar-nav ml-auto">
@@ -69,6 +69,19 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
+
+
+	$(document).ready(() => {
+
+		$('.btn').click( (e)=>{
+			console.log('something here');
+		});
+
+		$('#searchBtn').click( (e)=>{
+			console.log('something here');
+		});
+
+
 		$('#popular').click(function(e){
 			if($('#trendingContent').hasClass('hide')){
 				$('#trendingContent').removeClass('hide');
@@ -111,6 +124,7 @@
 			$('#trendingContent').removeClass('hide');
 			$('#trending').addClass('active');
 		});
+	});
 	</script>
 </body>
 </html>
