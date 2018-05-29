@@ -121,6 +121,11 @@
 							let conversation;
 							//declare id of user holding conversation with
 							let otherUserId;
+							//first name of other user
+							let firstName = data[i].firstName;
+							//last name of user
+							let lastName = data[i].lastName;
+							
 							//add the userId in whichever column is not the current user's id
 							if(data[i].userId1 == userId) {
 								otherUserId = data[i].userId2;
@@ -146,7 +151,7 @@
 								const peopleList = document.querySelector('.people-list');
 								template.content.querySelector('.personId').textContent = otherUserId;
 								//CHANGE LATER TO USER'S NAME
-								template.content.querySelector('.person-name-1').textContent = otherUserId;
+								template.content.querySelector('.person-name-1').textContent = firstName + ' ' + lastName;
 								//CHANGE LATER TO LAST MESSAGE IN CONVERSATION
 								template.content.querySelector('.lastMessage').textContent = "Hi! I was wondering if you're free for a job right now?";
 								//clone template and append to people-list
