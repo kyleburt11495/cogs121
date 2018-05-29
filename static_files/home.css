@@ -112,22 +112,32 @@ hr {
 	background-color: #808080;
 	display: inline-block;
 	margin-right: 1rem;
-	margin-bottom: 1rem;
+	position: absolute;
 	opacity: 1;
 }
 
 .project-hover {
 	display: inline-block;
+	height: 20rem;
+	width: 49%;
 }
 
-.project-hover > span {
+
+.project-hover span,i {
 	position: relative;
-	right: 20rem;
 	z-index: 1;
 	display: none;
-	color: yellow;
+	color: red;
 }
 
 .hidden {
 	display: none;
+}
+
+#likeButton:hover {
+	color: red;
+}
+
+.fas .fa-heart {
+	color: red;
 }

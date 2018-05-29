@@ -62,7 +62,6 @@
 				<p id="projectDescriptionModal"></p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<i id="likeButton" class="far fa-heart fa-lg"></i>
 			</div>
 		</div>
@@ -264,9 +263,9 @@ $(document).ready(() => {
       				projectId: projectClickedId
       			},
       			success: (data) => {
-            	//change appearance of like button
-            	console.log('Liked');
-            	$('#likeButton').removeClass('far').addClass('fas');
+            		//change appearance of like button
+            		console.log('Liked');
+            		$('#likeButton').removeClass('far').addClass('fas');
         		}
     		});
       	}

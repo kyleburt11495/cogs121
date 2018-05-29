@@ -260,3 +260,7 @@ h4{
 #likeButton:hover {
 	color: red;
 }
+
+.fas .fa-heart {
+	color: red;
+}

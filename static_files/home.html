@@ -13,9 +13,9 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" placeholder="Search..." id="search">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -59,7 +59,7 @@
         <div class="project-hover">
           <img class="project hidden" src="" alt="">
           <span id="projectOwner"></span>
-          <span id="like"></span>
+          <i id="likeButton" class="far fa-heart fa-lg hidden"></i>
         </div>
       </div>
 		</div>
@@ -151,7 +151,7 @@ $(document).ready(function() {
             $(data).each((e)=>{
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].userId);
+              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
               $('#projects-list').append(clone);
             });
         }
@@ -190,14 +190,55 @@ $(document).ready(function() {
           $(data).each((e)=>{
             let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
             clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-            clone.find('#projectOwner').html(data[e].userId);
+            clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
             $('#projects-list').append(clone);
           });
       }
   });
+
+  const likeProjectUrl = '/likeProject';
+      $('#likeButton').click(() => {
+        if($('#likeButton').hasClass('fas')){
+          $('#likeButton').removeClass('fas').addClass('far');
+        } else {
+          $.ajax({
+            url: likeProjectUrl,
+            type: 'POST',
+            datatype: 'JSON',
+            data: {
+              userId: userId,
+              projectId: projectClickedId
+            },
+            success: (data) => {
+                //change appearance of like button
+                console.log('Liked');
+                $('#likeButton').removeClass('far').addClass('fas');
+            }
+        });
+        }
+      });
+
   $('body').on('mouseenter', '.project',(e)=>{
-    $(event.target).next().css('display','inline-block');
+    $(event.target).next().css('display','block');
+    $(event.target).next().next().css('display','block');
   });
+  $('body').on('mouseleave','.project',(e)=>{
+    $(event.target).next().css('display','none');
+     $(event.target).next().next().css('display','none');
+  });
+
+  $('#searchButton').click(()=>{
+    let searchKey = '/search/' + $('#search').val(); 
+    $.ajax({
+      url: searchKey,
+      type: 'GET',
+      datatype: 'JSON',
+      success: (data) => {
+        console.log('SEARCH: ' + data);
+      }
+    });
+  });
+
 });
 </script>
 </body>

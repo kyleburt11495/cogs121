@@ -127,15 +127,28 @@ app.post('/followPerson', (req, res) => {
 
 
 app.get('/trending', (req, res) => {
-  db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isTrending = 1", (err, row)=> {
+    if(err) {
+      console.error(err.message);
+    }
+    else {
+      res.send(row);
+    }
+  });
+  /*db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
     if (err) {
       console.error(err.message);
     }
     else {
-      console.log(row);
-      res.send(row);
+      row.forEach((e)=>{
+        db.all("SELECT firstName, lastName FROM users_account WHERE userId= $userId",{$userId: e.userId},(err,row)=>{
+          res.write(e);
+          res.write(row);
+        });
+      });
+      res.end();
     }
-  });
+  });*/
 });
 
 app.get('/popular', (req, res) =>{
@@ -201,6 +214,17 @@ app.get('/loadProjects/:userid', (req, res) => {
   });
 });
 
+app.get('/search/:searchKey',(req,res) => {
+  const key = req.params.searchKey;
+  db.all("SELECT * FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE ", {$key: key}, (err,row)=>{
+    if(err){
+      console.error(err.message);
+    } else{
+      res.send(row);
+    }
+  });
+});
+
 //used to get userId of logged in user
 app.post('/users', (req,res) => {
   const username = req.body.username;
@@ -219,7 +243,6 @@ app.post('/users', (req,res) => {
     }
   });
 });
-
 
 app.post('/signup', (req, res)=>{
   // let match = false;
