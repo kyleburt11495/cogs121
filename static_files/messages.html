@@ -83,7 +83,6 @@
 	<script>
 	$(document).ready(() => {
 
-
 		//initialize and connect to sendbird
 		let sb = new SendBird({
 			appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
@@ -272,21 +271,12 @@
 			}
 		});
 
-
-
-
 		$('#logout').click(() => {
 			sessionStorage.clear();
 			console.log(sessionStorage.getItem('id'));
 		});
 	
 	});
-							
-									
-														  
-							
-		
-		
 		
 	function findPersonDiv(clickedDiv) {
 		while (clickedDiv.hasClass('person') == false)
