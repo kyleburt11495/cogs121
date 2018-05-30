@@ -56,11 +56,23 @@
       </div>
 
       <div id="projectTemplate">
-        <div class="project-hover">
-          <img class="project hidden" src="" alt="">
-          <span id="projectOwner"></span>
-          <i id="likeButton" class="far fa-heart fa-lg hidden"></i>
-        </div>
+        <div class="project1">
+        	<img class="project" src="" alt="">
+					<div class="container">
+						<span id="projectOwner"></span>
+		       	<i id="likeButton" class="far fa-heart fa-lg"></i>
+					</div>
+				</div>
+      </div>
+
+			<!-- <div class="project1">
+				<img class="project" src="" alt="">
+				<div class="container">
+					<span id="projectOwner"></span>
+	       	<i id="likeButton" class="far fa-heart fa-lg hidden"></i>
+				</div>
+			</div> -->
+
       </div>
 		</div>
 	</div>
@@ -79,7 +91,7 @@ $(document).ready(function() {
     window.location.href = 'profile.html';
   });
 
-  
+
   $('#popular').click((e)=>{
     //display popular images
     $('#trending').removeClass('active');
@@ -218,17 +230,17 @@ $(document).ready(function() {
         }
       });
 
-  $('body').on('mouseenter', '.project',(e)=>{
-    $(event.target).next().css('display','block');
-    $(event.target).next().next().css('display','block');
-  });
-  $('body').on('mouseleave','.project',(e)=>{
-    $(event.target).next().css('display','none');
-     $(event.target).next().next().css('display','none');
-  });
+  // $('body').on('mouseenter', '.project',(e)=>{
+  //   $(event.target).next().css('display','block');
+  //   $(event.target).next().next().css('display','block');
+  // });
+  // $('body').on('mouseleave','.project',(e)=>{
+  //   $(event.target).next().css('display','none');
+  //    $(event.target).next().next().css('display','none');
+  // });
 
   $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val(); 
+    let searchKey = '/search/' + $('#search').val();
     $.ajax({
       url: searchKey,
       type: 'GET',

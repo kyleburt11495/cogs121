@@ -112,29 +112,36 @@ hr {
 	background-color: #808080;
 	display: inline-block;
 	margin-right: 1rem;
-	position: absolute;
 	opacity: 1;
 }
 
-.project-hover {
+.project1 {
 	display: inline-block;
 	height: 20rem;
 	width: 49%;
 }
 
 
-.project-hover span,i {
-	position: relative;
+.project1 span {
 	z-index: 1;
-	display: none;
+	color: black;
+}
+
+.project1 span,i {
+	z-index: 1;
 	color: red;
 }
-
-.hidden {
+ /* .hidden {
 	display: none;
+} */
+
+.container{
+	position: relative;
+	z-index: 1;
+	padding: 2px 16px;
 }
 
-#likeButton:hover {
+#likeButton:hover{
 	color: red;
 }
 
