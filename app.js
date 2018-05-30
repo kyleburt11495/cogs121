@@ -302,9 +302,9 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
 
 
 app.get('/searchForUsers/:searchValue', (req, res) => {
-  const userId = req.params.searchValue;
+  const userId = '%' + req.params.searchValue + '%';
   console.log(userId);
-  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+  db.all("SELECT * FROM users_account WHERE firstName LIKE $userId", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -316,7 +316,7 @@ app.get('/searchForUsers/:searchValue', (req, res) => {
       res.send({}); //failed so return empty string instead of undefined
     }
   });
-})
+});
 
 // app.get('firstName/:lastName', (req, res) => {
 //   const firstName = req.params.firstName;
