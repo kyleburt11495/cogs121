@@ -9,7 +9,7 @@ __Screen #1(Messages)__
 __Screen #2(Home)__
 ![](m6_images/home.png)
 
-__Screen #1(Profile)__
+__Screen #3(Profile)__
 ![](m6_images/profile.png)
 
 __Screen #4(Login)__
