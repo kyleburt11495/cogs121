@@ -30,7 +30,7 @@ body {
 }
 
 #createProject{
-	margin-top: 2.5em;
+	margin-top: 1rem;
 	margin-bottom: 1em;
 	width: 600px;
 	height: 60px;
@@ -39,7 +39,6 @@ body {
 	border: 1px solid #C1C1C1;
 	color: black;
 	font-weight: bold;
-	margin-top: 6rem;
 	/* margin-right: 0.2rem; */
 	/* margin-bottom: 0.5rem; */
 
@@ -264,3 +263,33 @@ h4{
 .fas .fa-heart {
 	color: red;
 }
+
+#innerNav {
+	margin-top: 5rem;
+	overflow: hidden;
+	padding-left: 0;
+	margin-bottom: 0;
+	width: 100%;
+	text-align: center;
+	position: relative;
+}
+#innerNav li {
+	display: inline;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	/*transition: 0.3s;*/
+	font-size: 17px;
+}
+.hidden {
+	display: none;
+}
+
+.active {
+	text-decoration: underline;
+}
+.projects-main {
+	
+}
+

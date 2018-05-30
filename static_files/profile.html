@@ -155,21 +155,31 @@
 	</div>
 </div> -->
 
-<div class="projects-main">
-	<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-		<i class="fas fa-plus"></i>
-	</button>
-	<template class="projectTemplate">
-		<div class="project">
-			<div class="project-pic">
-				<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+<div class="projects-main col-md-5 col-xs-3">
+	<ul id="innerNav">
+		<li class="tablink active" id="projectsTab">PROJECTS</li>|
+		<li class="tablink" id="statsTab">STATS</li>
+	</ul>
+	<hr>
+	<div class="projects">
+		<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+			<i class="fas fa-plus"></i>
+		</button>
+		<template class="projectTemplate">
+			<div class="project">
+				<div class="project-pic">
+					<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+				</div>
+				<p class="projectInfo" id="projectTitle"></p>
+				<p class="projectInfo" id="projectDescription"></p>
+				<p class="projectInfo" id="projectId"></p>
 			</div>
-			<p class="projectInfo" id="projectTitle"></p>
-			<p class="projectInfo" id="projectDescription"></p>
-			<p class="projectInfo" id="projectId"></p>
-		</div>
-	</template>
-</div>
+		</template>
+	</div>
+	<div class="stats hidden ">
+		<h1>STATS</h1>
+	</div>
+
 </div>
 </div>
 <div id="likeChart">
@@ -188,9 +198,6 @@
   
 
 $(document).ready(() => {
-
-
-
 	// $(document).on('click', 'img', () => {
 	//             $('#projectViewModal').modal();
 	//           });
@@ -381,6 +388,18 @@ $(document).ready(() => {
           }
         });
       });
+      $('#statsTab').click(()=>{
+      	$('.stats').removeClass('hidden');
+      	$('#statsTab').addClass('active');
+      	$('.project, .projects').addClass('hidden');
+      	$('#projectsTab').removeClass('active');
+      });
+      $('#projectsTab').click(()=>{
+      	$('.stats').addClass('hidden');
+      	$('#statsTab').removeClass('active');
+      	$('.projects, .project').removeClass('hidden');
+      	$('#projectsTab').addClass('active');
+      });
       document.querySelector('#projectTitleModal').text = "Hello";
       $('#logout').click(() => {
           sessionStorage.clear();
@@ -413,7 +432,6 @@ $(document).ready(() => {
           }
         });
       });
-      
   });
 
 
