@@ -255,7 +255,7 @@ app.post('/createNewConversation', (req, res) => {
   //order ids so that smaller id is userId1 and larger is userId2
   let userId1;
   let userId2;
-  
+
   if(req.body.userId < req.body.profileClickedId) {
     userId1 = req.body.userId;
     userId2 = req.body.profileClickedId;
@@ -264,7 +264,7 @@ app.post('/createNewConversation', (req, res) => {
     userId1 = req.body.profileClickedId;
     userId2 = req.body.userId;
   }
-  
+
   db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
     $userId1: userId1, $userId2: userId2
   }, (err, row) => {
@@ -378,7 +378,7 @@ app.get('/search/:searchKey',(req,res) => {
   db.all("SELECT * FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
     if(err){
       console.error(err.message);
-    } else{ 
+    } else{
       console.log("SEARCH: ");
       console.log(row);
       res.send(row);
@@ -437,18 +437,20 @@ app.post('/signup', (req, res)=>{
           $isDesigner: req.body.isDesigner,
           $password: req.body.password,
         },
-        (err) => {
+        (err, row) => {
           if(err) {
             console.log('error creating new user');
           } else{
             console.log("hi");
+            // let someid = '';
             db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
               console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
             });
-            res.send({message:'successfuly run app.post(/signup)'});
-          }
+            //res.send({message:'successfuly run app.post(/signup)'});
+          };
         }
       );
     }
+    console.log('after hi');
   });
 });

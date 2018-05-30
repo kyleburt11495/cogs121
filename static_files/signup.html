@@ -71,7 +71,9 @@
       },
       success: (data)=>{
         console.log("DATA: " + data);
+        console.log(data.userId);
         sessionStorage.setItem("id",data.userId);
+        window.top.location = "home.html";
 
       }
     });
