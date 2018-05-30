@@ -9,7 +9,7 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg" id="nav">
-  		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="logo" id="imglogo"></a>
+  		<a class="navbar-brand" href="login.html"><img src="inlook.png" class="img-responsive" alt="logo" id="imglogo"></a>
   	</nav>
     <h4>Signup</h4>
         <div class="container">
@@ -72,7 +72,7 @@
       success: (data)=>{
         console.log("DATA: " + data);
         sessionStorage.setItem("id",data.userId);
-
+        window.top.location = 'login.html';
       }
     });
   }
