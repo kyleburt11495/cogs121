@@ -183,6 +183,7 @@
   let projectClickedId;
   let columns = [];
   let columns1 = ['likes'];
+  columns.push(columns1);
   let categories = [];
   
   
@@ -244,6 +245,33 @@ $(document).ready(() => {
                       categories.push(currentProjectTitle);
                       //console.log(columns);
                       //console.log(categories);
+                      var chart = c3.generate({
+                            bindto: '#likeChart',
+                         data: {
+                             columns: columns,
+                             type: 'bar'
+                         },
+                         axis: {
+                             x: {
+                                 label: {
+                                     text: 'projects',
+                                     position: 'outer-center'
+                                 },
+                                 type: 'category',
+                                 categories: categories,
+                                 tick: {
+                                     centered: true
+                                 }
+                             }
+                         },
+                         bar: {
+                             width: {
+                                 ratio: 0.25 // this makes bar width 50% of length between ticks
+                             }
+                             // or
+                             //width: 100 // this makes bar width 100px
+                         }
+                      });
                     }
                   });
 
@@ -256,36 +284,7 @@ $(document).ready(() => {
                 //data visualization
       
                
-              columns.push(columns1);
-              console.log(columns.toString());
-              console.log(columns1);
-              var chart = c3.generate({
-                bindto: '#likeChart',
-             data: {
-                 columns: columns,
-                 type: 'bar'
-             },
-             axis: {
-                 x: {
-                     label: {
-                         text: 'projects',
-                         position: 'outer-center'
-                     },
-                     type: 'category',
-                     categories: categories,
-                     tick: {
-                         centered: true
-                     }
-                 }
-             },
-             bar: {
-                 width: {
-                     ratio: 0.25 // this makes bar width 50% of length between ticks
-                 }
-                 // or
-                 //width: 100 // this makes bar width 100px
-             }
-          });
+              
                 
                 
 
