@@ -229,6 +229,55 @@ app.get('/loadProfile/:userid', (req, res) => {
   });
 });
 
+app.get('/getAmountOfLikes/:projectId', (req, res) => {
+  db.all("SELECT * FROM likes where projectId = $projectId", {$projectId: req.params.projectId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
+  });
+});
+
+app.post('/createNewConversation', (req, res) => {
+  //order ids so that smaller id is userId1 and larger is userId2
+  let userId1;
+  let userId2;
+  
+  if(req.body.userId < req.body.profileClickedId) {
+    userId1 = req.body.userId;
+    userId2 = req.body.profileClickedId;
+  }
+  else {
+    userId1 = req.body.profileClickedId;
+    userId2 = req.body.userId;
+  }
+  
+  db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
+    $userId1: userId1, $userId2: userId2
+  }, (err, row) => {
+    if (err) {
+      console.error(err);
+    }
+    return res.redirect('/messages.html');
+  });
+});
+
+app.get('/getProjectsAndLikes/:userId', (req, res) => {
+  db.all("SELECT * FROM projects LEFT OUTER JOIN likes ON (likes.userId = projects.userId) WHERE projects.userId = $userId", {$userId: req.params.userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    if(row.length > 0) {
+      console.log(row);
+      res.send(row);
+    }
+    else {
+      res.send({});
+    }
+  });
+});
+
 
 app.get('/searchForUsers/:searchValue', (req, res) => {
   const userId = '%' + req.params.searchValue + '%';
