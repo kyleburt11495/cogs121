@@ -279,7 +279,7 @@ app.get('/searchForUsers/:searchValue', (req, res) => {
 
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;
-  db.all("SELECT * FROM conversations WHERE (userId1 = $userId OR userId2 = $userId)", {$userId: userId}, (err, rows) => {
+  db.all("SELECT userId1, userId2, firstName, lastName FROM conversations INNER JOIN users_account ON (conversations.userId1 = users_account.userId or conversations.userId2 = users_account.userId) WHERE ((conversations.userId1 = $userId OR conversations.userId2 = $userId) AND (users_account.userId != $userId))", {$userId: userId}, (err, rows) => {
     if (err) {
       console.error(err.message);
     }
