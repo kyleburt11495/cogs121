@@ -226,7 +226,7 @@ app.get('/following/:userId', (req, res) =>{
 });
 
 app.get('/getFollows/:userId', (req, res) => {
-  db.all("SELECT * FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
     if(err) {
       console.error(err.message);
     }

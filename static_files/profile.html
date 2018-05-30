@@ -437,8 +437,10 @@ $(document).ready(() => {
           let dates = [];
           
           for(let i = 0; i < data.length; i++) {
-            if(!dates.includes(data[i].date))
+            if(!dates.includes(data[i].date)) {
               dates.push(data[i].date);
+              console.log(data[i].date);
+            }
           }
           
           for(let i = 0; i < dates.length; i++) {
