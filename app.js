@@ -18,6 +18,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
+// //send bird api
+// import * as SendBird from 'SendBird';
+// const sb = new SendBird({'appId': '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
+// });
+//
+// sb.connect(userId, (user, error) => {
+//
+// });
+
+
+
 const bodyParser = require('body-parser');
 
 
@@ -100,8 +111,9 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 });
 
-//follow project
-app.post('/likeProject', (req, res) => { 
+
+//like project
+app.post('/likeProject', (req, res) => {
   db.run("INSERT INTO likes(userId, projectId, date) VALUES($userId, $projectId, julianday('now'))", {
     $userId: req.body.userId,
     $projectId: req.body.projectId
@@ -110,6 +122,39 @@ app.post('/likeProject', (req, res) => {
       console.error(err.message);
     }
     return res.redirect('/profile.html');
+  });
+});
+
+//dislike project
+app.post('/dislikeProject', (req, res) => {
+  db.run("DELETE FROM likes WHERE userId = $userId AND projectId = $projectId", {
+    $userId: req.body.userId,
+    $projectId: req.body.projectId
+  }, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    console.log("deleted");
+    return res.redirect('/profile.html');
+  });
+});
+
+app.get('/isProjectLiked/:userId/:projectId', (req, res) => {
+  const userId = req.params.userId;
+  const projectId = req.params.projectId;
+  db.all("SELECT * FROM likes WHERE userId = $userId AND projectId = $projectId", {
+    $userId: userId,
+    $projectId: projectId
+  }, (err, row) => {
+    if (err) {
+      console.err(err.message);
+    }
+    if(row.length > 0) {
+      res.send(row[0]);
+    }
+    else {
+      res.send(null);
+    }
   });
 });
 
@@ -193,6 +238,120 @@ app.get('/loadProfile/:userid', (req, res) => {
     }
     else {
       res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+});
+
+app.get('/getAmountOfLikes/:projectId', (req, res) => {
+  db.all("SELECT * FROM likes where projectId = $projectId", {$projectId: req.params.projectId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
+  });
+});
+
+app.post('/createNewConversation', (req, res) => {
+  //order ids so that smaller id is userId1 and larger is userId2
+  let userId1;
+  let userId2;
+  
+  if(req.body.userId < req.body.profileClickedId) {
+    userId1 = req.body.userId;
+    userId2 = req.body.profileClickedId;
+  }
+  else {
+    userId1 = req.body.profileClickedId;
+    userId2 = req.body.userId;
+  }
+  
+  db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
+    $userId1: userId1, $userId2: userId2
+  }, (err, row) => {
+    if (err) {
+      console.error(err);
+    }
+    return res.redirect('/messages.html');
+  });
+});
+
+app.get('/getProjectsAndLikes/:userId', (req, res) => {
+  db.all("SELECT * FROM projects LEFT OUTER JOIN likes ON (likes.userId = projects.userId) WHERE projects.userId = $userId", {$userId: req.params.userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    if(row.length > 0) {
+      console.log(row);
+      res.send(row);
+    }
+    else {
+      res.send({});
+    }
+  });
+});
+
+
+app.get('/searchForUsers/:searchValue', (req, res) => {
+  const userId = req.params.searchValue;
+  console.log(userId);
+  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row.length > 0) {
+      console.log(row[0]);
+      res.send(row[0]);
+    }
+    else {
+      res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+})
+
+// app.get('firstName/:lastName', (req, res) => {
+//   const firstName = req.params.firstName;
+//   const lastName = req.params.lastName;
+//
+//   console.log(firstName);
+//   console.log(lastName);
+//
+//   db.all('SELECT * FROM users_account WHERE (firstName = $firstName OR lastName = $lastName',{
+//     $firstName:firstName,
+//     $lastName:lastName
+//   },(err, row) => {
+//     if(err) {
+//       console.error(err.message);
+//       console.log('err');
+//     }
+//     if (row.length > 0) {
+//       console.log(row[0]);
+//       res.send(row[0]);
+//
+//       console.log('hello');
+//     }
+//     else {
+//       res.send({}); //failed so return empty string
+//       console.log('failed');
+//     }
+//   });
+// })
+
+
+
+app.get('/getConversations/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.all("SELECT userId1, userId2, firstName, lastName FROM conversations INNER JOIN users_account ON (conversations.userId1 = users_account.userId or conversations.userId2 = users_account.userId) WHERE ((conversations.userId1 = $userId OR conversations.userId2 = $userId) AND (users_account.userId != $userId))", {$userId: userId}, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (rows.length > 0) {
+      console.log(rows);
+      res.send(rows);
+    }
+    else {
+	  console.log("no projects found");
+      res.send([]); //failed so return empty string instead of undefined
     }
   });
 });

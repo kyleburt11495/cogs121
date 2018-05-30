@@ -5,92 +5,75 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="messages.css">
+	<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<script src="SendBird.min.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
-   		<a class="navbar-brand" href="home.html">InLook</a>
-   		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-   			<div class="input-group">
-     			<input type="text" class="form-control" placeholder="Search...">
-      			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
-      			</span>
-    		</div>
-      		<ul class="navbar-nav ml-auto">
-      			<li class="nav-item">
-            		<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
-         		</li>
-         		<li class="nav-item">
-            		<a class="nav-link" href="#"><i class="far fa-envelope fa-lg"></i></a>
-         		</li>
-         		|
+		<a class="navbar-brand" href="home.html">InLook</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+				</span>
+			</div>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#"><i class="far fa-envelope fa-lg"></i></a>
+				</li>
+				|
 				<li class="nav-item">
 					<a class="nav-link" href="login.html" id="logout"><i class="fas fa-sign-out-alt"></i></a>
 				</li>
-      		</ul>
-   		</div>
+			</ul>
+		</div>
 	</nav>
 	<div class="main">
 		<h4>Messages</h4>
+		<template class="person-template">
+			<div class="person">
+				<div class="person-name">
+					<span class="person-name-1">Sumedha Gupta</span>
+				</div>
+				<div class="chat-ongoing">
+					<span class="lastMessage">Hi! I was wondering if you're free for a job right now?</span>
+				</div>
+				<p class="personId"></p>
+			</div>
+		</template>
 		<!-- message container -->
 		<div class="chat-container-main">
 			<div class="people-list">
-				<!-- list of people -->
-				<div class="person">
-					<div class="person-name">
-						<span class="person-name-1">Sumedha Gupta</span>
-					</div>
-					<div class="chat-ongoing">
-						<span>Hi! I was wondering if you're free for a job right now?</span>
-					</div>
-				</div>
-				<div class="person">
-					<div class="person-name">
-						<span class="person-name-1">Lynley Yamaguchi</span>
-					</div>
-					<div class="chat-ongoing">
-						<span>Hi! I was wondering if you're free for a job right now?</span>
-					</div>
-				</div>
-				<div class="person">
-					<div class="person-name">
-						<span class="person-name-1">Vince Tierra</span>
-					</div>
-					<div class="chat-ongoing">
-						<span>Hi! I was wondering if you're free for a job right now?</span>
-					</div>
-				</div>
-
+				<!-- list of people -->		
 			</div>
 			<div class="chat-container">
+				<template class="chat-message-template">
+                    <div class="container-msg">
+                      <img class="chat-profile-pic" src="profpic.png" alt="avatar">
+                      <p class="chat-message-text"></p>
+                      <span class="current-time-right"></span>
+					</div>
+                </template>
+				<template class="chat-message-diff-template">
+					<div class="container-msg diff">
+							<img src="profpic.png" alt="avatar" class="right">
+							<p class="chat-message-text"></p>
+							<span class="current-time-left">11:01pm</span>
+						</div>
+					</template>
 				<div class="chat-messages">
 					<!-- a bunch of messages exchanged back and forth by two people lol -->
-					<div class="container-msg">
-						<img src="profpic.png" alt="avatar">
-						<p>Hellooooo! I'm Sumedha</p>
-						<span class="current-time-right">11:00pm</span>
-					</div>
-					<div class="container-msg diff">
-						<img src="profpic.png" alt="avatar" class="right">
-						<p>Hi! How are you doing?</p>
-						<span class="current-time-left">11:01pm</span>
-					</div>
-					<div class="container-msg">
-						<img src="profpic.png" alt="avatar">
-						<p>I need help with some interior designs</p>
-						<span class="current-time-right">11:02pm</span>
-					</div>
-					<div class="container-msg diff">
-						<img src="profpic.png" alt="avatar" class="right">
-						<p>Okay, I can help</p>
-						<span class="current-time-left">11:03pm</span>
-					</div>
 				</div>
 				<div class="chat-input">
-					Cool! I like your designs
+					<input class="chat-text-field" type="text">
+					<button id="send-message-button">Send</button>
 				</div>
 			</div>
 		</div>
@@ -98,26 +81,220 @@
 	</div>
 
 	<script>
-		$(document).ready(() => {
-			const userId = sessionStorage.getItem('id');
-			const getUserProfileUrl = '/loadProfile/' + userId;
-			console.log(getUserProfileUrl);
-			$.ajax({
-				url: getUserProfileUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved user profile info');
-					console.log(data);
-					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-				}
-			});
-			$('#logout').click(() => {
-				sessionStorage.clear();
-				console.log(sessionStorage.getItem('id'));
-			});
+	$(document).ready(() => {
 
+
+		//initialize and connect to sendbird
+		let sb = new SendBird({
+			appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
 		});
+
+		const userId = sessionStorage.getItem('id');
+		//id of other user in currently selected conversation
+		let otherUserId;
+		//the current channel
+		let messageChannel;
+		// array of userId's of other users that have started conversations with current user
+		const conversationsArray = [];
+		//index of current conversation in conversationsArray
+		let currentConversationIndex;
+
+
+
+		sb.connect(userId, (user, error) => {
+			if (error) {
+				console.error(error.message);
+			}
+			else {
+				console.log('connected to sendbird');
+				//load conversations into conversationsArray
+				//then populate people-list bar with conversations using cloned templates
+				const getConversationsUrl = '/getConversations/' + userId;
+				$.ajax({
+					url: getConversationsUrl,
+					type: 'GET',
+					datatype: 'JSON',
+					success: (data) => {
+						console.log(data);
+						for (let i = 0; i < data.length; i++) {
+							//declare conversation object
+							let conversation;
+							//declare id of user holding conversation with
+							let otherUserId;
+							//first name of other user
+							let firstName = data[i].firstName;
+							//last name of user
+							let lastName = data[i].lastName;
+							
+							//add the userId in whichever column is not the current user's id
+							if(data[i].userId1 == userId) {
+								otherUserId = data[i].userId2;
+							}
+							else {
+								otherUserId = data[i].userId1;
+							}
+							console.log(otherUserId);
+							
+							//open channel with other user
+							sb.GroupChannel.createChannelWithUserIds([otherUserId], true, "name", null, null, null, (channel, error) => {
+								if (error) {
+									console.error(error);
+									return;
+								}
+								//create conversation object and store in conversation array
+								conversation = {otherUserId: channel};
+								console.log(conversation.otherUserId.lastMessage.sender.userId);
+								conversationsArray.push(conversation);
+
+								//clone template and store
+								const template = document.querySelector('.person-template');
+								const peopleList = document.querySelector('.people-list');
+								template.content.querySelector('.personId').textContent = otherUserId;
+								//CHANGE LATER TO USER'S NAME
+								template.content.querySelector('.person-name-1').textContent = firstName + ' ' + lastName;
+								//CHANGE LATER TO LAST MESSAGE IN CONVERSATION
+								template.content.querySelector('.lastMessage').textContent = "Hi! I was wondering if you're free for a job right now?";
+								//clone template and append to people-list
+								let clone = document.importNode(template.content, true);
+								peopleList.appendChild(clone);
+
+								//HANDLER FOR MESSAGE RECIEVED. If message was from current channel, display new message
+								let channelHandler = new sb.ChannelHandler();
+								channelHandler.onMessageReceived = (channel, message) => {
+									console.log(channel, message);
+									let messageText = message.message;
+
+									//use channel to determine which chat window message will be displayed in
+									if(channel == conversationsArray[currentConversationIndex].otherUserId) {
+										//if channel matched then clone new template and append to chat window
+										let messageTemplate = document.querySelector('.chat-message-diff-template');
+										let chatMessagesDiv = document.querySelector('.chat-messages');
+										//populate template with message 
+										messageTemplate.content.querySelector('.chat-message-text').textContent = messageText;
+										messageTemplate.content.querySelector('span').textContent = '11:00 PM';
+
+										let messageTemplateClone = document.importNode(messageTemplate.content, true);
+										chatMessagesDiv.appendChild(messageTemplateClone);
+									}
+									else
+										console.log('did not match');
+								}			
+								sb.addChannelHandler(1, channelHandler);
+								
+
+								//when sidebar is clicked, get correct channel and display chat history
+								$('.person').click((event) => {
+									console.log("Clicked person");
+									//get clicked conversation
+									let clickedDiv = $(event.target);
+									const clickedPersonDiv = findPersonDiv(clickedDiv);
+									//get id of otherUser
+									otherUserId = $(clickedPersonDiv).find('.personId').text();
+									//get position in people-list which is also index of conversation object in conversationsArray
+									currentConversationIndex = clickedPersonDiv.index();
+									console.log(currentConversationIndex);
+									//get conversation object from conversationsArray
+									let currentConversation = conversationsArray[currentConversationIndex];
+									//access channel of other user
+									messageChannel = currentConversation.otherUserId;
+
+									//access chat history of channel
+									let messageListQuery = messageChannel.createPreviousMessageListQuery();
+									messageListQuery.load(2, true, (messageList, err) => {
+										if(err) {
+											console.error(err);
+											return;
+										}
+										console.log(messageList);
+										//loop through messageList, get messages and fill and clone template with message things
+										let chatMessagesDiv = document.querySelector('.chat-messages');
+										for(let i = 0; i < messageList.length; i++) {
+											let currentMessage = messageList[i];
+											let senderId = currentMessage._sender.userId;
+											let messageText = currentMessage.message;
+
+											console.log(senderId);
+											console.log(messageText);
+
+											let messageTemplate;
+											//clone chat-message-template if user sent message, chat-message-diff-template if user is recipent
+											if(senderId == userId)
+												messageTemplate = document.querySelector('.chat-message-template');
+											else
+												messageTemplate = document.querySelector('.chat-message-diff-template');
+											//populate template with message 
+											messageTemplate.content.querySelector('.chat-message-text').textContent = messageText;
+											messageTemplate.content.querySelector('span').textContent = '11:00 PM';
+
+											let messageTemplateClone = document.importNode(messageTemplate.content, true);
+											chatMessagesDiv.appendChild(messageTemplateClone);
+										}
+									});
+								});
+								
+								//send message button click handler
+								$('#send-message-button').click(() => {
+									const message = $('.chat-text-field').val();
+									messageChannel.sendUserMessage(message, null, null, (messageSent, err) => {
+										if (err) {
+											console.error(err);
+											return;
+										}
+										console.log(messageSent);
+										
+										//append message to chatMessagesDiv
+										let chatMessagesDiv = document.querySelector('.chat-messages');
+										let messageTemplate = document.querySelector('.chat-message-template');
+										messageTemplate.content.querySelector('.chat-message-text').textContent = message;
+										messageTemplate.content.querySelector('span').textContent = '11:00 PM';
+										
+										let messageTemplateClone = document.importNode(messageTemplate.content, true);
+										chatMessagesDiv.appendChild(messageTemplateClone);
+									});
+								});
+							});
+						}
+					}
+				});
+			}
+		});
+		
+		const getUserProfileUrl = '/loadProfile/' + userId;
+		console.log(getUserProfileUrl);
+		$.ajax({
+			url: getUserProfileUrl,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				console.log('Recieved user profile info');
+				console.log(data);
+				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+			}
+		});
+
+
+
+
+		$('#logout').click(() => {
+			sessionStorage.clear();
+			console.log(sessionStorage.getItem('id'));
+		});
+	
+	});
+							
+									
+														  
+							
+		
+		
+		
+	function findPersonDiv(clickedDiv) {
+		while (clickedDiv.hasClass('person') == false)
+			clickedDiv = clickedDiv.parent();
+		return clickedDiv;
+	}
+		
+
 	</script>
 </body>
 </html>
