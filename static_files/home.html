@@ -255,14 +255,7 @@ $(document).ready(function() {
 
   $('#searchButton').click(()=>{
     let searchKey = '/search/' + $('#search').val(); 
-    $.ajax({
-      url: searchKey,
-      type: 'GET',
-      datatype: 'JSON',
-      success: (data) => {
-        console.log('SEARCH: ' + data);
-      }
-    });
+    window.location.href = 'search.html?' + searchKey;
   });
 
 });
