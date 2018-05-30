@@ -23,6 +23,7 @@
 	position: fixed;
 	padding: 0;
 	z-index: 1;
+	margin-bottom: 2rem;
 }
 
 body {
@@ -39,14 +40,11 @@ body {
 	float: right;
 }
 
-.main {
+.main{
     padding: 0px 10px;
-		margin-bottom: 4rem;
-}
+		/* margin-bottom: 4rem; */
+	}
 
-h4{
-	margin-bottom: 2rem;
-}
 
 .navbar-brand {
 	margin-left: 0.3rem;
@@ -113,11 +111,6 @@ hr {
 .chat-messages{
   flex: 1;
 	overflow-y: scroll;
-
-	/* max-height: 20vh;
-	overflow-y: scroll; */
-  /* height: 100vh; */
-  /* overflow: auto; */
 }
 
 .chat-input{
@@ -126,7 +119,7 @@ hr {
 }
 
 h4{
-  padding-top: 40px;
+  padding-top: 5rem;
   padding-left: 80px;
 }
 
