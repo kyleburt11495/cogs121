@@ -13,7 +13,7 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search..." id="search">
+				<input type="text" class="form-control" placeholder="Search..." id="searchValue">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
@@ -83,17 +83,15 @@
 
 $(document).ready(function() {
 
-	$('#searchBtn').click( () =>{
+	$('#searchButton').click( () =>{
 		// let searchValue = $('#searchValue').val().toLowerCase();
 		let searchValue = $('#searchValue').val();
 		let i = searchValue.indexOf(' ');
 		let firstName = searchValue.slice(0,i).trim();
 		let lastName = searchValue.slice(i+1, searchValue.length).trim();
-
 		console.log(searchValue);
 		console.log(firstName);
 		console.log(lastName);
-
 		$.ajax({
 			url: 'searchForUsers/' + searchValue,
 			type: 'GET',
@@ -101,6 +99,7 @@ $(document).ready(function() {
 		//	data: {firstName: firstName, lastName:lastName},
 			success: (data) =>{
 				const userSearchId = data.userId;
+                console.log("hsss" + userSearchId);
 				sessionStorage.setItem('profileClickedId', userSearchId);
 				window.location.href = 'profile.html';
 			}
@@ -265,18 +264,9 @@ $(document).ready(function() {
   //    $(event.target).next().next().css('display','none');
   // });
 
-  $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val();
-    $.ajax({
-      url: searchKey,
-      type: 'GET',
-      datatype: 'JSON',
-      success: (data) => {
-        console.log('SEARCH: ' + data);
-      }
-    });
+  
   });
-
+  
 });
 </script>
 </body>

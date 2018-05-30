@@ -79,7 +79,7 @@
 		<a class="navbar-brand" href="home.html" id="anchor"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" placeholder="Search..." id="search">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
 				</span>
@@ -177,21 +177,21 @@
 		</template>
 	</div>
 	<div class="stats hidden ">
-		<h1>STATS</h1>
+		<h3 class="text-center">Project Likes</h3>
+		<div id="likeChart"></div>
+        <div id="followChart"></div>
 	</div>
 
 </div>
 </div>
-<div id="likeChart">
-	
-</div>
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   let projectClickedId;
   let columns = [];
-  let columns1 = ['likes'];
+  let columns1 = ['Likes'];
   columns.push(columns1);
   let categories = [];
   
@@ -281,20 +281,13 @@ $(document).ready(() => {
                     }
                   });
 
-
 					console.log(data[i].mainImg);
 					let clone = document.importNode(template.content, true);
 					projectsMain.appendChild(clone);
 				}
                 
                 //data visualization
-      
-               
-              
-                
-                
 
-			
                 $(".design-pics").click(function(event){
                   //project div
                   projectDiv = $(event.target).parent().parent();
@@ -431,6 +424,66 @@ $(document).ready(() => {
             
           }
         });
+      });
+  
+      const getFollowsUrl = '/getFollows/' + userId;
+      $.ajax({
+        url: getFollowsUrl,
+        type: 'GET',
+        datatype: 'JSON',
+        success: (data) => {
+          let outerArray = [];
+          let innerArray = ['Follows'];
+          let dates = [];
+          
+          for(let i = 0; i < data.length; i++) {
+            if(!dates.includes(data[i].date)) {
+              dates.push(data[i].date);
+              console.log(data[i].date);
+            }
+          }
+          
+          for(let i = 0; i < dates.length; i++) {
+            let dateCount = 0;
+            for (let j = 0; j < data.length; j++) {
+              if(data[j].date == dates[i])
+                dateCount++;
+            }
+            innerArray.push(dateCount);
+          }
+          //innerArray.push(data.length);
+          
+          outerArray.push(innerArray);
+          
+          
+          var chart = c3.generate({
+            bindto: '#followChart',
+            data: {
+               columns: outerArray,
+               type: 'bar'
+            },
+            axis: {
+               x: {
+                   label: {
+                       text: 'dates',
+                       position: 'outer-center'
+                   },
+                   type: 'category',
+                   categories: dates,
+                   tick: {
+                       centered: true
+                   }
+               }
+            },
+            bar: {
+               width: {
+                   ratio: 0.25 // this makes bar width 50% of length between ticks
+               }
+               // or
+               //width: 100 // this makes bar width 100px
+            }
+          });
+        }
       });
   });
 
