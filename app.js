@@ -229,6 +229,31 @@ app.get('/loadProfile/:userid', (req, res) => {
   });
 });
 
+app.get('/getAmountOfLikes/:projectId', (req, res) => {
+  db.all("SELECT * FROM likes where projectId = $projectId", {$projectId: req.params.projectId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
+  });
+});
+
+app.get('/getProjectsAndLikes/:userId', (req, res) => {
+  db.all("SELECT * FROM projects LEFT OUTER JOIN likes ON (likes.userId = projects.userId) WHERE projects.userId = $userId", {$userId: req.params.userId}, (err, row) => {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    if(row.length > 0) {
+      console.log(row);
+      res.send(row);
+    }
+    else {
+      res.send({});
+    }
+  });
+});
+
 
 app.get('/searchForUsers/:searchValue', (req, res) => {
   const userId = req.params.searchValue;
