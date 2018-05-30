@@ -399,7 +399,22 @@ $(document).ready(() => {
         }
       });
       
-    
+      $('#messageButton').click((event) => {
+        const createNewConversationUrl = '/createNewConversation'
+        $.ajax({
+          url: createNewConversationUrl,
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            profileClickedId: profileClickedId
+          },
+          success: (data) => {
+            
+          }
+        });
+      });
+      
   });
 
 
