@@ -179,6 +179,7 @@
 	<div class="stats hidden ">
 		<h3 class="text-center">Project Likes</h3>
 		<div id="likeChart"></div>
+        <div id="followChart"></div>
 	</div>
 
 </div>
@@ -423,6 +424,64 @@ $(document).ready(() => {
             
           }
         });
+      });
+  
+      const getFollowsUrl = '/getFollows/' + userId;
+      $.ajax({
+        url: getFollowsUrl,
+        type: 'GET',
+        datatype: 'JSON',
+        success: (data) => {
+          let outerArray = [];
+          let innerArray = ['Follows'];
+          let dates = [];
+          
+          for(let i = 0; i < data.length; i++) {
+            if(!dates.includes(data[i].date))
+              dates.push(data[i].date);
+          }
+          
+          for(let i = 0; i < dates.length; i++) {
+            let dateCount = 0;
+            for (let j = 0; j < data.length; j++) {
+              if(data[j].date == dates[i])
+                dateCount++;
+            }
+            innerArray.push(dateCount);
+          }
+          //innerArray.push(data.length);
+          
+          outerArray.push(innerArray);
+          
+          
+          var chart = c3.generate({
+            bindto: '#followChart',
+            data: {
+               columns: outerArray,
+               type: 'bar'
+            },
+            axis: {
+               x: {
+                   label: {
+                       text: 'dates',
+                       position: 'outer-center'
+                   },
+                   type: 'category',
+                   categories: dates,
+                   tick: {
+                       centered: true
+                   }
+               }
+            },
+            bar: {
+               width: {
+                   ratio: 0.25 // this makes bar width 50% of length between ticks
+               }
+               // or
+               //width: 100 // this makes bar width 100px
+            }
+          });
+        }
       });
   });
 

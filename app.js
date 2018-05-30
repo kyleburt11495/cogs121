@@ -225,6 +225,15 @@ app.get('/following/:userId', (req, res) =>{
   });
 });
 
+app.get('/getFollows/:userId', (req, res) => {
+  db.all("SELECT * FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
+  });
+});
+
 app.get('/loadProfile/:userid', (req, res) => {
   const userId = req.params.userid;
   console.log(userId);
