@@ -252,7 +252,7 @@ app.post('/createNewConversation', (req, res) => {
     userId2 = req.body.userId;
   }
   
-  db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
+  db.run("INSERT INTO conversations(userId1, userId2) VALUES($userId1, $userId2)", {
     $userId1: userId1, $userId2: userId2
   }, (err, row) => {
     if (err) {

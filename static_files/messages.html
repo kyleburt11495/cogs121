@@ -145,7 +145,7 @@
 								}
 								//create conversation object and store in conversation array
 								conversation = {otherUserId: channel};
-								console.log(conversation.otherUserId.lastMessage.sender.userId);
+								//console.log(conversation.otherUserId.lastMessage.sender.userId);
 								conversationsArray.push(conversation);
 
 								//clone template and store
@@ -179,7 +179,7 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									}
 									else
-									console.log('did not match');
+									 console.log('did not match');
 								}
 								sb.addChannelHandler(1, channelHandler);
 
@@ -242,6 +242,7 @@
 											console.error(err);
 											return;
 										}
+                                        console.log(messageChannel);
 										console.log(messageSent);
 
 										//append message to chatMessagesDiv
