@@ -71,8 +71,8 @@
       },
       success: (data)=>{
         console.log("DATA: " + data);
-        sessionStorage.setItem("id",data.userId);
-        window.top.location = 'login.html';
+        //sessionStorage.setItem("id",data.userId);
+        window.location.href = '/login.html';
       }
     });
   }

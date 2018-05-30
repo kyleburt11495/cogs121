@@ -454,7 +454,7 @@ app.post('/signup', (req, res)=>{
             db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
               console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
             });
-            res.send({message:'successfuly run app.post(/signup)'});
+            res.send({message: 'sucees'});
           }
         }
       );
