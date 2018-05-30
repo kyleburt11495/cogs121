@@ -177,21 +177,20 @@
 		</template>
 	</div>
 	<div class="stats hidden ">
-		<h1>STATS</h1>
+		<h3 class="text-center">Project Likes</h3>
+		<div id="likeChart"></div>
 	</div>
 
 </div>
 </div>
-<div id="likeChart">
-	
-</div>
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   let projectClickedId;
   let columns = [];
-  let columns1 = ['likes'];
+  let columns1 = ['Likes'];
   columns.push(columns1);
   let categories = [];
   
@@ -281,20 +280,13 @@ $(document).ready(() => {
                     }
                   });
 
-
 					console.log(data[i].mainImg);
 					let clone = document.importNode(template.content, true);
 					projectsMain.appendChild(clone);
 				}
                 
                 //data visualization
-      
-               
-              
-                
-                
 
-			
                 $(".design-pics").click(function(event){
                   //project div
                   projectDiv = $(event.target).parent().parent();
