@@ -6,17 +6,78 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="search.css">
 </head>
 <body>
-	<h2>Results for<span id="searchFor"><span></h2>
-	<div class="profileTemplate">
-		<img src="">
-		<span id="name"></span>
+	<nav class="navbar navbar-expand-lg" id="nav">
+		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search..." id="search">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
+				</span>
+			</div>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i>User</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
+				</li>
+				|
+				<li class="nav-item">
+					<a href="login.html" class="nav-link" id="logout"><i class="fas fa-sign-out-alt"></i></a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<h2 id="resultsTitle">Results for<span id="searchFor"><span></h2>
+	<div class="error hidden"></div>
+	<div id="profileResults"></div>
+	<div id="projectResults"></div>
+	<div class="profileTemplate hidden">
+		<div class="profile">
+			<img class="profilePic" src="" height="70px" width="70px"> 
+			<input type="hidden" value=""></input>
+			<h5 class="name"></h5>
+		</div>
 	</div>
-	<div class="projectTemplate">
-		<img src="">
-		<span id="projectOwner"><span>
-		<span id="like"></span>
+	<div class="projectTemplate hidden">
+		<div class="project card col-sm-5">
+			<img src="" height="300px" width="100%" class="cardImg"/>
+			<div class="card-body">
+				<input type="hidden" value="" id="projectId"></input>
+				<span class="projectTitle"></span><br>
+				<span class="projectOwner"></span>
+				<input type="hidden" value="" id="ownerId"></input>
+				<span class="like"></span>
+			</div>
+		</div>
+	</div>
+	<!--Project View Modal -->
+	<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div id="project-view-modal" class="modal-body">
+					<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
+					<p id="projectTitleModal"></p>
+					<p id="projectDescriptionModal"></p>
+				</div>
+				<div class="modal-footer">
+					<i id="likeButton" class="far fa-heart fa-lg"></i>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -24,16 +85,78 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 		$(document).ready(()=>{
+			const userId = sessionStorage.getItem('id');
+			const getUserProfileUrl = '/loadProfile/' + userId;
+			$.ajax({
+				url: getUserProfileUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log('Recieved user profile info');
+					console.log(data);
+					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+					$('.profileName').html(data.firstName + ' ' + data.lastName);
+				}
+			});
 			const searchKey = window.location.search.substr(1);
-			console.log(searchKey);
+			const key = window.location.search.substr(9);
+			$('#searchFor').html(' "' + key + '"');
 			$.ajax({
 				url: searchKey,
 				type: 'GET',
 				datatype: 'JSON',
 				success: (data) => {
-					console.log('SEARCH: ' + data);
-
+					if(data.length > 0){
+					$('#profileResults').empty();
+					$('#projectResults').empty();
+					$(data).each((e)=>{
+						if(data[e].projectId == null){
+							console.log("profile");
+							let clone = $('.profileTemplate').contents().clone();
+							clone.find('.name').html(data[e].firstName + ' ' + data[e].lastName);
+							if(data[e].profilePicture == null){
+								clone.find('.profilePic').attr('src','https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png');
+							} else {
+								clone.find('.profilePic').attr('src', data[e].profilePicture);
+							}
+							$('#profileResults').empty();
+							$('#profileResults').append(clone);
+						} else {
+							console.log("project");
+							let clone = $('.projectTemplate').contents().clone();
+							clone.find('img').attr('src',data[e].mainImg);
+							clone.find('.projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
+							clone.find('.projectTitle').html(data[e].projectTitle);
+							clone.find('#ownerId').attr('value',data[e].userId);
+							clone.find('#projectId').attr('value',data[e].projectId);
+							clone.appendTo("#projectResults");
+						}
+					});
+					}
+					else {
+						$('.error').html("Oops we couldn't find anything!").removeClass("hidden");
+					}	
 				}
+			});
+			$('#searchButton').click(()=>{
+				window.location.href = 'search.html?/search/' + $('#search').val();
+			});
+			$('body').on('click','.projectOwner',()=>{
+				sessionStorage.setItem('profileClickedId',$(event.target).next().val() );
+				window.location.href = '/profile.html';
+			});
+			$('body').on('click','.project',()=>{
+				console.log($(event.target).find('.projectTitle').html());
+				let src = $(event.target).closest('img').attr('src');
+				if(!src){
+					src = $(event.target).prev().attr('src');
+					if(!src){
+						src = $(event.target).find('img').attr('src');
+					}
+				}
+				
+				$('#projectImgModal').attr('src',src);
+				$('#projectViewModal').modal();
 			});
 		});
 	</script>

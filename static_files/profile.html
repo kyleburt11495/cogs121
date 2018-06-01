@@ -218,10 +218,19 @@ $(document).ready(() => {
           success: (data) => {
               console.log('Recieved user profile info');
               console.log(data);
-              $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
               $('.profileName').html(data.firstName + ' ' + data.lastName);
           }
       });
+
+      $.ajax({
+      	url: '/loadProfile/' + userId,
+      	type: 'GET',
+      	datatype: 'JSON',
+      	success: (data) => {
+      		$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      	}
+      });
+
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
           url: getUserProjectsUrl,

@@ -43,36 +43,6 @@ app.listen(3000, () => {
   console.log('Server started');
 });
 
-app.get('/home', (req, res) => {
-  console.log('Running home');
-});
-
-app.get('/messages', (req, res) => {
-  console.log('Running messages');
-
-});
-
-app.get('/picview', (req, res) => {
-  console.log('Running picview');
-
-});
-
-app.get('/profile', (req, res) => {
-  console.log('Running profile');
-
-});
-
-app.get('/project', (req, res) => {
-  console.log('Running project');
-
-});
-
-
-app.get('/upload', (req, res) => {
-  console.log('Running upload');
-
-});
-
 //multer file upload
 app.post('/uploadFile', upload.single('image'), (req, res) => {
   console.log(req.file.filename);
@@ -197,7 +167,7 @@ app.get('/trending', (req, res) => {
 });
 
 app.get('/popular', (req, res) =>{
-  db.all("SELECT * FROM projects WHERE isPopular = 1", (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isPopular = 1", (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -213,7 +183,7 @@ app.get('/following/:userId', (req, res) =>{
   let userId = req.params.userId;
 
   //perform query to get followed images
-  db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
