@@ -182,7 +182,9 @@
 								
 
 								//when sidebar is clicked, get correct channel and display chat history
+                                $('.person').unbind();
 								$('.person').click((event) => {
+                                    $('.chat-messages').html("");
 									console.log("Clicked person");
 									//get clicked conversation
 									let clickedDiv = $(event.target);
@@ -199,7 +201,7 @@
 
 									//access chat history of channel
 									let messageListQuery = messageChannel.createPreviousMessageListQuery();
-									messageListQuery.load(2, true, (messageList, err) => {
+									messageListQuery.load(3, true, (messageList, err) => {
 										if(err) {
 											console.error(err);
 											return;
@@ -207,7 +209,7 @@
 										console.log(messageList);
 										//loop through messageList, get messages and fill and clone template with message things
 										let chatMessagesDiv = document.querySelector('.chat-messages');
-										for(let i = 0; i < messageList.length; i++) {
+										for(let i = messageList.length-1; i >= 0; i--) {
 											let currentMessage = messageList[i];
 											let senderId = currentMessage._sender.userId;
 											let messageText = currentMessage.message;
@@ -232,6 +234,7 @@
 								});
 								
 								//send message button click handler
+                                $('#send-message-button').unbind('click');
 								$('#send-message-button').click(() => {
 									const message = $('.chat-text-field').val();
 									messageChannel.sendUserMessage(message, null, null, (messageSent, err) => {

@@ -195,6 +195,15 @@ app.get('/following/:userId', (req, res) =>{
   });
 });
 
+app.get('/getFollows/:userId', (req, res) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
+  });
+});
+
 app.get('/loadProfile/:userid', (req, res) => {
   const userId = req.params.userid;
   console.log(userId);
@@ -235,13 +244,14 @@ app.post('/createNewConversation', (req, res) => {
     userId2 = req.body.userId;
   }
   
-  db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
+  db.run("INSERT INTO conversations(userId1, userId2) VALUES($userId1, $userId2)", {
     $userId1: userId1, $userId2: userId2
   }, (err, row) => {
     if (err) {
       console.error(err);
     }
-    return res.redirect('/messages.html');
+    res.send({message: 'sucees'});
+
   });
 });
 
@@ -263,9 +273,9 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
 
 
 app.get('/searchForUsers/:searchValue', (req, res) => {
-  const userId = req.params.searchValue;
+  const userId = '%' + req.params.searchValue + '%';
   console.log(userId);
-  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+  db.all("SELECT * FROM users_account WHERE firstName LIKE $userId", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -277,7 +287,7 @@ app.get('/searchForUsers/:searchValue', (req, res) => {
       res.send({}); //failed so return empty string instead of undefined
     }
   });
-})
+});
 
 // app.get('firstName/:lastName', (req, res) => {
 //   const firstName = req.params.firstName;
@@ -415,7 +425,7 @@ app.post('/signup', (req, res)=>{
             db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
               console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
             });
-            res.send({message:'successfuly run app.post(/signup)'});
+            res.send({message: 'sucees'});
           }
         }
       );
