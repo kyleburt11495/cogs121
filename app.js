@@ -18,17 +18,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
-// //send bird api
-// import * as SendBird from 'SendBird';
-// const sb = new SendBird({'appId': '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
-// });
-//
-// sb.connect(userId, (user, error) => {
-//
-// });
-
-
-
 const bodyParser = require('body-parser');
 
 
@@ -98,16 +87,16 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       }
       /**
       db.get('SELECT * FROM projects WHERE projectId = (SELECT MAX(projectId))', (err, row) => {
-        if(err) {
-          console.err(err.message);
-        }
-        let lastInsertedId = row.projectId;
-        console.log(lastInsertedId);
-      });
-      */
-      return res.redirect('/profile.html');
-    });
+      if(err) {
+      console.err(err.message);
+    }
+    let lastInsertedId = row.projectId;
+    console.log(lastInsertedId);
   });
+  */
+  return res.redirect('/profile.html');
+});
+});
 
 });
 
@@ -180,20 +169,6 @@ app.get('/trending', (req, res) => {
       res.send(row);
     }
   });
-  /*db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
-    if (err) {
-      console.error(err.message);
-    }
-    else {
-      row.forEach((e)=>{
-        db.all("SELECT firstName, lastName FROM users_account WHERE userId= $userId",{$userId: e.userId},(err,row)=>{
-          res.write(e);
-          res.write(row);
-        });
-      });
-      res.end();
-    }
-  });*/
 });
 
 app.get('/popular', (req, res) =>{
@@ -255,7 +230,7 @@ app.post('/createNewConversation', (req, res) => {
   //order ids so that smaller id is userId1 and larger is userId2
   let userId1;
   let userId2;
-  
+
   if(req.body.userId < req.body.profileClickedId) {
     userId1 = req.body.userId;
     userId2 = req.body.profileClickedId;
@@ -264,7 +239,7 @@ app.post('/createNewConversation', (req, res) => {
     userId1 = req.body.profileClickedId;
     userId2 = req.body.userId;
   }
-  
+
   db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
     $userId1: userId1, $userId2: userId2
   }, (err, row) => {
@@ -309,36 +284,6 @@ app.get('/searchForUsers/:searchValue', (req, res) => {
   });
 })
 
-// app.get('firstName/:lastName', (req, res) => {
-//   const firstName = req.params.firstName;
-//   const lastName = req.params.lastName;
-//
-//   console.log(firstName);
-//   console.log(lastName);
-//
-//   db.all('SELECT * FROM users_account WHERE (firstName = $firstName OR lastName = $lastName',{
-//     $firstName:firstName,
-//     $lastName:lastName
-//   },(err, row) => {
-//     if(err) {
-//       console.error(err.message);
-//       console.log('err');
-//     }
-//     if (row.length > 0) {
-//       console.log(row[0]);
-//       res.send(row[0]);
-//
-//       console.log('hello');
-//     }
-//     else {
-//       res.send({}); //failed so return empty string
-//       console.log('failed');
-//     }
-//   });
-// })
-
-
-
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;
   db.all("SELECT userId1, userId2, firstName, lastName FROM conversations INNER JOIN users_account ON (conversations.userId1 = users_account.userId or conversations.userId2 = users_account.userId) WHERE ((conversations.userId1 = $userId OR conversations.userId2 = $userId) AND (users_account.userId != $userId))", {$userId: userId}, (err, rows) => {
@@ -350,7 +295,7 @@ app.get('/getConversations/:userId', (req, res) => {
       res.send(rows);
     }
     else {
-	  console.log("no projects found");
+      console.log("no projects found");
       res.send([]); //failed so return empty string instead of undefined
     }
   });
@@ -367,7 +312,7 @@ app.get('/loadProjects/:userid', (req, res) => {
       res.send(row);
     }
     else {
-	  console.log("no projects found");
+      console.log("no projects found");
       res.send({}); //failed so return empty string instead of undefined
     }
   });
@@ -378,7 +323,7 @@ app.get('/search/:searchKey',(req,res) => {
   db.all("SELECT * FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
     if(err){
       console.error(err.message);
-    } else{ 
+    } else{
       console.log("SEARCH: ");
       console.log(row);
       res.send(row);
@@ -415,16 +360,10 @@ app.post('/signup', (req, res)=>{
         match = true;
         return match;
       }
-      });
-    /*if(req.body.email == row.email){
-      console.log("match");
-      return false;
-    } */
-
-
+    });
     if(match){
       console.log('user already exists');
-      // res.send({});
+      res.send({});
       return;
     }
     else{
@@ -437,18 +376,28 @@ app.post('/signup', (req, res)=>{
           $isDesigner: req.body.isDesigner,
           $password: req.body.password,
         },
-        (err) => {
+        (err, row) => {
           if(err) {
-            console.log('error creating new user');
-          } else{
-            console.log("hi");
-            db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
-              console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
-            });
-            res.send({message:'successfuly run app.post(/signup)'});
+            console.log(err.message);
+            res.send({}) //send empty string
           }
+          else{
+            const user_email = req.body.email;
+            db.all('SELECT * from users_account WHERE email = $user_email', {$user_email: user_email},
+            (err, row) => {
+              if(err){
+                console.log(err.message);
+              } else{
+                console.log('New user');
+                console.log(row[0]);
+                res.send(row[0]);
+
+              };
+            });
+
+          };
         }
       );
-    }
+    };
   });
 });

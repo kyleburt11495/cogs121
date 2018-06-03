@@ -65,6 +65,7 @@
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 				<p id="projectTitleModal"></p>
 				<p id="projectDescriptionModal"></p>
+				<textarea placeholder="comment.." id="projectComment"> </textarea>
 			</div>
 			<div class="modal-footer">
 				<i id="likeButton" class="far fa-heart fa-lg"></i>
@@ -111,7 +112,8 @@
 				<!-- Profile essential details -->
 				<div class="profile-important">
 					<div class="profile-photo">
-						<img src="profpic.png"  id="profpic" alt="">
+						<img src="defaultpicture.png"  id="profpic" alt=""></br></br>
+						<button type="button" class="btn-sm-message" id="uploadProfile">Upload Profile Picture </button>
 					</div>
 					<h3 class="username profileName" id="profileName">User</h3>
 					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
@@ -168,7 +170,7 @@
 		<template class="projectTemplate">
 			<div class="project">
 				<div class="project-pic">
-					<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+					<img src="" alt="" class="design-pics img-responsive" id="projectImg">
 				</div>
 				<p class="projectInfo" id="projectTitle"></p>
 				<p class="projectInfo" id="projectDescription"></p>
@@ -193,8 +195,8 @@
   let columns1 = ['Likes'];
   columns.push(columns1);
   let categories = [];
-  
-  
+
+
 
 $(document).ready(() => {
 	// $(document).on('click', 'img', () => {
@@ -206,7 +208,7 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
-      
+
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
@@ -237,7 +239,7 @@ $(document).ready(() => {
                   template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
                   template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
                   template.content.querySelector('#projectId').textContent = data[i].projectId;
-                  
+
                   const currentProjectTitle = data[i].projectTitle;
                   //query for how many likes this project has and store in array
                   const getAmountOfLikesUrl = 'getAmountOfLikes/' + data[i].projectId;
@@ -284,7 +286,7 @@ $(document).ready(() => {
 					let clone = document.importNode(template.content, true);
 					projectsMain.appendChild(clone);
 				}
-                
+
                 //data visualization
 
                 $(".design-pics").click(function(event){
@@ -296,10 +298,10 @@ $(document).ready(() => {
                   console.log($(projectDiv).find('#projectTitle').text());
                   $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
                   $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
-                  
-                  //set projectClickedId to projectId of clicked project 
+
+                  //set projectClickedId to projectId of clicked project
                   projectClickedId = $(projectDiv).find('#projectId').text();
-                  
+
                   //make query to database to determine whether this project was liked by user or not
                   const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projectClickedId;
                   $.ajax({
@@ -320,13 +322,13 @@ $(document).ready(() => {
                       $('#projectViewModal').modal();
                     }
                   });
-                  
+
 
                 });
               }
           }
       });
-    
+
       //send userId and projectId to database when like button is clicked
       const likeProjectUrl = '/likeProject';
       const dislikeProjectUrl = '/dislikeProject';
@@ -362,7 +364,7 @@ $(document).ready(() => {
     		});
       	}
       });
-    
+
       //send userId's to database when follow button is clicked
       const followPersonUrl = '/followPerson';
       $('#followUser').click(() => {
@@ -397,8 +399,8 @@ $(document).ready(() => {
           sessionStorage.clear();
           console.log(sessionStorage.getItem('id'));
       });
-  
-      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId 
+
+      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId
       $.ajax({
         url: getProjectsAndLikesUrl,
         type: 'GET',
@@ -408,7 +410,7 @@ $(document).ready(() => {
           console.log(data);
         }
       });
-      
+
       $('#messageButton').click((event) => {
         const createNewConversationUrl = '/createNewConversation'
         $.ajax({
@@ -420,7 +422,7 @@ $(document).ready(() => {
             profileClickedId: profileClickedId
           },
           success: (data) => {
-            
+
           }
         });
       });
