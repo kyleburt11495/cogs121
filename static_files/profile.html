@@ -91,7 +91,7 @@
 				<li class="nav-item">
 					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
 				</li>
-				|
+
 				<li class="nav-item">
 					<a class="nav-link" href="login.html" id="logout"><i class="fas fa-sign-out-alt"></i></a>
 				</li>
@@ -124,7 +124,7 @@
 				<!-- Skills list -->
 				<!-- <div class="sidebar-info-bar"> -->
 					<!-- <div class="profile-important"> -->
-						<h4>Skills & Styles </h4>
+						<h4>Skills</h4>
 						<ul class="skills-list">
 							<li>Modern</li>
 							<li>Contemporary</li>
@@ -134,7 +134,7 @@
 					<!-- </div> -->
 					<!-- <div class="sidebar-info-bar"> -->
 					<!-- <div class="profile-important"> -->
-						<h4>Social</h4>
+						<h4 id="social">Social</h4>
 						<div id="socialMedia">
 							<a href="wwww.twitter.com" class="fa fa-twitter"></a>
 							<a href="wwww.linkedin.com" class="fa fa-linkedin"></a>
@@ -157,10 +157,10 @@
 
 <div class="projects-main col-md-5 col-xs-3">
 	<ul id="innerNav">
-		<li class="tablink active" id="projectsTab">PROJECTS</li>|
+		<li class="tablink active" id="projectsTab">PROJECTS</li>
 		<li class="tablink" id="statsTab">STATS</li>
 	</ul>
-	<hr>
+
 	<div class="projects">
 		<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
 			<i class="fas fa-plus"></i>
@@ -183,7 +183,7 @@
 </div>
 </div>
 <div id="likeChart">
-	
+
 </div>
 
 
@@ -194,8 +194,8 @@
   let columns1 = ['likes'];
   columns.push(columns1);
   let categories = [];
-  
-  
+
+
 
 $(document).ready(() => {
 	// $(document).on('click', 'img', () => {
@@ -207,7 +207,7 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
-      
+
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
@@ -238,7 +238,7 @@ $(document).ready(() => {
                   template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
                   template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
                   template.content.querySelector('#projectId').textContent = data[i].projectId;
-                  
+
                   const currentProjectTitle = data[i].projectTitle;
                   //query for how many likes this project has and store in array
                   const getAmountOfLikesUrl = 'getAmountOfLikes/' + data[i].projectId;
@@ -286,15 +286,15 @@ $(document).ready(() => {
 					let clone = document.importNode(template.content, true);
 					projectsMain.appendChild(clone);
 				}
-                
-                //data visualization
-      
-               
-              
-                
-                
 
-			
+                //data visualization
+
+
+
+
+
+
+
                 $(".design-pics").click(function(event){
                   //project div
                   projectDiv = $(event.target).parent().parent();
@@ -304,10 +304,10 @@ $(document).ready(() => {
                   console.log($(projectDiv).find('#projectTitle').text());
                   $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
                   $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
-                  
-                  //set projectClickedId to projectId of clicked project 
+
+                  //set projectClickedId to projectId of clicked project
                   projectClickedId = $(projectDiv).find('#projectId').text();
-                  
+
                   //make query to database to determine whether this project was liked by user or not
                   const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projectClickedId;
                   $.ajax({
@@ -328,13 +328,13 @@ $(document).ready(() => {
                       $('#projectViewModal').modal();
                     }
                   });
-                  
+
 
                 });
               }
           }
       });
-    
+
       //send userId and projectId to database when like button is clicked
       const likeProjectUrl = '/likeProject';
       const dislikeProjectUrl = '/dislikeProject';
@@ -370,7 +370,7 @@ $(document).ready(() => {
     		});
       	}
       });
-    
+
       //send userId's to database when follow button is clicked
       const followPersonUrl = '/followPerson';
       $('#followUser').click(() => {
@@ -405,8 +405,8 @@ $(document).ready(() => {
           sessionStorage.clear();
           console.log(sessionStorage.getItem('id'));
       });
-  
-      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId 
+
+      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId
       $.ajax({
         url: getProjectsAndLikesUrl,
         type: 'GET',
@@ -416,7 +416,7 @@ $(document).ready(() => {
           console.log(data);
         }
       });
-      
+
       $('#messageButton').click((event) => {
         const createNewConversationUrl = '/createNewConversation'
         $.ajax({
@@ -428,7 +428,7 @@ $(document).ready(() => {
             profileClickedId: profileClickedId
           },
           success: (data) => {
-            
+
           }
         });
       });
