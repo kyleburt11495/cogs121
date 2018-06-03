@@ -32,36 +32,6 @@ app.listen(3000, () => {
   console.log('Server started');
 });
 
-app.get('/home', (req, res) => {
-  console.log('Running home');
-});
-
-app.get('/messages', (req, res) => {
-  console.log('Running messages');
-
-});
-
-app.get('/picview', (req, res) => {
-  console.log('Running picview');
-
-});
-
-app.get('/profile', (req, res) => {
-  console.log('Running profile');
-
-});
-
-app.get('/project', (req, res) => {
-  console.log('Running project');
-
-});
-
-
-app.get('/upload', (req, res) => {
-  console.log('Running upload');
-
-});
-
 //multer file upload
 app.post('/uploadFile', upload.single('image'), (req, res) => {
   console.log(req.file.filename);
@@ -172,7 +142,7 @@ app.get('/trending', (req, res) => {
 });
 
 app.get('/popular', (req, res) =>{
-  db.all("SELECT * FROM projects WHERE isPopular = 1", (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isPopular = 1", (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -188,7 +158,7 @@ app.get('/following/:userId', (req, res) =>{
   let userId = req.params.userId;
 
   //perform query to get followed images
-  db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -197,6 +167,15 @@ app.get('/following/:userId', (req, res) =>{
       console.log(row);
       res.send(row); //failed so return empty string instead of undefined
     }
+  });
+});
+
+app.get('/getFollows/:userId', (req, res) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
   });
 });
 
@@ -240,13 +219,14 @@ app.post('/createNewConversation', (req, res) => {
     userId2 = req.body.userId;
   }
 
-  db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
+  db.run("INSERT INTO conversations(userId1, userId2) VALUES($userId1, $userId2)", {
     $userId1: userId1, $userId2: userId2
   }, (err, row) => {
     if (err) {
       console.error(err);
     }
-    return res.redirect('/messages.html');
+    res.send({message: 'sucees'});
+
   });
 });
 
@@ -268,9 +248,9 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
 
 
 app.get('/searchForUsers/:searchValue', (req, res) => {
-  const userId = req.params.searchValue;
+  const userId = '%' + req.params.searchValue + '%';
   console.log(userId);
-  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+  db.all("SELECT * FROM users_account WHERE firstName LIKE $userId", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -282,7 +262,7 @@ app.get('/searchForUsers/:searchValue', (req, res) => {
       res.send({}); //failed so return empty string instead of undefined
     }
   });
-})
+});
 
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;

@@ -107,13 +107,16 @@ hr {
 	white-space: nowrap;
 }
 
+body {
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
 .project {
 	height: 20rem;
 	background-color: #808080;
 	display: inline-block;
 	margin-right: 1rem;
 	position: absolute;
-	opacity: 1;
 }
 
 .project-hover {
@@ -122,20 +125,51 @@ hr {
 	width: 49%;
 }
 
-
-.project-hover span,i {
-	position: relative;
-	z-index: 1;
-	display: none;
+#projectOwner {
 	color: red;
+	z-index: 1;
+	position: relative;
+}
+#projectTemplate {
+	display: none;
 }
 
-.hidden {
-	display: none;
+.text {
+	opacity: 0;
+	z-index: 1;
+}
+
+.project-hover:hover > .project {
+	opacity: 0.3;
+}
+
+.project:hover + .text {
+	opacity: 1;
+}
+
+.project .text:hover {
+	opacity: 0.3;
+}
+
+.text:hover {
+	opacity: 1;
+}
+
+#projectOwner:hover {
+	text-decoration: underline;
 }
 
 #likeButton:hover {
 	color: red;
+}
+
+#likeButton {
+	z-index: 1;
+	position: relative;
+}
+
+.hidden {
+	display: none;
 }
 
 .fas .fa-heart {
