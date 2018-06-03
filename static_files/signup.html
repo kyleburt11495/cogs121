@@ -9,46 +9,48 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg" id="nav">
-  		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="logo" id="imglogo"></a>
-  	</nav>
-    <h4>Signup</h4>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">INLOOK</a>
+    </div>
+  </nav>
+    <h4 id="signup-text">SIGN UP</h4>
         <div class="container">
           <form id='form' class="form-horizontal">
             <!-- <form id='form' method='POST' action="#"> -->
-            <label for="firstname">First Name</label>
+            <!-- <label for="firstname">First Name</label> -->
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user"></i></span>
-              <input id="firstname" type="text" class="form-control" placeholder="First Name">
+              <!-- <span class="input-group-addon"></i></span> -->
+              <input id="firstname" type="text" class="form-control" placeholder="First Name" size="40">
             </div>
             <br>
-            <label for="lastname">Last Name</label>
+            <!-- <label for="lastname">Last Name</label> -->
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user"></i></span>
-              <input id="lastname" type="text" class="form-control" placeholder="Last Name">
+              <!-- <span class="input-group-addon"></i></span> -->
+              <input id="lastname" type="text" class="form-control" placeholder="Last Name" size="40">
             </div>
             <br>
-            <label for="username">Email</label>
+            <!-- <label for="username">Email</label> -->
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user"></i></span>
-              <input id="username" type="text" class="form-control" placeholder="Email">
+              <!-- <span class="input-group-addon"></i></span> -->
+              <input id="username" type="text" class="form-control" placeholder="Email" size="40">
             </div>
             <br>
-            <label for="password">Password</label>
+            <!-- <label for="password">Password</label> -->
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-              <input id="password" type="password" class="form-control" placeholder="Password">
+              <!-- <span class="input-group-addon"></span> -->
+              <input id="password" type="password" class="form-control" placeholder="Password" size="40">
             </div>
             <br>
             <label for="designerOrCustomer">Are You a Designer or Customer?</label>
             <div class="input-group">
               <input class="form-check-input" type="radio" name="isDesigner" id="developer" value="1" checked>
-              <label for="developer">Designer</label>
+              <label id= "designer" for="developer">Designer</label>
               <input class="form-check-input" type="radio" name="isDesigner" id="customer" value="0">
-              <label for="developer">Customer</label>
+              <label id="customer" for="developer">Customer</label>
             </div>
             <div class="form-group in">
               <button id="submitButton" type="submit" class="btn btn-primary btn-sm btn-block">Create Account</button></br>
-              <a href="home.html">Have an account? Log in!</a>
+              <a class="hasAccount" href="home.html">Have an account? Log in!</a>
             </div>
           </form>
         </div>

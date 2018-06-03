@@ -14,23 +14,28 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg" id="nav">
-    <a class="navbar-brand" href="#"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">INLOOK</a>
+    </div>
   </nav>
-  <div class="container">
+
+  <section class="container">
    <form action="#" class="form-horizontal" name="form" id="form">
     <div class="logo">
-     <h1 id="logintext">Login</h1>
-   </div>
-   <div id="error"></div>
-   <div id="userLogin">
-   <div class="input-group span-1"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" placeholder="Email" id="username"></div>
-   <br/><br/>
-   <div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i></span><input type="password" class="form-control" placeholder="Password" id="password"></div>
-   <br/>
- </div>
- <a class="btn btn-primary" id="login" href="#">Log In</a><br/><a href="/signup" id="newUser">New user? Create a new account!</a>
-</form>
-</div>
+     <h1 id="logintext">LOGIN</h1>
+    </div>
+    <div id="error"></div>
+    <div id="userLogin">
+      <div class="input-group span-1"><input type="text" class="form-control" placeholder="Email" id="username"></div>
+      <br/><br/>
+      <div class="input-group"><input type="password" class="form-control" placeholder="Password" id="password"></div>
+      <br/>
+    </div>
+    <a class="btn btn-primary" id="login" href="#">Log In</a><br/><a href="/signup" id="newUser">New user? Create a new account!</a>
+    </form>
+  </section>
+
+
 <script>
 $(document).ready(()=>{
   $('#login').click(()=>{
@@ -45,10 +50,10 @@ $(document).ready(()=>{
         success: (data) => {
           if(data.userId){
             sessionStorage.setItem("id",data.userId);
-            
+
             //connect to sendbird
-            
-            
+
+
             window.top.location = "home.html";
           }
           else{
