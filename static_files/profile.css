@@ -19,9 +19,6 @@
 	margin: 0.1rem;
 }
 
-#anchor{
-}
-
 #navcontainer {
 	background-color: #212121;
 	position: fixed;
@@ -49,8 +46,10 @@ body {
 	/* margin-bottom: 0.5rem; */
 
 }
+
+
 #createProject:hover {
-	background-color: black;
+	background-color: white;
 }
 
 .search {
@@ -94,10 +93,6 @@ a:hover {
 	color: red;
 }
 
-hr {
-	width: 85%;
-}
-
 .input-group {
 	width: 55%;
 	margin: auto;
@@ -132,14 +127,6 @@ bar*/
   margin-top: 40px;
 }
 
-/* body{
-  text-align: center;
-}  */
-
-ul{
-  /* list-style: none; */
-}
-
 #socialMedia li{
 	display: inline;
 	border:	none;
@@ -151,31 +138,34 @@ ul{
     opacity: 0.7;
 		color: white;
 }
-.fa-twitter{
-	background: #55ACEE;
-}
-.fa-linkedin {
-	background: #007bb5;
-}
-.fa-instagram{
-	background: #bb0000;
-}
+
 .fa {
-  color: white;
+  color: gray;
 	font-size: 30px;
 	width: 30px;
 	text-decoration: none;
 	border-radius: 20%;
+	letter-spacing: 50px;
+	padding-bottom: 30px;
+
 }
 
 .sidebar-profile-info ul.skills-list li{
-  font-size:12px;
-  line-height: 1;
-  color: #444;
+  font-size:13px;
+  line-height: 8px;
+  color: #656565;
   display: inline-block;
   padding: 10px 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #C5C5C5;
+  border-radius: 10px;
+	/* text-align: center; */
+}
+
+ul.skills-list{
+	padding: 0px;
+}
+
+.skills-list{
 	text-align: center;
 }
 
@@ -267,6 +257,14 @@ h4{
   display: none
 }
 
+.project{
+	border-style: solid;
+	border-color: white;
+	margin-right: 10px;
+	border-width: 10px;
+	box-shadow: 0px 0px 25px #D3D3D3;
+}
+
 .modal .btn {
 	margin-left: 10px;
 	float: right;
@@ -281,7 +279,7 @@ h4{
 }
 
 #innerNav {
-	margin-top: 5rem;
+	margin-top: 6rem;
 	overflow: hidden;
 	padding-left: 0;
 	margin-bottom: 0;
@@ -292,6 +290,7 @@ h4{
 #innerNav li {
 	display: inline;
 	border: none;
+	color: gray;
 	outline: none;
 	cursor: pointer;
 	padding: 14px 16px;
@@ -302,9 +301,6 @@ h4{
 	display: none;
 }
 
-.active {
-	text-decoration: underline;
-}
-.projects-main {
-
+#social{
+	padding: 0px;
 }
