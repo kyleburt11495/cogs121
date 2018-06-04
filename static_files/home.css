@@ -292,8 +292,10 @@ font-size: 1.75rem;
 	display: none;
 }
 
-.tablink .active{
-	text-decoration-color: black;
+.active{
+	font-weight: bold;
+	color: black !important;
+	text-decoration: underline;
 }
 
 a {
@@ -348,6 +350,10 @@ body {
 	z-index: 1;
 	position: relative;
 }
+.project-hover {
+	display: inline-block;
+	margin: 0 2rem 1rem 0;
+}
 
 #projectOwner:hover {
 	color: blue;
@@ -374,7 +380,7 @@ body {
 }
 .text i {
 	position: absolute;
-	left: 22rem;
+	left: 24rem;
 }
 
 .project span,i {
@@ -409,7 +415,7 @@ display: none;
 }
 
 #likeButton:hover{
-	color: red;
+	color: blue;
 }
 
 #likeButton {
