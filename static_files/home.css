@@ -330,6 +330,25 @@ hr {
 	white-space: nowrap;
 }
 
+.text {
+	opacity: 0;
+}
+
+.project-hover:hover > .project {
+	opacity: 0.3;
+}
+
+.project:hover + .text {
+	opacity: 1;
+}
+
+.project .text:hover {
+	opacity: 0.3;
+}
+
+.text:hover {
+	opacity: 1;
+}
 
 
 .project {
@@ -338,8 +357,6 @@ hr {
 	display: inline-block;
 	opacity: 1;
 	border-style: solid;
-	width: 720px;
-	height: auto;
 	border-color: white;
 	border-width: 10px;
 	box-shadow: 0px 0px 20px #E6E6E6;
@@ -352,7 +369,7 @@ hr {
 	height: 20rem;
 	width: 49%;
 	margin-top: 30px;
-}*/
+}
 
 #projectOwner {
 	z-index: 1;
@@ -376,13 +393,19 @@ hr {
 .project1 span {
 	z-index: 1;
 	color: black;
-	bottom: 1rem;
+	bottom: 4rem;
 	position: absolute;
 	margin-left: 1rem;
 }
 .text i {
 	position: absolute;
-	left: 24rem;
+	float: right;
+	bottom: 2.5rem;
+}
+
+.text span {
+	bottom: 2.5rem;
+	left: 2rem;
 }
 
 .project1 span,i {
