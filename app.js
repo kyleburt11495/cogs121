@@ -70,6 +70,8 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 });
 
+//upload profile picture
+
 
 //like project
 app.post('/likeProject', (req, res) => {

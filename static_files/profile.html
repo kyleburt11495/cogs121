@@ -14,9 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.js"></script>
 </head>
 <body>
-	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-	Create New Project
-</button> -->
+
 
 <!--Project Creation Modal -->
 <div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -74,6 +72,31 @@
 	</div>
 </div>
 
+<!-- Upload Profile Picture Modal -->
+<div class="modal fade" id="profilePictureUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Upload Profile Picture</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="uploadPicture" action="/uploadProfilePicture" method="post" enctype="multipart/form-data" target="_self">
+					<div class="form-group">
+						<label for="image">Upload Image</label>
+						<input type="file" name="image" id="image" class="form-control">
+					</div>
+					<input type="hidden" name="userId" id="userId">
+					<input type="submit" class="btn btn-primary" id="submitProfilepic">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="container-fluid" id="navcontainer">
 	<nav class="navbar navbar-expand-lg" id="nav">
@@ -113,7 +136,7 @@
 				<div class="profile-important">
 					<div class="profile-photo">
 						<img src="defaultpicture.png"  id="profpic" alt=""></br></br>
-						<button type="button" class="btn-sm-message" id="uploadProfile">Upload Profile Picture </button>
+						<button type="button" id="profileUploadButton" class="btn-sm-message" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile">Upload Profile Picture </button>
 					</div>
 					<h3 class="username profileName" id="profileName">User</h3>
 					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
@@ -209,6 +232,11 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
+
+			if( userId != profileClickedId) {
+				$("#profileUploadButton").hide();
+				$("#createProject").hide();
+			}
 
       $('#userId').val(userId);
       console.log("userId " + userId);
@@ -436,7 +464,7 @@ $(document).ready(() => {
           }
         });
       });
-  
+
       const getFollowsUrl = '/getFollows/' + userId;
       $.ajax({
         url: getFollowsUrl,
@@ -446,14 +474,14 @@ $(document).ready(() => {
           let outerArray = [];
           let innerArray = ['Follows'];
           let dates = [];
-          
+
           for(let i = 0; i < data.length; i++) {
             if(!dates.includes(data[i].date)) {
               dates.push(data[i].date);
               console.log(data[i].date);
             }
           }
-          
+
           for(let i = 0; i < dates.length; i++) {
             let dateCount = 0;
             for (let j = 0; j < data.length; j++) {
@@ -463,10 +491,10 @@ $(document).ready(() => {
             innerArray.push(dateCount);
           }
           //innerArray.push(data.length);
-          
+
           outerArray.push(innerArray);
-          
-          
+
+
           var chart = c3.generate({
             bindto: '#followChart',
             data: {
