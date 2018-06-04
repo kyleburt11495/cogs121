@@ -103,6 +103,11 @@
 				$('.profileName').html(data.firstName + ' ' + data.lastName);
 			}
 		});
+
+		$('#userName').click(()=>{
+			sessionStorage.setItem('profileClickedId',sessionStorage.getItem('id'));
+			window.location.href = 'profile.hmtl';
+		});
 		const searchKey = window.location.search.substr(1);
 		const key = window.location.search.substr(9);
 		$('#searchFor').html(' "' + key + '"');
