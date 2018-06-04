@@ -173,7 +173,7 @@ app.get('/following/:userId', (req, res) =>{
 });
 
 app.get('/getFollows/:userId', (req, res) => {
-  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC LIMIT 10", {$userId: req.params.userId}, (err, row) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date(date) AS date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC LIMIT 10", {$userId: req.params.userId}, (err, row) => {
     if(err) {
       console.error(err.message);
     }

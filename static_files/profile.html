@@ -529,12 +529,13 @@ $(document).ready(() => {
         window.location.href = 'search.html?' + searchKey;
       });
 
-      const getFollowsUrl = '/getFollows/' + userId;
+      const getFollowsUrl = '/getFollows/' + profileClickedId;
       $.ajax({
         url: getFollowsUrl,
         type: 'GET',
         datatype: 'JSON',
         success: (data) => {
+          console.log(data);
           let outerArray = [];
           let innerArray = ['Follows'];
           let dates = [];
