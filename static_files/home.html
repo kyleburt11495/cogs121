@@ -92,7 +92,7 @@ click on a project. Users can search for other users or certain projects in the 
 
       <div id="projectTemplate" class="hidden">
         <div class="project-hover col-sm-5">
-          <img class="project hidden" src="" alt="" width="550px" height="500px">
+          <img class="project hidden" src="" alt="" width="550px" height="500px" value="">
           <div class="text">
             <span id="projectOwner" val=""></span>
             <i id="likeButton" class="far fa-heart fa-lg" val=""></i>
@@ -315,6 +315,7 @@ $(document).ready(function() {
     });
     }
   });
+
 
   //redirect to search results page
   $('#searchButton').click(()=>{

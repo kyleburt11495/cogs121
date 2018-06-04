@@ -438,3 +438,6 @@ display: none;
 .fas {
 	color: red;
 }
+.fas:hover{
+	color: red;
+}
