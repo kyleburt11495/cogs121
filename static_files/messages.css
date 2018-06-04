@@ -419,7 +419,9 @@ hr {
 
 .chat-input{
   padding: 10px;
-  background-color: #F9F9F9;
+  background-color: #EDEDED;
+	border-top: 1px solid;
+	border-color: #979797;
 }
 
 h4{
@@ -434,17 +436,18 @@ h4{
 .person{
   box-shadow: 0px 2px 20px #E0E0E0;
   padding: 5px;
+	border-bottom: red;
 }
 
 .container-msg{
-  background-color:
   padding: 10px;
   margin: 10px 15px;
-  background-color: white;
+  background-color: #F3F3F3;
+	border-radius: 20;
 }
 
 .diff{
-  background-color: white;
+  background-color: #F3F3F3;
 }
 
 .container-msg::after{
