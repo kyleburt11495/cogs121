@@ -45,8 +45,8 @@
 				 <div class="container-2">
 				 	<input type="search" id="search" />
 				    <span class="icon">
-							<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
-						</span>
+						<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+					</span>
 				    <!-- <input type="search" id="search" /> -->
 				 </div>
 			</div>
@@ -204,7 +204,9 @@
 		});
 		$('#searchButton').click(()=>{
 			console.log($('#search').val());
-			window.location.href = 'search.html?/search/' + $('#search').val();
+			if($('#search').val() != ''){
+				window.location.href = 'search.html?/search/' + $('#search').val();
+			}
 		});
 		$('body').on('click','.projectOwner',()=>{
 			sessionStorage.setItem('profileClickedId',$(event.target).next().val() );
@@ -214,9 +216,22 @@
 		$('body').on('click','#message',(e)=>{
 			console.log("messages");
 			e.stopPropagation();
-			let id = $(event.target).next().attr('value');
-			sessionStorage.setItem('mostRecentConversation',id);
-			window.location.href = 'messages.html';
+			let id = $(event.target).prev().find('#userId').attr('value');
+			console.log(id);
+			const createNewConversationUrl = '/createNewConversation'
+			$.ajax({
+				url: createNewConversationUrl,
+				type: 'POST',
+				datatype: 'JSON',
+				data: {
+					userId: userId,
+					profileClickedId: id
+				},
+				success: (data) => {
+					sessionStorage.setItem('mostRecentConversation', id);
+					window.location.href = '/messages.html';
+				}
+			});
 		});
 
 		$('body').on('click','.profile',()=>{
