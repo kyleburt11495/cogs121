@@ -413,3 +413,15 @@ display: none;
 .fas .fa-heart {
 	color: red;
 }
+
+.hiddenId {
+  display: none;
+}
+
+.hiddenTitle {
+  display: none
+}
+
+.hiddenDescription {
+  display: none
+}
