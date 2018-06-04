@@ -48,11 +48,11 @@
 		</div>
 	</div>
 </div>
-  
+
 <template class="commentTemplate">
   <div class="comment">
-    <p class="commentAuthor"></p>
-    <p class="commentText"></p>
+    <p class="commentAuthor" id="authorcomment"></p>
+    <p class="commentText" id="userComment"></p>
   </div>
 </template>
 
@@ -68,12 +68,13 @@
 			</div>
 			<div id="project-view-modal" class="modal-body">
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
-				<p id="projectTitleModal"></p>
-				<p id="projectDescriptionModal"></p>
+				<h2 id="projectTitleModal"></h2>
+			<hr/>
+				<p id="projectDescriptionModal"></p><hr>
                 <div class="commentList"></div>
                 <div class="chat-input">
-					<input class="comment-text-field" type="text">
-					<button id="post-comment-button">Send</button>
+					</br><hr/><input class="comment-text-field" type="text" id="usernameComment"><br/>
+					<button id="post-comment-button" id="commentButton">Send</button>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -370,7 +371,7 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
-                      
+
                       $.ajax({
                         url: '/getComments/' + $(projectDiv).find('#projectId').text(),
                         type: 'GET',
@@ -383,7 +384,7 @@ $(document).ready(() => {
                             template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
                             template.content.querySelector('.commentText').textContent = data[i].commentText;
                             let clone = document.importNode(template.content, true);
-                            
+
                             commentList.appendChild(clone);
                           }
                           $('#projectViewModal').modal();
@@ -498,7 +499,7 @@ $(document).ready(() => {
           }
         });
       });
-  
+
       $('#post-comment-button').click((event) => {
         let commentText = $('.comment-text-field').val();
         console.log(commentText);
@@ -517,7 +518,7 @@ $(document).ready(() => {
             template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
             template.content.querySelector('.commentText').textContent = commentText;
             let clone = document.importNode(template.content, true);
-            
+
             document.querySelector('.commentList').appendChild(clone);
           }
         });

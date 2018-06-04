@@ -196,6 +196,10 @@ ul{
 	object-fit: cover;
 }
 
+.design-pic{
+
+}
+
 .project1{
 	padding-top: 50px;
 }
@@ -296,3 +300,35 @@ h4{
 #projectComment {
 	width: 100%;
 }
+
+#userComment{
+	display: inline-block;
+	float: right
+}
+
+#authorcomment{
+	display: inline-block;
+	float: left;
+	font-weight: bold;
+}
+#usernameComment{
+	width: 100%;
+}
+#commentButton{
+	width: 100%;
+}
+
+hr{
+	width: 100%;
+	background-color: #333;
+}
+
+/* @media (min-width: 992px) {
+  .modal-lg {
+    width: 900px;
+  }
+} */
+/* #projectTitleModal{
+	font-size: 24px;
+	font-style: bold;
+} */
