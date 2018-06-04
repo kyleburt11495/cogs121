@@ -58,7 +58,7 @@
 				<span class="projectTitle"></span><br>
 				<span class="projectOwner"></span>
 				<input type="hidden" value="" id="ownerId"></input>
-				<i class="far fa-heart fa-lg likeButton" value=""></i>
+				<!--<i class="far fa-heart fa-lg likeButton" value=""></i>-->
 			</div>
 		</div>
 	</div>
@@ -79,7 +79,7 @@
 					<p id="projectDescriptionModal"></p>
 				</div>
 				<div class="modal-footer">
-					<i class="far fa-heart fa-lg likeButton" value=""></i>
+					<i class="far fa-heart fa-lg" id="likeButton" value=""></i>
 				</div>
 			</div>
 		</div>
@@ -197,9 +197,9 @@
 			window.location.href = '/profile.html';
 		});
       
-        $('body').on('click', '.likeButton', (event) => {
+        $('body').on('click', '#likeButton', (event) => {
           console.log(projId);
-          if($(event.target).hasClass('fas')){
+          if($('#likeButton').hasClass('fas')){
             $.ajax({
               url: dislikeProjectUrl,
               type: 'POST',
@@ -210,7 +210,7 @@
               },
               success: (data) => {
                 console.log('disliked');
-                $(event.target).removeClass('fas').addClass('far');
+                $('#likeButton').removeClass('fas').addClass('far');
               }
             });
             } 
@@ -226,7 +226,7 @@
                   success: (data) => {
                       //change appearance of like button
                       console.log('Liked');
-                      $(event.target).removeClass('far').addClass('fas');
+                      $('#likeButton').removeClass('far').addClass('fas');
                   }
               });
             }
