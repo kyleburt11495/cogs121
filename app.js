@@ -1,3 +1,6 @@
+// This file serves as the backend for our web application that calls the database to access user information.
+// These calls include projects, projects likes, user follows, and user account information.
+
 const express = require('express');
 const app = express();
 
@@ -184,7 +187,7 @@ app.get('/trending', (req, res) => {
 
 app.get('/popular', (req, res) =>{
   db.all("SELECT likes.projectId AS projectId, projects.projectTitle AS projectTitle, projects.projectDescription AS projectDescription, projects.mainImg AS mainImg, projects.userId AS userId, users_account.firstName AS firstName, users_account.lastName AS lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId GROUP BY likes.projectId ORDER BY COUNT(*) DESC", (err, row) => {
-    if (err) { 
+    if (err) {
       console.error(err.message);
     }
     else {

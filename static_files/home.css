@@ -1,3 +1,6 @@
+/* This file contains all of the styling for the homepage found in home.html.  */
+
+
 *{
 	font-family: Lato;
 }
@@ -358,6 +361,7 @@ hr {
 	opacity: 1;
 	border-style: solid;
 	border-color: white;
+	margin-right: 10px;
 	border-width: 10px;
 	box-shadow: 0px 0px 20px #E6E6E6;
 	justify-content: : center;
