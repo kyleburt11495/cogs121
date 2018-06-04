@@ -70,8 +70,45 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 });
 
-//upload profile picture
+//edit profile (bio & picture)
+app.post('/editbio', upload.single('image'), (req, res) => {
+  console.log(req.body);
+  // console.log(req.file.filename); gets an error if the user does not provide a file for the profile picture NOT GOOD
+  console.log(req.body.editName);
+  console.log(req.body.editLastname);
+  console.log(req.body.editbio);
+  const userId = req.body.userId;
+  const firstName = req.body.editName;
+  const lastName = req.body.editLastname;
+  const userBio = req.body.editBio;
+  const profilePicture = req.file.filename;
 
+  db.run('UPDATE users_account SET firstName =$firstName, lastName =$lastName, bio=$userBio, profilePicture=$mainImg WHERE userId=$userId',
+{
+  $firstName: req.body.editName,
+  $lastName: req.body.editLastname,
+  $bio:req.body.editBio,
+  $profilePicture:req.file.filename,
+},
+(err, row) => {
+  if(err){
+    console.log(err.message);
+    res.send({}) //send empty string
+  } else {
+    return res.redirect('/profile.html');
+
+  }
+})
+
+
+
+
+
+
+//  return res.redirect('/profile.html');
+
+  //console.log(req.file.filename);
+})
 
 //like project
 app.post('/likeProject', (req, res) => {
