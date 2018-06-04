@@ -115,15 +115,13 @@ body {
 	height: 20rem;
 	background-color: #808080;
 	display: inline-block;
-	margin-right: 1rem;
-	position: absolute;
 }
 
-.project1 {
+/*.project {
 	display: inline-block;
 	height: 20rem;
 	width: 49%;
-}
+}*/
 
 #projectOwner {
 	color: red;
@@ -133,6 +131,8 @@ body {
 #projectTemplate {
 	display: none;
 }
+
+
 
 .text {
 	opacity: 0;
@@ -153,6 +153,10 @@ body {
 
 .text:hover {
 	opacity: 1;
+}
+
+#projectOwner {
+	position: relative;
 }
 
 #projectOwner:hover {

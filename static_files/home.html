@@ -56,7 +56,7 @@
       </div>
 
       <div id="projectTemplate">
-        <div class="project-hover">
+        <div class="project-hover col-sm-4">
           <img class="project hidden" src="" alt="">
           <div class="text">
             <span id="projectOwner" val=""></span>
@@ -230,6 +230,14 @@ $(document).ready(function() {
             clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
             clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
             clone.find('#likeButton').attr('val',data[e].projectId);
+            /*$.ajax({
+              url: '/isProjectLiked/' + sessionStorage.getItem('id') + '/' + data[e].projectId,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+
+              }
+            });*/
             $('#projects-list').append(clone);
           });
       }

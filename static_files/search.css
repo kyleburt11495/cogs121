@@ -91,3 +91,7 @@
 #projectTitleModal {
 	font-weight: bold;
 }
+
+.likeButton {
+	float: right;
+}

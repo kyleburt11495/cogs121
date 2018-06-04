@@ -274,6 +274,12 @@
 			}
 		});
 
+		//redirect to search results page
+	    $('#searchButton').click(()=>{
+	      let searchKey = '/search/' + $('#searchValue').val(); 
+	      window.location.href = 'search.html?' + searchKey;
+	    });
+
 		$('#logout').click(() => {
 			sessionStorage.clear();
 			console.log(sessionStorage.getItem('id'));

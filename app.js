@@ -314,7 +314,8 @@ app.get('/loadProjects/:userid', (req, res) => {
 
 app.get('/search/:searchKey',(req,res) => {
   const key = '%' + req.params.searchKey + '%';
-  db.all("SELECT users_account.userId, users_account.firstName, users_account.email, users_account.lastName, users_account.isDesigner, users_account.profilePicture, users_account.bio, projects.projectId, projects.projectTitle, projects.projectDescription, projects.isTrending, projects.isPopular, projects.mainImg FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
+  console.log("BACK " + req.params.searchKey);
+  db.all("SELECT users_account.userId, users_account.firstName, users_account.email, users_account.lastName, users_account.isDesigner, users_account.profilePicture, users_account.bio, projects.projectId, projects.projectTitle, projects.projectDescription, projects.isTrending, projects.isPopular, projects.mainImg FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName || ' ' || users_account.lastName LIKE $key OR users_account.lastName LIKE $key OR users_account.firstName LIKE $key", {$key: key}, (err,row)=>{
     if(err){
       console.error(err.message);
     } else{
