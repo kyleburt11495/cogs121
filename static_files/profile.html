@@ -14,9 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.js"></script>
 </head>
 <body>
-	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-	Create New Project
-</button> -->
+
 
 <!--Project Creation Modal -->
 <div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -85,6 +83,31 @@
 	</div>
 </div>
 
+<!-- Upload Profile Picture Modal -->
+<div class="modal fade" id="profilePictureUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Upload Profile Picture</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="uploadPicture" action="/uploadProfilePicture" method="post" enctype="multipart/form-data" target="_self">
+					<div class="form-group">
+						<label for="image">Upload Image</label>
+						<input type="file" name="image" id="image" class="form-control">
+					</div>
+					<input type="hidden" name="userId" id="userId">
+					<input type="submit" class="btn btn-primary" id="submitProfilepic">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="container-fluid" id="navcontainer">
 	<nav class="navbar navbar-expand-lg" id="nav">
@@ -93,7 +116,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" placeholder="Search..." id="search">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -123,7 +146,8 @@
 				<!-- Profile essential details -->
 				<div class="profile-important">
 					<div class="profile-photo">
-						<img src="profpic.png"  id="profpic" alt="">
+						<img src="defaultpicture.png"  id="profpic" alt=""></br></br>
+						<button type="button" id="profileUploadButton" class="btn-sm-message" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile">Upload Profile Picture </button>
 					</div>
 					<h3 class="username profileName" id="profileName">User</h3>
 					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
@@ -180,7 +204,7 @@
 		<template class="projectTemplate">
 			<div class="project">
 				<div class="project-pic">
-					<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+					<img src="" alt="" class="design-pics img-responsive" id="projectImg">
 				</div>
 				<p class="projectInfo" id="projectTitle"></p>
 				<p class="projectInfo" id="projectDescription"></p>
@@ -195,7 +219,6 @@
 	</div>
 
 </div>
-</div>
 
 
 
@@ -206,8 +229,8 @@
   let columns1 = ['Likes'];
   columns.push(columns1);
   let categories = [];
-  
-  
+
+
 
 $(document).ready(() => {
 	// $(document).on('click', 'img', () => {
@@ -219,11 +242,16 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
-      
+
+			if( userId != profileClickedId) {
+				$("#profileUploadButton").hide();
+				$("#createProject").hide();
+			}
+
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
-      console.log(getUserProfileUrl);
+      console.log("CLICKED PROFILE :" + getUserProfileUrl);
       $.ajax({
           url: getUserProfileUrl,
           type: 'GET',
@@ -231,10 +259,19 @@ $(document).ready(() => {
           success: (data) => {
               console.log('Recieved user profile info');
               console.log(data);
-              $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
               $('.profileName').html(data.firstName + ' ' + data.lastName);
           }
       });
+
+      $.ajax({
+      	url: '/loadProfile/' + userId,
+      	type: 'GET',
+      	datatype: 'JSON',
+      	success: (data) => {
+      		$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      	}
+      });
+
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
           url: getUserProjectsUrl,
@@ -250,7 +287,7 @@ $(document).ready(() => {
                   template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
                   template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
                   template.content.querySelector('#projectId').textContent = data[i].projectId;
-                  
+
                   const currentProjectTitle = data[i].projectTitle;
                   //query for how many likes this project has and store in array
                   const getAmountOfLikesUrl = 'getAmountOfLikes/' + data[i].projectId;
@@ -295,9 +332,10 @@ $(document).ready(() => {
 
 					console.log(data[i].mainImg);
 					let clone = document.importNode(template.content, true);
-					projectsMain.appendChild(clone);
+					//projectsMain.appendChild(clone);
+					projectsMain.insertBefore(clone, projectsMain.childNodes[6]);
 				}
-                
+
                 //data visualization
 
                 $(".design-pics").click(function(event){
@@ -312,10 +350,10 @@ $(document).ready(() => {
                   console.log($(projectDiv).find('#projectTitle').text());
                   $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
                   $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
-                  
-                  //set projectClickedId to projectId of clicked project 
+
+                  //set projectClickedId to projectId of clicked project
                   projectClickedId = $(projectDiv).find('#projectId').text();
-                  
+
                   //make query to database to determine whether this project was liked by user or not
                   const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projectClickedId;
                   $.ajax({
@@ -353,13 +391,13 @@ $(document).ready(() => {
                       $('#projectViewModal').modal();
                     }
                   });
-                  
+
 
                 });
               }
           }
       });
-    
+
       //send userId and projectId to database when like button is clicked
       const likeProjectUrl = '/likeProject';
       const dislikeProjectUrl = '/dislikeProject';
@@ -395,7 +433,7 @@ $(document).ready(() => {
     		});
       	}
       });
-    
+
       //send userId's to database when follow button is clicked
       const followPersonUrl = '/followPerson';
       $('#followUser').click(() => {
@@ -430,8 +468,8 @@ $(document).ready(() => {
           sessionStorage.clear();
           console.log(sessionStorage.getItem('id'));
       });
-  
-      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId 
+
+      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId
       $.ajax({
         url: getProjectsAndLikesUrl,
         type: 'GET',
@@ -441,7 +479,7 @@ $(document).ready(() => {
           console.log(data);
         }
       });
-      
+
       $('#messageButton').click((event) => {
         const createNewConversationUrl = '/createNewConversation'
         $.ajax({
@@ -462,8 +500,13 @@ $(document).ready(() => {
       $('#post-comment-button').click((event) => {
         $.ajax({});
       });
-  
-  
+
+          //redirect to search results page
+      $('#searchButton').click(()=>{
+        let searchKey = '/search/' + $('#search').val();
+        window.location.href = 'search.html?' + searchKey;
+      });
+
       const getFollowsUrl = '/getFollows/' + userId;
       $.ajax({
         url: getFollowsUrl,
@@ -473,14 +516,14 @@ $(document).ready(() => {
           let outerArray = [];
           let innerArray = ['Follows'];
           let dates = [];
-          
+
           for(let i = 0; i < data.length; i++) {
             if(!dates.includes(data[i].date)) {
               dates.push(data[i].date);
               console.log(data[i].date);
             }
           }
-          
+
           for(let i = 0; i < dates.length; i++) {
             let dateCount = 0;
             for (let j = 0; j < data.length; j++) {
@@ -490,10 +533,10 @@ $(document).ready(() => {
             innerArray.push(dateCount);
           }
           //innerArray.push(data.length);
-          
+
           outerArray.push(innerArray);
-          
-          
+
+
           var chart = c3.generate({
             bindto: '#followChart',
             data: {
