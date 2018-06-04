@@ -1,4 +1,5 @@
-
+<!-- This is the search results page that contains all related results from the user searching up a certain term. The word searched will
+provide all the results including the users associated with the term and the projects/photos associated with it.  -->
 
 <!DOCTYPE html>
 <html>
@@ -12,32 +13,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
-	<!-- <nav class="navbar navbar-expand-lg" id="nav">
-		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search..." id="search">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
-				</span>
-			</div>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i>User</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-				</li>
-				|
-				<li class="nav-item">
-					<a href="login.html" class="nav-link" id="logout"><i class="fas fa-sign-out-alt"></i></a>
-				</li>
-			</ul>
-		</div>
-	</nav> -->
 	<nav class="navbar navbar-expand-lg" id="nav">
 
 		<form>
@@ -249,7 +224,7 @@
 			sessionStorage.setItem('profileClickedId',id);
 			window.location.href = '/profile.html';
 		});
-      
+
         $('body').on('click', '#likeButton', (event) => {
           console.log(projId);
           if($('#likeButton').hasClass('fas')){
@@ -266,7 +241,7 @@
                 $('#likeButton').removeClass('fas').addClass('far');
               }
             });
-            } 
+            }
             else {
               $.ajax({
                   url: likeProjectUrl,
@@ -310,7 +285,7 @@
 					$('#projectOwnerModal').html(data[0].firstName + " " + data[0].lastName);
 					$('#projectImgModal').attr('src',data[0].mainImg);
 					$('#projectDescriptionModal').html(data[0].projectDescription);
-                  
+
                     const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projId;
                     $.ajax({
                       url: isProjectLikedUrl,
