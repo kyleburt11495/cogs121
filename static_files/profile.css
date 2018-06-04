@@ -290,6 +290,9 @@ h4{
 	text-decoration: underline;
 }
 .projects-main {
-	
+
 }
 
+#projectComment {
+	width: 100%;
+}
