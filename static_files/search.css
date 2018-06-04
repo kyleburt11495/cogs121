@@ -32,7 +32,7 @@
 	margin: auto;
 }
 #resultsTitle {
-	margin: 1.5rem 0 0 2rem;
+	margin: 1.5rem 0 1.5rem 2rem;
 }
 
 .hidden {
@@ -44,7 +44,29 @@
 }
 .profile {
 	display: inline-block;
+	border: 1px solid black;
+	margin-left: auto;
+	margin-bottom: 1rem;
 }
+
+.profile:hover {
+	background-color: #E8E8E8;
+}
+
+#message {
+	float: right;
+	margin-top: 1rem;
+}
+
+#message:hover {
+	color: red;
+}
+
+.text {
+	margin-top: .75rem;
+	display: inline-block;
+}
+
 .error {
 	text-align: center;
 	margin-top: 2rem;
@@ -64,4 +86,8 @@
 
 #projectImgModal {
 	width: 100%;
+}
+
+#projectTitleModal {
+	font-weight: bold;
 }

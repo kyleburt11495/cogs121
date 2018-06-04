@@ -40,10 +40,14 @@
 	<div id="profileResults"></div>
 	<div id="projectResults"></div>
 	<div class="profileTemplate hidden">
-		<div class="profile">
-			<img class="profilePic" src="" height="70px" width="70px"> 
-			<input type="hidden" value=""></input>
-			<h5 class="name"></h5>
+		<div class="profile col-sm-4">
+			<img class="profilePic disabled" src="" height="70px" width="70px">
+			<div class="text">
+				<h5 class="name"></h5>
+				<p id="numProjects"></p>
+				<input type="hidden" value="" id="userId"></input>
+			</div>
+			<i class="far fa-envelope fa-lg" id="message"></i>
 		</div>
 	</div>
 	<div class="projectTemplate hidden">
@@ -71,6 +75,7 @@
 				<div id="project-view-modal" class="modal-body">
 					<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 					<p id="projectTitleModal"></p>
+					<p id="projectOwnerModal"></p>
 					<p id="projectDescriptionModal"></p>
 				</div>
 				<div class="modal-footer">
@@ -84,81 +89,120 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
-		$(document).ready(()=>{
-			const userId = sessionStorage.getItem('id');
-			const getUserProfileUrl = '/loadProfile/' + userId;
-			$.ajax({
-				url: getUserProfileUrl,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					console.log('Recieved user profile info');
-					console.log(data);
-					$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-					$('.profileName').html(data.firstName + ' ' + data.lastName);
-				}
-			});
-			const searchKey = window.location.search.substr(1);
-			const key = window.location.search.substr(9);
-			$('#searchFor').html(' "' + key + '"');
-			$.ajax({
-				url: searchKey,
-				type: 'GET',
-				datatype: 'JSON',
-				success: (data) => {
-					if(data.length > 0){
-					$('#profileResults').empty();
-					$('#projectResults').empty();
-					$(data).each((e)=>{
-						if(data[e].projectId == null){
-							console.log("profile");
-							let clone = $('.profileTemplate').contents().clone();
-							clone.find('.name').html(data[e].firstName + ' ' + data[e].lastName);
-							if(data[e].profilePicture == null){
-								clone.find('.profilePic').attr('src','https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png');
-							} else {
-								clone.find('.profilePic').attr('src', data[e].profilePicture);
-							}
-							$('#profileResults').empty();
-							$('#profileResults').append(clone);
-						} else {
-							console.log("project");
-							let clone = $('.projectTemplate').contents().clone();
-							clone.find('img').attr('src',data[e].mainImg);
-							clone.find('.projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
-							clone.find('.projectTitle').html(data[e].projectTitle);
-							clone.find('#ownerId').attr('value',data[e].userId);
-							clone.find('#projectId').attr('value',data[e].projectId);
-							clone.appendTo("#projectResults");
-						}
-					});
-					}
-					else {
-						$('.error').html("Oops we couldn't find anything!").removeClass("hidden");
-					}	
-				}
-			});
-			$('#searchButton').click(()=>{
-				window.location.href = 'search.html?/search/' + $('#search').val();
-			});
-			$('body').on('click','.projectOwner',()=>{
-				sessionStorage.setItem('profileClickedId',$(event.target).next().val() );
-				window.location.href = '/profile.html';
-			});
-			$('body').on('click','.project',()=>{
-				console.log($(event.target).find('.projectTitle').html());
-				let src = $(event.target).closest('img').attr('src');
-				if(!src){
-					src = $(event.target).prev().attr('src');
-					if(!src){
-						src = $(event.target).find('img').attr('src');
-					}
-				}
-				
-				$('#projectImgModal').attr('src',src);
-				$('#projectViewModal').modal();
-			});
+	$(document).ready(()=>{
+		const userId = sessionStorage.getItem('id');
+		const getUserProfileUrl = '/loadProfile/' + userId;
+		$.ajax({
+			url: getUserProfileUrl,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				console.log('Recieved user profile info');
+				console.log(data);
+				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+				$('.profileName').html(data.firstName + ' ' + data.lastName);
+			}
 		});
+		const searchKey = window.location.search.substr(1);
+		const key = window.location.search.substr(9);
+		$('#searchFor').html(' "' + key + '"');
+		$.ajax({
+			url: searchKey,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				if(data.length > 0){
+				$('#profileResults').empty();
+				$('#projectResults').empty();
+				let users = {};
+				$(data).each((e)=>{
+					if(data[e].projectId){
+						let clone = $('.projectTemplate').contents().clone();
+						clone.find('img').attr('src',data[e].mainImg);
+						clone.find('.projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
+						clone.find('.projectTitle').html(data[e].projectTitle);
+						clone.find('#ownerId').attr('value',data[e].userId);
+						clone.find('#projectId').attr('value',data[e].projectId);
+						clone.appendTo("#projectResults");
+						if(!(data[e].userId in users)){
+							users[data[e].userId] = data[e];
+						}
+					} else {
+						if(!(data[e].userId in users)){
+							users[data[e].userId] = data[e];
+						}
+					}
+				});
+				Object.keys(users).forEach((e)=>{
+					if(users[e].firstName.includes(key) || users[e].lastName.includes(key)){
+						let clone = $('.profileTemplate').contents().clone();
+						clone.find('#userId').attr('value',users[e].userId);
+						clone.find('.name').html(users[e].firstName + ' ' + users[e].lastName);
+						if(users[e].profilePicture == null){
+							clone.find('.profilePic').attr('src','https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png');
+						} else {
+							clone.find('.profilePic').attr('src', users[e].profilePicture);
+						}
+						$('#profileResults').append(clone);
+					}
+				});
+				}
+				else {
+					$('.error').html("Oops we couldn't find anything!").removeClass("hidden");
+				}	
+			}
+		});
+		$('#searchButton').click(()=>{
+			window.location.href = 'search.html?/search/' + $('#search').val();
+		});
+		$('body').on('click','.projectOwner',()=>{
+			sessionStorage.setItem('profileClickedId',$(event.target).next().val() );
+			window.location.href = '/profile.html';
+		});
+
+		$('body').on('click','#message',()=>{
+			console.log("messages");
+			let id = $(event.target).next().attr('value');
+			sessionStorage.setItem('mostRecentConversation',id);
+			window.location.href = 'messages.html';
+		});
+
+		$('body').on('click','.profile',()=>{
+			let id = $(event.target).find('#userName').attr('value');
+			if(id == null){
+				id = $(event.target).children('#userId').attr('value');
+			}
+			if(id == null){
+				id = $(event.target).siblings('#userId').attr('value');
+			}
+			console.log("ID " + id);
+			sessionStorage.setItem('profileClickedId',id);
+			window.location.href = '/profile.html';
+		});
+
+		$('body').on('click','.project',()=>{
+			let projId = $(event.target).find('#projectId').val();
+			console.log($(event.target).next().children('#projectOwner'));
+
+			if(!projId){
+				projId = $(event.target).next().children('#projectId').val();
+			}
+			$.ajax({
+				url: '/getProject/' + projId,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log("PROJECT DATA " + data[0].projectTitle);
+					$('#projectTitleModal').html(data[0].projectTitle);
+					$('#projectOwnerModal').html(data[0].firstName + " " + data[0].lastName);
+					$('#projectImgModal').attr('src',data[0].mainImg);
+					$('#projectDescriptionModal').html(data[0].projectDescription);
+				}
+			});
+			
+			$('#projectViewModal').modal();
+		});
+	});
 	</script>
 </body>
 </html>
