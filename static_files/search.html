@@ -58,7 +58,7 @@
 				<span class="projectTitle"></span><br>
 				<span class="projectOwner"></span>
 				<input type="hidden" value="" id="ownerId"></input>
-				<span class="like"></span>
+				<!--<i class="far fa-heart fa-lg likeButton" value=""></i>-->
 			</div>
 		</div>
 	</div>
@@ -79,7 +79,7 @@
 					<p id="projectDescriptionModal"></p>
 				</div>
 				<div class="modal-footer">
-					<i id="likeButton" class="far fa-heart fa-lg"></i>
+					<i class="far fa-heart fa-lg" id="likeButton" value=""></i>
 				</div>
 			</div>
 		</div>
@@ -90,6 +90,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 	$(document).ready(()=>{
+        const dislikeProjectUrl= '/dislikeProject';
+        const likeProjectUrl = '/likeProject';
         let projId;
 		const userId = sessionStorage.getItem('id');
 		const getUserProfileUrl = '/loadProfile/' + userId;
@@ -109,8 +111,9 @@
 			sessionStorage.setItem('profileClickedId',sessionStorage.getItem('id'));
 			window.location.href = 'profile.hmtl';
 		});
-		const searchKey = window.location.search.substr(1);
-		const key = window.location.search.substr(9);
+		const searchKey = decodeURIComponent(window.location.search.substr(1));
+		const key = decodeURIComponent(window.location.search.substr(9));
+		console.log("SEARCH " + searchKey);
 		$('#searchFor').html(' "' + key + '"');
 		$.ajax({
 			url: searchKey,
@@ -129,6 +132,7 @@
 						clone.find('.projectTitle').html(data[e].projectTitle);
 						clone.find('#ownerId').attr('value',data[e].userId);
 						clone.find('#projectId').attr('value',data[e].projectId);
+						clone.find('.likeButton').attr('value',data[e].projectId);
 						clone.appendTo("#projectResults");
 						if(!(data[e].userId in users)){
 							users[data[e].userId] = data[e];
@@ -140,10 +144,13 @@
 					}
 				});
 				Object.keys(users).forEach((e)=>{
-					if(users[e].firstName.includes(key) || users[e].lastName.includes(key)){
+					if(users[e].firstName.toUpperCase().search(key.toUpperCase()) || users[e].lastName.toUpperCase().search(key.toUpperCase())){
 						let clone = $('.profileTemplate').contents().clone();
 						clone.find('#userId').attr('value',users[e].userId);
 						clone.find('.name').html(users[e].firstName + ' ' + users[e].lastName);
+						if(users[e].userId == sessionStorage.getItem('id')){
+							clone.find('#message').addClass('hidden');
+						}
 						if(users[e].profilePicture == null){
 							clone.find('.profilePic').attr('src','https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png');
 						} else {
@@ -190,9 +197,7 @@
 			window.location.href = '/profile.html';
 		});
       
-        const likeProjectUrl = '/likeProject';
-        const dislikeProjectUrl = '/dislikeProject';
-        $('body').on('click', '#likeButton', () => {
+        $('body').on('click', '#likeButton', (event) => {
           console.log(projId);
           if($('#likeButton').hasClass('fas')){
             $.ajax({
@@ -226,6 +231,14 @@
               });
             }
         });
+
+		$('#projectViewModal').on('hidden.bs.modal',()=>{
+			if($('.modal-footer .likeButton').hasClass('fas')){
+				$('.card-body .likeButton').removeClass('far').addClass('fas');
+			} else {
+				$('.card-body .likeButton').removeClass('fas').addClass('far');
+			}
+		});
 
 		$('body').on('click','.project',()=>{
 			projId = $(event.target).find('#projectId').val();
@@ -265,6 +278,11 @@
                     });
 				}
 			});
+			if($(event.target).find('.likeButton').hasClass('fas')){
+				$('.modal-footer .likeButton').removeClass('far').addClass('fas');
+			} else {
+				$('modal-footer .likeButton').removeClass('fas').addClass('far');
+			}
 			
 		});
 	});
