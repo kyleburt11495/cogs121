@@ -308,13 +308,12 @@ $(document).ready(function() {
     }
   });
 
-
-
-  
   //redirect to search results page
   $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val(); 
-    window.location.href = 'search.html?' + searchKey;
+    if($('#search').val() != ''){
+      let searchKey = '/search/' + $('#search').val(); 
+      window.location.href = 'search.html?' + searchKey;
+    }
   });
 });
 </script>
