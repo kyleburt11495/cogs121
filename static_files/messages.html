@@ -16,9 +16,9 @@
 		<a class="navbar-brand" href="home.html">InLook</a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" placeholder="Search..." id="searchValue">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -89,19 +89,19 @@
 			</div>
 			<div class="chat-container">
 				<template class="chat-message-template">
-                    <div class="container-msg">
-                      <img class="chat-profile-pic" src="profpic.png" alt="avatar">
-                      <p class="chat-message-text"></p>
-                      <span class="current-time-right"></span>
+					<div class="container-msg">
+						<img class="chat-profile-pic" src="profpic.png" alt="avatar">
+						<p class="chat-message-text"></p>
+						<span class="current-time-right"></span>
 					</div>
-                </template>
+				</template>
 				<template class="chat-message-diff-template">
 					<div class="container-msg diff">
-							<img src="profpic.png" alt="avatar" class="right">
-							<p class="chat-message-text"></p>
-							<span class="current-time-left">11:01pm</span>
-						</div>
-					</template>
+						<img src="profpic.png" alt="avatar" class="right">
+						<p class="chat-message-text"></p>
+						<span class="current-time-left">11:01pm</span>
+					</div>
+				</template>
 				<div class="chat-messages">
 					<!-- a bunch of messages exchanged back and forth by two people lol -->
 				</div>
@@ -117,7 +117,6 @@
 	<script>
 	$(document).ready(() => {
 
-
 		//initialize and connect to sendbird
 		let sb = new SendBird({
 			appId: '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
@@ -126,6 +125,9 @@
 		const userId = sessionStorage.getItem('id');
 		//id of other user in currently selected conversation
 		let otherUserId;
+        let mostRecentConversation;
+        //check if mostRecentConversation in sessionStorage is set. If it is then set otherUserId to it
+        mostRecentConversation = sessionStorage.getItem('mostRecentConversation');
 		//the current channel
 		let messageChannel;
 		// array of userId's of other users that have started conversations with current user
@@ -177,7 +179,7 @@
 								}
 								//create conversation object and store in conversation array
 								conversation = {otherUserId: channel};
-								console.log(conversation.otherUserId.lastMessage.sender.userId);
+								//console.log(conversation.otherUserId.lastMessage.sender.userId);
 								conversationsArray.push(conversation);
 
 								//clone template and store
@@ -211,13 +213,14 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									}
 									else
-										console.log('did not match');
+
+									console.log('did not match');
 								}
 								sb.addChannelHandler(1, channelHandler);
-
-
 								//when sidebar is clicked, get correct channel and display chat history
+								$('.person').unbind();
 								$('.person').click((event) => {
+									$('.chat-messages').html("");
 									console.log("Clicked person");
 									//get clicked conversation
 									let clickedDiv = $(event.target);
@@ -234,7 +237,7 @@
 
 									//access chat history of channel
 									let messageListQuery = messageChannel.createPreviousMessageListQuery();
-									messageListQuery.load(2, true, (messageList, err) => {
+									messageListQuery.load(3, true, (messageList, err) => {
 										if(err) {
 											console.error(err);
 											return;
@@ -242,7 +245,7 @@
 										console.log(messageList);
 										//loop through messageList, get messages and fill and clone template with message things
 										let chatMessagesDiv = document.querySelector('.chat-messages');
-										for(let i = 0; i < messageList.length; i++) {
+										for(let i = messageList.length-1; i >= 0; i--) {
 											let currentMessage = messageList[i];
 											let senderId = currentMessage._sender.userId;
 											let messageText = currentMessage.message;
@@ -253,9 +256,9 @@
 											let messageTemplate;
 											//clone chat-message-template if user sent message, chat-message-diff-template if user is recipent
 											if(senderId == userId)
-												messageTemplate = document.querySelector('.chat-message-template');
+											messageTemplate = document.querySelector('.chat-message-template');
 											else
-												messageTemplate = document.querySelector('.chat-message-diff-template');
+											messageTemplate = document.querySelector('.chat-message-diff-template');
 											//populate template with message
 											messageTemplate.content.querySelector('.chat-message-text').textContent = messageText;
 											messageTemplate.content.querySelector('span').textContent = '11:00 PM';
@@ -264,9 +267,11 @@
 											chatMessagesDiv.appendChild(messageTemplateClone);
 										}
 									});
+                                    sessionStorage.setItem('mostRecentConversation', otherUserId);
 								});
 
 								//send message button click handler
+								$('#send-message-button').unbind('click');
 								$('#send-message-button').click(() => {
 									const message = $('.chat-text-field').val();
 									messageChannel.sendUserMessage(message, null, null, (messageSent, err) => {
@@ -286,6 +291,10 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									});
 								});
+                              
+                                if(otherUserId == mostRecentConversation) {
+                                  $('.person').last().trigger('click');
+                                }
 							});
 						}
 					}
@@ -306,8 +315,11 @@
 			}
 		});
 
-
-
+		//redirect to search results page
+	    $('#searchButton').click(()=>{
+	      let searchKey = '/search/' + $('#searchValue').val(); 
+	      window.location.href = 'search.html?' + searchKey;
+	    });
 
 		$('#logout').click(() => {
 			sessionStorage.clear();
@@ -316,15 +328,9 @@
 
 	});
 
-
-
-
-
-
-
 	function findPersonDiv(clickedDiv) {
 		while (clickedDiv.hasClass('person') == false)
-			clickedDiv = clickedDiv.parent();
+		clickedDiv = clickedDiv.parent();
 		return clickedDiv;
 	}
 
