@@ -60,7 +60,7 @@ messages page and will allow you to logout. Users can search for other users and
 
 <template class="commentTemplate">
   <div class="comment">
-    <p class="commentAuthor"></p>
+    <!--<p class="commentAuthor"></p>-->
     <p class="commentText"></p>
   </div>
 </template>
@@ -79,6 +79,7 @@ messages page and will allow you to logout. Users can search for other users and
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 				<p id="projectTitleModal"></p>
 				<p id="projectDescriptionModal"></p>
+              <hr>
                 <div class="commentList"></div>
                 <div class="chat-input">
 					<input class="comment-text-field" type="text">
@@ -448,8 +449,8 @@ $(document).ready(() => {
                           for(let i = 0; i < data.length; i++) {
                             console.log(data);
                             let template = document.querySelector('.commentTemplate');
-                            template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
-                            template.content.querySelector('.commentText').textContent = data[i].commentText;
+                            //template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+                            template.content.querySelector('.commentText').textContent = data[i].firstName + ' ' + data[i].lastName + ": " + data[i].commentText;
                             let clone = document.importNode(template.content, true);
 
                             commentList.appendChild(clone);
@@ -591,8 +592,8 @@ $(document).ready(() => {
           success: (data) => {
             console.log("HELLO");
             let template = document.querySelector('.commentTemplate');
-            template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
-            template.content.querySelector('.commentText').textContent = commentText;
+            //template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+            template.content.querySelector('.commentText').textContent =$('.profileName').html() + ": " + commentText;
             let clone = document.importNode(template.content, true);
 
             document.querySelector('.commentList').appendChild(clone);
