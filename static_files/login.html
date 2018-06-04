@@ -45,10 +45,10 @@ $(document).ready(()=>{
         success: (data) => {
           if(data.userId){
             sessionStorage.setItem("id",data.userId);
-            
+
             //connect to sendbird
-            
-            
+
+
             window.top.location = "home.html";
           }
           else{
