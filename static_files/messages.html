@@ -91,6 +91,9 @@
 		const userId = sessionStorage.getItem('id');
 		//id of other user in currently selected conversation
 		let otherUserId;
+        let mostRecentConversation;
+        //check if mostRecentConversation in sessionStorage is set. If it is then set otherUserId to it
+        mostRecentConversation = sessionStorage.getItem('mostRecentConversation');
 		//the current channel
 		let messageChannel;
 		// array of userId's of other users that have started conversations with current user
@@ -142,7 +145,7 @@
 								}
 								//create conversation object and store in conversation array
 								conversation = {otherUserId: channel};
-								console.log(conversation.otherUserId.lastMessage.sender.userId);
+								//console.log(conversation.otherUserId.lastMessage.sender.userId);
 								conversationsArray.push(conversation);
 
 								//clone template and store
@@ -179,6 +182,9 @@
 										console.log('did not match');
 								}			
 								sb.addChannelHandler(1, channelHandler);
+                              
+                                //open correct conversation
+                                
 								
 
 								//when sidebar is clicked, get correct channel and display chat history
@@ -231,7 +237,9 @@
 											chatMessagesDiv.appendChild(messageTemplateClone);
 										}
 									});
+                                    sessionStorage.setItem('mostRecentConversation', otherUserId);
 								});
+                              
 								
 								//send message button click handler
                                 $('#send-message-button').unbind('click');
@@ -254,6 +262,10 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									});
 								});
+                              
+                                if(otherUserId == mostRecentConversation) {
+                                  $('.person').last().trigger('click');
+                                }
 							});
 						}
 					}

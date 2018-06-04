@@ -172,7 +172,7 @@ app.post('/followPerson', (req, res) => {
 
 
 app.get('/trending', (req, res) => {
-  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isTrending = 1", (err, row)=> {
+  db.all("SELECT likes.projectId, projects.projectTitle, projects.projectDescription, projects.mainImg, projects.userId, count(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId WHERE likes.date BETWEEN julianday('now', '-7 days') AND julianday('now') GROUP BY likes.projectId ORDER BY count(*)", (err, row)=> {
     if(err) {
       console.error(err.message);
     }
@@ -197,8 +197,8 @@ app.get('/trending', (req, res) => {
 });
 
 app.get('/popular', (req, res) =>{
-  db.all("SELECT * FROM projects WHERE isPopular = 1", (err, row) => {
-    if (err) {
+  db.all("SELECT likes.projectId AS projectId, projects.projectTitle AS projectTitle, projects.projectDescription AS projectDescription, projects.mainImg AS mainImg, projects.userId AS userId, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId GROUP BY likes.projectId ORDER BY COUNT(*) DESC", (err, row) => {
+    if (err) { 
       console.error(err.message);
     }
     else {
@@ -226,7 +226,7 @@ app.get('/following/:userId', (req, res) =>{
 });
 
 app.get('/getFollows/:userId', (req, res) => {
-  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC LIMIT 10", {$userId: req.params.userId}, (err, row) => {
     if(err) {
       console.error(err.message);
     }
@@ -252,7 +252,7 @@ app.get('/loadProfile/:userid', (req, res) => {
 });
 
 app.get('/getAmountOfLikes/:projectId', (req, res) => {
-  db.all("SELECT * FROM likes where projectId = $projectId", {$projectId: req.params.projectId}, (err, row) => {
+  db.all("SELECT * FROM likes where projectId = $projectId LIMIT 10", {$projectId: req.params.projectId}, (err, row) => {
     if(err) {
       console.error(err.message);
     }
@@ -260,6 +260,28 @@ app.get('/getAmountOfLikes/:projectId', (req, res) => {
   });
 });
 
+app.post('/postComment', (req, res) => {
+  db.run("INSERT INTO comments(userId, projectId, commentText, time) VALUES($userId, $projectId, $commentText, julianday('now'))", {
+    $userId: req.body.userId,
+    $projectId: req.body.projectId,
+    $commentText: req.body.commentText
+  }, (err, row) => {
+    if(err) {
+      console.error(err);
+    }
+    res.send({message: 'successfully inserted comment into database'})
+  });
+});
+
+app.get('/getComments/:projectId', (req, res) => {
+  db.all("SELECT * FROM comments WHERE projectId = $projectId ORDER BY time DESC", {$projectId: req.params.userId}, (err, row) => {
+    if(err) {
+      console.error(err);
+    }
+    console.log(row);
+    res.send(row);
+  });
+});
 app.post('/createNewConversation', (req, res) => {
   //order ids so that smaller id is userId1 and larger is userId2
   let userId1;

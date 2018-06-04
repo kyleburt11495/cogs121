@@ -50,6 +50,13 @@
 		</div>
 	</div>
 </div>
+  
+<template class="commentTemplate">
+  <div class="comment">
+    <p class="commentAuthor"></p>
+    <p class="commentText"></p>
+  </div>
+</template>
 
 <!--Project View Modal -->
 <div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -65,6 +72,11 @@
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 				<p id="projectTitleModal"></p>
 				<p id="projectDescriptionModal"></p>
+                <div class="commentList"></div>
+                <div class="chat-input">
+					<input class="comment-text-field" type="text">
+					<button id="post-comment-button">Send</button>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<i id="likeButton" class="far fa-heart fa-lg"></i>
@@ -289,6 +301,9 @@ $(document).ready(() => {
                 //data visualization
 
                 $(".design-pics").click(function(event){
+                  //clear
+                  document.querySelector('.commentList').innerHTML = "";
+
                   //project div
                   projectDiv = $(event.target).parent().parent();
                   console.log($(event.target).parent().text());
@@ -317,6 +332,23 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
+                      
+                      $.ajax({
+                        url: '/getComments/' + $(projectDiv).find('#projectId').text(),
+                        type: 'GET',
+                        datatype: 'JSON',
+                        success: (data) => {
+                          let commentList = document.querySelector('.commentList');
+                          for(let i = 0; i < data.length; i++) {
+                            let template = document.querySelector('.commentTemplate');
+                            template.content.querySelector(".commentAuthor").textContent = data.firstName + ' ' + data.lastName;
+                            template.content.querySelector('.commentText').textContent = data.commentText;
+                            let clone = document.importNode(template.content, true);
+                            
+                            commentList.appendChild(clone);
+                          }
+                        }
+                      });
                       //display modal
                       $('#projectViewModal').modal();
                     }
@@ -421,10 +453,16 @@ $(document).ready(() => {
             profileClickedId: profileClickedId
           },
           success: (data) => {
-            
+            sessionStorage.setItem('mostRecentConversation', profileClickedId);
+            window.location.href = '/messages.html';
           }
         });
       });
+  
+      $('#post-comment-button').click((event) => {
+        $.ajax({});
+      });
+  
   
       const getFollowsUrl = '/getFollows/' + userId;
       $.ajax({
