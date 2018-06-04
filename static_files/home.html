@@ -9,6 +9,7 @@ click on a project. Users can search for other users or certain projects in the 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="home.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
@@ -89,8 +90,8 @@ click on a project. Users can search for other users or certain projects in the 
       <div id="projects-list">
       </div>
 
-      <div id="projectTemplate">
-        <div class="project-hover col-sm-4">
+      <div id="projectTemplate" class="hidden">
+        <div class="project-hover col-sm-5">
           <img class="project hidden" src="" alt="">
           <div class="text">
             <span id="projectOwner" val=""></span>
@@ -156,6 +157,7 @@ $(document).ready(function() {
             console.log(data);
             $('#projects-list').empty();
             $(data).each((e)=>{
+              console.log(data);
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
               clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
@@ -239,7 +241,8 @@ $(document).ready(function() {
     success: (data) => {
       console.log('Recieved user profile info');
       console.log(data);
-      $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      //$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      $('#userName li').html(data.firstName + ' ' + data.lastName);
     }
   });
 
@@ -313,13 +316,12 @@ $(document).ready(function() {
     }
   });
 
-
-
-
   //redirect to search results page
   $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val();
-    window.location.href = 'search.html?' + searchKey;
+    if($('#search').val() != ''){
+      let searchKey = '/search/' + $('#search').val(); 
+      window.location.href = 'search.html?' + searchKey;
+    }
   });
 });
 </script>

@@ -292,9 +292,10 @@ font-size: 1.75rem;
 	display: none;
 }
 
-#innerNav li:active{
+.active{
+	font-weight: bold;
+	color: black !important;
 	text-decoration: underline;
-	color: black;
 }
 
 a {
@@ -351,12 +352,37 @@ hr {
 	height: 20rem;
 	width: 49%;
 	margin-top: 30px;
+}*/
+
+#projectOwner {
+	z-index: 1;
+	position: relative;
+}
+.project-hover {
+	display: inline-block;
+	margin: 0 2rem 1rem 0;
+}
+
+#projectOwner:hover {
+	color: blue;
+}
+
+#projectTemplate {
+	display: none;
+}
 
 }
 
 .project1 span {
 	z-index: 1;
 	color: black;
+	bottom: 1rem;
+	position: absolute;
+	margin-left: 1rem;
+}
+.text i {
+	position: absolute;
+	left: 24rem;
 }
 
 .project1 span,i {
@@ -374,9 +400,18 @@ display: none;
 }
 
 #likeButton:hover{
-	color: red;
+	color: blue;
 }
 
-.fas .fa-heart {
+#likeButton {
+	z-index: 1;
+	position: relative;
+}
+
+.hidden {
+	display: none;
+}
+
+.fas {
 	color: red;
 }

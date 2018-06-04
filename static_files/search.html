@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="search.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
 	<!-- <nav class="navbar navbar-expand-lg" id="nav">
@@ -94,7 +95,7 @@
 				<span class="projectTitle"></span><br>
 				<span class="projectOwner"></span>
 				<input type="hidden" value="" id="ownerId"></input>
-				<i class="far fa-heart fa-lg likeButton" value=""></i>
+				<!--<i class="far fa-heart fa-lg likeButton" value=""></i>-->
 			</div>
 		</div>
 	</div>
@@ -115,7 +116,7 @@
 					<p id="projectDescriptionModal"></p>
 				</div>
 				<div class="modal-footer">
-					<i class="far fa-heart fa-lg likeButton" value=""></i>
+					<i class="far fa-heart fa-lg" id="likeButton" value=""></i>
 				</div>
 			</div>
 		</div>
@@ -126,6 +127,9 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 	$(document).ready(()=>{
+        const dislikeProjectUrl= '/dislikeProject';
+        const likeProjectUrl = '/likeProject';
+        let projId;
 		const userId = sessionStorage.getItem('id');
 		const getUserProfileUrl = '/loadProfile/' + userId;
 		$.ajax({
@@ -199,6 +203,7 @@
 			}
 		});
 		$('#searchButton').click(()=>{
+			console.log($('#search').val());
 			window.location.href = 'search.html?/search/' + $('#search').val();
 		});
 		$('body').on('click','.projectOwner',()=>{
@@ -212,43 +217,6 @@
 			let id = $(event.target).next().attr('value');
 			sessionStorage.setItem('mostRecentConversation',id);
 			window.location.href = 'messages.html';
-		});
-
-		const likeProjectUrl = '/likeProject';
-		const dislikeProjectUrl = '/dislikeProject';
-		$('body').on('click','.likeButton',(e) => {
-			let likeTarget = $(event.target);
-			e.stopPropagation();
-			if(likeTarget.hasClass('fas')){
-				$.ajax({
-					url: dislikeProjectUrl,
-					type: 'POST',
-					datatype: 'JSON',
-					data: {
-						userId: userId,
-						projectId: likeTarget.attr('value')
-					},
-					success: (data) => {
-						likeTarget.removeClass('fas').addClass('far');
-						console.log("unliked");
-					}
-				});
-			} else {
-				$.ajax({
-					url: likeProjectUrl,
-					type: 'POST',
-					datatype: 'JSON',
-					data: {
-						userId: userId,
-						projectId: likeTarget.attr('value')
-					},
-					success: (data) => {
-			            //change appearance of like button
-			            likeTarget.removeClass('far').addClass('fas');
-			            console.log("like");
-        			}
-    			});
-			}
 		});
 
 		$('body').on('click','.profile',()=>{
@@ -266,6 +234,41 @@
 			sessionStorage.setItem('profileClickedId',id);
 			window.location.href = '/profile.html';
 		});
+      
+        $('body').on('click', '#likeButton', (event) => {
+          console.log(projId);
+          if($('#likeButton').hasClass('fas')){
+            $.ajax({
+              url: dislikeProjectUrl,
+              type: 'POST',
+              datatype: 'JSON',
+              data: {
+                userId: userId,
+                projectId: projId
+              },
+              success: (data) => {
+                console.log('disliked');
+                $('#likeButton').removeClass('fas').addClass('far');
+              }
+            });
+            } 
+            else {
+              $.ajax({
+                  url: likeProjectUrl,
+                  type: 'POST',
+                  datatype: 'JSON',
+                  data: {
+                      userId: userId,
+                      projectId: projId
+                  },
+                  success: (data) => {
+                      //change appearance of like button
+                      console.log('Liked');
+                      $('#likeButton').removeClass('far').addClass('fas');
+                  }
+              });
+            }
+        });
 
 		$('#projectViewModal').on('hidden.bs.modal',()=>{
 			if($('.modal-footer .likeButton').hasClass('fas')){
@@ -276,7 +279,7 @@
 		});
 
 		$('body').on('click','.project',()=>{
-			let projId = $(event.target).find('#projectId').val();
+			projId = $(event.target).find('#projectId').val();
 			console.log($(event.target).next().children('#projectOwner'));
 
 			if(!projId){
@@ -292,6 +295,25 @@
 					$('#projectOwnerModal').html(data[0].firstName + " " + data[0].lastName);
 					$('#projectImgModal').attr('src',data[0].mainImg);
 					$('#projectDescriptionModal').html(data[0].projectDescription);
+                  
+                    const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projId;
+                    $.ajax({
+                      url: isProjectLikedUrl,
+                      type: 'GET',
+                      datatype: 'JSON',
+                      success: (data) => {
+                        console.log('Checked if disliked or not');
+                        //if data exists then project was disliked
+                        if (data) {
+                          //set appearance of like button to already liked
+                          $('#likeButton').removeClass('far').addClass('fas');
+                        }
+                        else {
+                          $('#likeButton').removeClass('fas').addClass('far');
+                        }
+                        $('#projectViewModal').modal();
+                      }
+                    });
 				}
 			});
 			if($(event.target).find('.likeButton').hasClass('fas')){

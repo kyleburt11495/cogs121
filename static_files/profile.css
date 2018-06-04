@@ -366,7 +366,8 @@ a:hover {
 bar*/
 .sidebar-profile-info{
 	text-align: center;
-  max-width: 350px;
+	width: 300px;
+  max-width: 400px;
   background: #f2f2f2;
   border-radius: 6px;
   box-shadow: 0 4px 15px #E6E6E6;
@@ -388,7 +389,9 @@ bar*/
 #profpic{
   width: 10rem;
   height: auto;
-  margin-top: 40px;
+  margin-top: 20px;
+	margin-left: 25%;
+	margin-right: 50%;
 }
 
 #socialMedia li{
@@ -489,6 +492,18 @@ ul.skills-list{
 button{
 	margin-bottom: 10px;
 }
+
+
+.btn-sm-setting{
+	background: #f2f2f2;
+	border: none;
+	color: white;
+	border-radius: 12px;
+	padding: 5px;
+	float: right;
+}
+
+
 
 .username{
 	font-size: 24px;
