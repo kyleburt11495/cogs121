@@ -292,10 +292,10 @@ font-size: 1.75rem;
 	display: none;
 }
 
-/* #innerNav li:active{
+#innerNav li:active{
 	text-decoration: underline;
 	color: black;
-} */
+}
 
 a {
 	color: white;
@@ -329,86 +329,52 @@ hr {
 	white-space: nowrap;
 }
 
-body {
-  -webkit-transform: translate3d(0, 0, 0);
-}
+
 
 .project {
 	height: 20rem;
 	background-color: #808080;
 	display: inline-block;
+	opacity: 1;
+	border-style: solid;
+	width: 720px;
+	height: auto;
+	border-color: white;
+	border-width: 10px;
+	box-shadow: 0px 0px 20px #E6E6E6;
+	justify-content: : center;
+	/* margin-top: 30px; */
 }
 
-/*.project {
+.project1 {
 	display: inline-block;
 	height: 20rem;
 	width: 49%;
-}*/
+	margin-top: 30px;
 
-#projectOwner {
-	color: red;
+}
+
+.project1 span {
 	z-index: 1;
-	position: relative;
-}
-#projectTemplate {
-	display: none;
+	color: black;
 }
 
-.project{
-	border-style: solid;
-	border-color: white;
-	margin-right: 10px;
-	border-width: 10px;
-	box-shadow: 0px 0px 20px #E6E6E6;
-}
-
-.text {
-	opacity: 0;
-	z-index: 1;
-}
-
-.project span,i {
+.project1 span,i {
 	z-index: 1;
 	/* color: red; */
 }
 /* .hidden {
 display: none;
 } */
-.project-hover:hover > .project {
-	opacity: 0.3;
-}
 
-.project:hover + .text {
-	opacity: 1;
-}
-
-.project .text:hover {
-	opacity: 0.3;
-}
-
-.text:hover {
-	opacity: 1;
-}
-
-#projectOwner {
+.container{
 	position: relative;
-}
-
-#projectOwner:hover {
-	text-decoration: underline;
+	z-index: 1;
+	padding: 2px 16px;
 }
 
 #likeButton:hover{
 	color: red;
-}
-
-#likeButton {
-	z-index: 1;
-	position: relative;
-}
-
-.hidden {
-	display: none;
 }
 
 .fas .fa-heart {

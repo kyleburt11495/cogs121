@@ -60,12 +60,14 @@ div{
   border-bottom-style: solid;
   border-bottom-color: black;
   border-bottom-width: thin;
+  border-radius: 0px;
   align-content: center;
   box-shadow: none;
 }
 
 .form-control{
   border: none;
+  border-radius: 0px;
 }
 
 .img-responsive{

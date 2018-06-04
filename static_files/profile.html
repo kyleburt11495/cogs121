@@ -1,3 +1,11 @@
+<!-- The profile page allows users to upload new projects of their own onto the web application so others can
+their work. It also allows them to use this page as an online portfolio by storing all their old projects.
+Also, the designer can add a bio and a profile picture. They can come back and edit that information at
+any time. They can view the stats tab to see how they have been performing. They can see the number of likes
+per project and the number of followers. The navigation bar links to the user's profile,
+messages page and will allow you to logout. Users can search for other users and projects in the search bar. -->
+
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -48,7 +56,7 @@
 		</div>
 	</div>
 </div>
-  
+
 <template class="commentTemplate">
   <div class="comment">
     <p class="commentAuthor"></p>
@@ -403,7 +411,7 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
-                      
+
                       $.ajax({
                         url: '/getComments/' + $(projectDiv).find('#projectId').text(),
                         type: 'GET',
@@ -416,7 +424,7 @@ $(document).ready(() => {
                             template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
                             template.content.querySelector('.commentText').textContent = data[i].commentText;
                             let clone = document.importNode(template.content, true);
-                            
+
                             commentList.appendChild(clone);
                           }
                           $('#projectViewModal').modal();
@@ -531,7 +539,7 @@ $(document).ready(() => {
           }
         });
       });
-  
+
       $('#post-comment-button').click((event) => {
         let commentText = $('.comment-text-field').val();
         console.log(commentText);
@@ -550,7 +558,7 @@ $(document).ready(() => {
             template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
             template.content.querySelector('.commentText').textContent = commentText;
             let clone = document.importNode(template.content, true);
-            
+
             document.querySelector('.commentList').appendChild(clone);
           }
         });

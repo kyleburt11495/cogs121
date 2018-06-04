@@ -316,6 +316,7 @@ body {
 	border-bottom-width: thin;
 	border-bottom-color: black;
 	border-top: none;
+	border-radius: 0px;
 	border-left: none;
 	border-right: none;
 }
@@ -584,4 +585,8 @@ h4{
 
 #projectComment {
 	width: 100%;
+}
+
+#profileUploadButton{
+	background-color: #E9E9E9;
 }

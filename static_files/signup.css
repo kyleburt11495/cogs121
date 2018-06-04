@@ -141,6 +141,7 @@ h4 {
 
 .form-control{
   border: none;
+  border-radius: 0px; 
 }
 
 #designer, #customer{

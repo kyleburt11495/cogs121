@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,7 @@
 	<link rel="stylesheet" href="search.css">
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg" id="nav">
+	<!-- <nav class="navbar navbar-expand-lg" id="nav">
 		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -34,14 +36,48 @@
 				</li>
 			</ul>
 		</div>
+	</nav> -->
+	<nav class="navbar navbar-expand-lg" id="nav">
+
+		<form>
+			<div class="box" id="navbarSupportedContent">
+				 <div class="container-2">
+				 	<input type="search" id="search" />
+				    <span class="icon">
+							<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+						</span>
+				    <!-- <input type="search" id="search" /> -->
+				 </div>
+			</div>
+		</form>
+
+		<div class="navbar-header">
+			<a class="navbar-brand" href="home.html">INLOOK</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+
+		<div id="menuToggle">
+			<input type="checkbox"/>
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul id="menu">
+				<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
+				<a class="menu-options" href="messages.html"><li>Messages</li></a>
+				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
+			</ul>
+		</div>
 	</nav>
-	<h2 id="resultsTitle">Results for<span id="searchFor"><span></h2>
+
+	<h2 id="resultsTitle">RESULTS FOR<span id="searchFor"><span></h2>
 	<div class="error hidden"></div>
 	<div id="profileResults"></div>
 	<div id="projectResults"></div>
 	<div class="profileTemplate hidden">
 		<div class="profile col-sm-4">
-			<img class="profilePic disabled" src="" height="70px" width="70px">
+			<img class="profilePic disabled" id="picprof" src="" height="70px" width="70px">
 			<div class="text">
 				<h5 class="name"></h5>
 				<p id="numProjects"></p>
@@ -52,7 +88,7 @@
 	</div>
 	<div class="projectTemplate hidden">
 		<div class="project card col-sm-5">
-			<img src="" height="300px" width="100%" class="cardImg"/>
+			<img src="" height="300px" width="100%" class="cardImg" id="searchImg"/>
 			<div class="card-body">
 				<input type="hidden" value="" id="projectId"></input>
 				<span class="projectTitle"></span><br>
@@ -159,7 +195,7 @@
 				}
 				else {
 					$('.error').html("Oops we couldn't find anything!").removeClass("hidden");
-				}	
+				}
 			}
 		});
 		$('#searchButton').click(()=>{
@@ -217,11 +253,11 @@
 
 		$('body').on('click','.profile',()=>{
 			console.log(event.target);
-		
+
 			let id = $(event.target).find('#userId').attr('value');
 			if(!id){
 				id = $(event.target).next().children('#userId').attr('value');
-			} 
+			}
 			if(!id){
 				id = $(event.target).siblings('#userId').attr('value');
 			}
@@ -263,7 +299,7 @@
 			} else {
 				$('modal-footer .likeButton').removeClass('fas').addClass('far');
 			}
-			
+
 			$('#projectViewModal').modal();
 		});
 	});
