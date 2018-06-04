@@ -165,21 +165,25 @@
 			window.location.href = '/profile.html';
 		});
 
-		$('body').on('click','#message',()=>{
+		$('body').on('click','#message',(e)=>{
 			console.log("messages");
+			e.stopPropagation();
 			let id = $(event.target).next().attr('value');
 			sessionStorage.setItem('mostRecentConversation',id);
 			window.location.href = 'messages.html';
 		});
 
 		$('body').on('click','.profile',()=>{
-			let id = $(event.target).find('#userName').attr('value');
-			if(id == null){
-				id = $(event.target).children('#userId').attr('value');
-			}
-			if(id == null){
+			console.log(event.target);
+		
+			let id = $(event.target).find('#userId').attr('value');
+			if(!id){
+				id = $(event.target).next().children('#userId').attr('value');
+			} 
+			if(!id){
 				id = $(event.target).siblings('#userId').attr('value');
 			}
+
 			console.log("ID " + id);
 			sessionStorage.setItem('profileClickedId',id);
 			window.location.href = '/profile.html';
