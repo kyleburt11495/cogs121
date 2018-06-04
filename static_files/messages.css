@@ -509,3 +509,7 @@ input{
 	border: none;
 	align-content: margin-right;
 }
+
+.active {
+  background-color: #F3F3F3;
+}
