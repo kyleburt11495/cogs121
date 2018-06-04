@@ -18,17 +18,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
-// //send bird api
-// import * as SendBird from 'SendBird';
-// const sb = new SendBird({'appId': '02CF44A7-02AA-4F78-82EA-93CEE2CC5FCF'
-// });
-//
-// sb.connect(userId, (user, error) => {
-//
-// });
-
-
-
 const bodyParser = require('body-parser');
 
 
@@ -41,36 +30,6 @@ app.use(bodyParser.urlencoded({extended: true})); //hook to the app
 
 app.listen(3000, () => {
   console.log('Server started');
-});
-
-app.get('/home', (req, res) => {
-  console.log('Running home');
-});
-
-app.get('/messages', (req, res) => {
-  console.log('Running messages');
-
-});
-
-app.get('/picview', (req, res) => {
-  console.log('Running picview');
-
-});
-
-app.get('/profile', (req, res) => {
-  console.log('Running profile');
-
-});
-
-app.get('/project', (req, res) => {
-  console.log('Running project');
-
-});
-
-
-app.get('/upload', (req, res) => {
-  console.log('Running upload');
-
 });
 
 //multer file upload
@@ -98,18 +57,20 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       }
       /**
       db.get('SELECT * FROM projects WHERE projectId = (SELECT MAX(projectId))', (err, row) => {
-        if(err) {
-          console.err(err.message);
-        }
-        let lastInsertedId = row.projectId;
-        console.log(lastInsertedId);
-      });
-      */
-      return res.redirect('/profile.html');
-    });
+      if(err) {
+      console.err(err.message);
+    }
+    let lastInsertedId = row.projectId;
+    console.log(lastInsertedId);
   });
+  */
+  return res.redirect('/profile.html');
+});
+});
 
 });
+
+//upload profile picture
 
 
 //like project
@@ -180,24 +141,10 @@ app.get('/trending', (req, res) => {
       res.send(row);
     }
   });
-  /*db.all("SELECT * FROM projects WHERE isTrending = 1", (err, row) => {
-    if (err) {
-      console.error(err.message);
-    }
-    else {
-      row.forEach((e)=>{
-        db.all("SELECT firstName, lastName FROM users_account WHERE userId= $userId",{$userId: e.userId},(err,row)=>{
-          res.write(e);
-          res.write(row);
-        });
-      });
-      res.end();
-    }
-  });*/
 });
 
 app.get('/popular', (req, res) =>{
-  db.all("SELECT * FROM projects WHERE isPopular = 1", (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isPopular = 1", (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -213,7 +160,7 @@ app.get('/following/:userId', (req, res) =>{
   let userId = req.params.userId;
 
   //perform query to get followed images
-  db.all("SELECT * FROM projects WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE projects.projectId IN (SELECT projectId FROM following_projects WHERE userId = $userId)", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -222,6 +169,15 @@ app.get('/following/:userId', (req, res) =>{
       console.log(row);
       res.send(row); //failed so return empty string instead of undefined
     }
+  });
+});
+
+app.get('/getFollows/:userId', (req, res) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+    if(err) {
+      console.error(err.message);
+    }
+    res.send(row);
   });
 });
 
@@ -238,6 +194,18 @@ app.get('/loadProfile/:userid', (req, res) => {
     }
     else {
       res.send({}); //failed so return empty string instead of undefined
+    }
+  });
+});
+
+app.get('/getProject/:projId',(req,res)=>{
+  const projId = req.params.projId;
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId=users_account.userId WHERE projectId=$projId",{$projId: projId}, (err,row) => {
+    if(err) {
+      console.error(err.message);
+    } else {
+      console.log(row);
+      res.send(row);
     }
   });
 });
@@ -265,13 +233,14 @@ app.post('/createNewConversation', (req, res) => {
     userId2 = req.body.userId;
   }
 
-  db.run("INSERT INTO conversations(userId1, userId2, date) VALUES($userId1, $userId2, $date)", {
+  db.run("INSERT INTO conversations(userId1, userId2) VALUES($userId1, $userId2)", {
     $userId1: userId1, $userId2: userId2
   }, (err, row) => {
     if (err) {
       console.error(err);
     }
-    return res.redirect('/messages.html');
+    res.send({message: 'sucees'});
+
   });
 });
 
@@ -293,9 +262,9 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
 
 
 app.get('/searchForUsers/:searchValue', (req, res) => {
-  const userId = req.params.searchValue;
+  const userId = '%' + req.params.searchValue + '%';
   console.log(userId);
-  db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId}, (err, row) => {
+  db.all("SELECT * FROM users_account WHERE firstName LIKE $userId", {$userId: userId}, (err, row) => {
     if (err) {
       console.error(err.message);
     }
@@ -307,37 +276,7 @@ app.get('/searchForUsers/:searchValue', (req, res) => {
       res.send({}); //failed so return empty string instead of undefined
     }
   });
-})
-
-// app.get('firstName/:lastName', (req, res) => {
-//   const firstName = req.params.firstName;
-//   const lastName = req.params.lastName;
-//
-//   console.log(firstName);
-//   console.log(lastName);
-//
-//   db.all('SELECT * FROM users_account WHERE (firstName = $firstName OR lastName = $lastName',{
-//     $firstName:firstName,
-//     $lastName:lastName
-//   },(err, row) => {
-//     if(err) {
-//       console.error(err.message);
-//       console.log('err');
-//     }
-//     if (row.length > 0) {
-//       console.log(row[0]);
-//       res.send(row[0]);
-//
-//       console.log('hello');
-//     }
-//     else {
-//       res.send({}); //failed so return empty string
-//       console.log('failed');
-//     }
-//   });
-// })
-
-
+});
 
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;
@@ -350,7 +289,7 @@ app.get('/getConversations/:userId', (req, res) => {
       res.send(rows);
     }
     else {
-	  console.log("no projects found");
+      console.log("no projects found");
       res.send([]); //failed so return empty string instead of undefined
     }
   });
@@ -367,7 +306,7 @@ app.get('/loadProjects/:userid', (req, res) => {
       res.send(row);
     }
     else {
-	  console.log("no projects found");
+      console.log("no projects found");
       res.send({}); //failed so return empty string instead of undefined
     }
   });
@@ -375,7 +314,7 @@ app.get('/loadProjects/:userid', (req, res) => {
 
 app.get('/search/:searchKey',(req,res) => {
   const key = '%' + req.params.searchKey + '%';
-  db.all("SELECT * FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
+  db.all("SELECT users_account.userId, users_account.firstName, users_account.email, users_account.lastName, users_account.isDesigner, users_account.profilePicture, users_account.bio, projects.projectId, projects.projectTitle, projects.projectDescription, projects.isTrending, projects.isPopular, projects.mainImg FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
     if(err){
       console.error(err.message);
     } else{
@@ -415,16 +354,10 @@ app.post('/signup', (req, res)=>{
         match = true;
         return match;
       }
-      });
-    /*if(req.body.email == row.email){
-      console.log("match");
-      return false;
-    } */
-
-
+    });
     if(match){
       console.log('user already exists');
-      // res.send({});
+      res.send({});
       return;
     }
     else{
@@ -439,18 +372,26 @@ app.post('/signup', (req, res)=>{
         },
         (err, row) => {
           if(err) {
-            console.log('error creating new user');
-          } else{
-            console.log("hi");
-            // let someid = '';
-            db.each("SELECT userId, firstName, email, isDesigner FROM users_account", (err,row)=>{
-              console.log(row.userId + " " + row.firstName + ":" + row.email + '.');
+            console.log(err.message);
+            res.send({}) //send empty string
+          }
+          else{
+            const user_email = req.body.email;
+            db.all('SELECT * from users_account WHERE email = $user_email', {$user_email: user_email},
+            (err, row) => {
+              if(err){
+                console.log(err.message);
+              } else{
+                console.log('New user');
+                console.log(row[0]);
+                res.send(row[0]);
+
+              };
             });
-            //res.send({message:'successfuly run app.post(/signup)'});
+
           };
         }
       );
-    }
-    console.log('after hi');
+    };
   });
 });
