@@ -14,9 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.js"></script>
 </head>
 <body>
-	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-	Create New Project
-</button> -->
+
 
 <!--Project Creation Modal -->
 <div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -50,6 +48,13 @@
 		</div>
 	</div>
 </div>
+  
+<template class="commentTemplate">
+  <div class="comment">
+    <p class="commentAuthor"></p>
+    <p class="commentText"></p>
+  </div>
+</template>
 
 <!--Project View Modal -->
 <div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -65,9 +70,39 @@
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 				<p id="projectTitleModal"></p>
 				<p id="projectDescriptionModal"></p>
+                <div class="commentList"></div>
+                <div class="chat-input">
+					<input class="comment-text-field" type="text">
+					<button id="post-comment-button">Send</button>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<i id="likeButton" class="far fa-heart fa-lg"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Upload Profile Picture Modal -->
+<div class="modal fade" id="profilePictureUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Upload Profile Picture</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="uploadPicture" action="/uploadProfilePicture" method="post" enctype="multipart/form-data" target="_self">
+					<div class="form-group">
+						<label for="image">Upload Image</label>
+						<input type="file" name="image" id="image" class="form-control">
+					</div>
+					<input type="hidden" name="userId" id="userId">
+					<input type="submit" class="btn btn-primary" id="submitProfilepic">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -79,9 +114,9 @@
 		<a class="navbar-brand" href="home.html" id="anchor"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" placeholder="Search..." id="search">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -144,7 +179,8 @@
 				<!-- Profile essential details -->
 				<div class="profile-important">
 					<div class="profile-photo">
-						<img src="profpic.png"  id="profpic" alt="">
+						<img src="defaultpicture.png"  id="profpic" alt=""></br></br>
+						<button type="button" id="profileUploadButton" class="btn-sm-message" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile">Upload Profile Picture </button>
 					</div>
 					<h3 class="username profileName" id="profileName">User</h3>
 					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
@@ -201,7 +237,7 @@
 		<template class="projectTemplate">
 			<div class="project">
 				<div class="project-pic">
-					<img src="interior_design4.jpg" alt="" class="design-pics img-responsive" id="projectImg">
+					<img src="" alt="" class="design-pics img-responsive" id="projectImg">
 				</div>
 				<p class="projectInfo" id="projectTitle"></p>
 				<p class="projectInfo" id="projectDescription"></p>
@@ -210,12 +246,10 @@
 		</template>
 	</div>
 	<div class="stats hidden ">
-		<h1>STATS</h1>
+		<h3 class="text-center">Project Likes</h3>
+		<div id="likeChart"></div>
+        <div id="followChart"></div>
 	</div>
-
-</div>
-</div>
-<div id="likeChart">
 
 </div>
 
@@ -224,7 +258,7 @@
 <script>
   let projectClickedId;
   let columns = [];
-  let columns1 = ['likes'];
+  let columns1 = ['Likes'];
   columns.push(columns1);
   let categories = [];
 
@@ -241,10 +275,15 @@ $(document).ready(() => {
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
 
+
+			if( userId != profileClickedId) {
+				$("#profileUploadButton").hide();
+				$("#createProject").hide();
+			}
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
-      console.log(getUserProfileUrl);
+      console.log("CLICKED PROFILE :" + getUserProfileUrl);
       $.ajax({
           url: getUserProfileUrl,
           type: 'GET',
@@ -252,10 +291,19 @@ $(document).ready(() => {
           success: (data) => {
               console.log('Recieved user profile info');
               console.log(data);
-              $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
               $('.profileName').html(data.firstName + ' ' + data.lastName);
           }
       });
+
+      $.ajax({
+      	url: '/loadProfile/' + userId,
+      	type: 'GET',
+      	datatype: 'JSON',
+      	success: (data) => {
+      		$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      	}
+      });
+
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
           url: getUserProjectsUrl,
@@ -314,21 +362,19 @@ $(document).ready(() => {
                     }
                   });
 
-
 					console.log(data[i].mainImg);
 					let clone = document.importNode(template.content, true);
-					projectsMain.appendChild(clone);
+					//projectsMain.appendChild(clone);
+					projectsMain.insertBefore(clone, projectsMain.childNodes[6]);
 				}
 
                 //data visualization
 
 
-
-
-
-
-
                 $(".design-pics").click(function(event){
+                  //clear
+                  document.querySelector('.commentList').innerHTML = "";
+
                   //project div
                   projectDiv = $(event.target).parent().parent();
                   console.log($(event.target).parent().text());
@@ -357,8 +403,27 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
+                      
+                      $.ajax({
+                        url: '/getComments/' + $(projectDiv).find('#projectId').text(),
+                        type: 'GET',
+                        datatype: 'JSON',
+                        success: (data) => {
+                          let commentList = document.querySelector('.commentList');
+                          for(let i = 0; i < data.length; i++) {
+                            console.log(data);
+                            let template = document.querySelector('.commentTemplate');
+                            template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+                            template.content.querySelector('.commentText').textContent = data[i].commentText;
+                            let clone = document.importNode(template.content, true);
+                            
+                            commentList.appendChild(clone);
+                          }
+                          $('#projectViewModal').modal();
+
+                        }
+                      });
                       //display modal
-                      $('#projectViewModal').modal();
                     }
                   });
 
@@ -461,9 +526,101 @@ $(document).ready(() => {
             profileClickedId: profileClickedId
           },
           success: (data) => {
-
+            sessionStorage.setItem('mostRecentConversation', profileClickedId);
+            window.location.href = '/messages.html';
           }
         });
+      });
+  
+      $('#post-comment-button').click((event) => {
+        let commentText = $('.comment-text-field').val();
+        console.log(commentText);
+        $.ajax({
+          url: '/postComment',
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: projectClickedId,
+            commentText: commentText
+          },
+          success: (data) => {
+            console.log("HELLO");
+            let template = document.querySelector('.commentTemplate');
+            template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+            template.content.querySelector('.commentText').textContent = commentText;
+            let clone = document.importNode(template.content, true);
+            
+            document.querySelector('.commentList').appendChild(clone);
+          }
+        });
+      });
+
+          //redirect to search results page
+      $('#searchButton').click(()=>{
+        let searchKey = '/search/' + $('#search').val();
+        window.location.href = 'search.html?' + searchKey;
+      });
+
+      const getFollowsUrl = '/getFollows/' + profileClickedId;
+      $.ajax({
+        url: getFollowsUrl,
+        type: 'GET',
+        datatype: 'JSON',
+        success: (data) => {
+          console.log(data);
+          let outerArray = [];
+          let innerArray = ['Follows'];
+          let dates = [];
+
+          for(let i = 0; i < data.length; i++) {
+            if(!dates.includes(data[i].date)) {
+              dates.push(data[i].date);
+              console.log(data[i].date);
+            }
+          }
+
+          for(let i = 0; i < dates.length; i++) {
+            let dateCount = 0;
+            for (let j = 0; j < data.length; j++) {
+              if(data[j].date == dates[i])
+                dateCount++;
+            }
+            innerArray.push(dateCount);
+          }
+          //innerArray.push(data.length);
+
+          outerArray.push(innerArray);
+
+
+          var chart = c3.generate({
+            bindto: '#followChart',
+            data: {
+               columns: outerArray,
+               type: 'bar'
+            },
+            axis: {
+               x: {
+                   label: {
+                       text: 'dates',
+                       position: 'outer-center'
+                   },
+                   type: 'category',
+                   categories: dates,
+                   tick: {
+                       centered: true
+                   }
+               }
+            },
+            bar: {
+               width: {
+                   ratio: 0.25 // this makes bar width 50% of length between ticks
+               }
+               // or
+               //width: 100 // this makes bar width 100px
+            }
+          });
+        }
       });
   });
 

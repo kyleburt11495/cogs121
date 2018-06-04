@@ -25,7 +25,7 @@
 
 		<!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search..." id="search">
+				<input type="text" class="form-control" placeholder="Search..." id="searchValue">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
@@ -85,23 +85,13 @@
       </div>
 
       <div id="projectTemplate">
-        <div class="project1">
-        	<img class="project" src="" alt="">
-					<div class="container">
-						<span id="projectOwner"></span>
-		       	<i id="likeButton" class="far fa-heart fa-lg"></i>
-					</div>
-				</div>
-      </div>
-
-			<!-- <div class="project1">
-				<img class="project" src= "" alt="">
-				<div class="container">
-					<span id="projectOwner"></span>
-	       	<i id="likeButton" class="far fa-heart fa-lg hidden"></i>
-				</div>
-			</div> -->
-
+        <div class="project-hover col-sm-4">
+          <img class="project hidden" src="" alt="">
+          <div class="text">
+            <span id="projectOwner" val=""></span>
+            <i id="likeButton" class="far fa-heart fa-lg" val=""></i>
+          </div>
+        </div>
       </div>
 		</div>
 	</div>
@@ -112,29 +102,28 @@
 
 $(document).ready(function() {
 
-	// $('#searchBtn').click( () =>{
-	// 	// let searchValue = $('#searchValue').val().toLowerCase();
-	// 	let searchValue = $('#searchValue').val();
-	// 	let i = searchValue.indexOf(' ');
-	// 	let firstName = searchValue.slice(0,i).trim();
-	// 	let lastName = searchValue.slice(i+1, searchValue.length).trim();
-	//
-	// 	console.log(searchValue);
-	// 	console.log(firstName);
-	// 	console.log(lastName);
-	//
-	// 	$.ajax({
-	// 		url: 'searchForUsers/' + searchValue,
-	// 		type: 'GET',
-	// 		datatype: 'JSON',
-	// 	//	data: {firstName: firstName, lastName:lastName},
-	// 		success: (data) =>{
-	// 			const userSearchId = data.userId;
-	// 			sessionStorage.setItem('profileClickedId', userSearchId);
-	// 			window.location.href = 'profile.html';
-	// 		}
-	// 	});
-	// });
+	/*$('#searchButton').click( () =>{
+		// let searchValue = $('#searchValue').val().toLowerCase();
+		let searchValue = $('#searchValue').val();
+		let i = searchValue.indexOf(' ');
+		let firstName = searchValue.slice(0,i).trim();
+		let lastName = searchValue.slice(i+1, searchValue.length).trim();
+		console.log(searchValue);
+		console.log(firstName);
+		console.log(lastName);
+		$.ajax({
+			url: 'searchForUsers/' + searchValue,
+			type: 'GET',
+			datatype: 'JSON',
+		//	data: {firstName: firstName, lastName:lastName},
+			success: (data) =>{
+				const userSearchId = data.userId;
+                console.log("hsss" + userSearchId);
+				sessionStorage.setItem('profileClickedId', userSearchId);
+				window.location.href = 'profile.html';
+			}
+		});
+	});*/
 
    //get userId from session storage
   let userId = sessionStorage.getItem('id');
@@ -164,7 +153,8 @@ $(document).ready(function() {
             $(data).each((e)=>{
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].userId);
+              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+              clone.find('#likeButton').attr('val',data[e].projectId);
               $('#projects-list').append(clone);
             });
         }
@@ -192,7 +182,8 @@ $(document).ready(function() {
             $(data).each((e)=>{
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].userId);
+              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+              clone.find('#likeButton').attr('val',data[e].projectId);
               $('#projects-list').append(clone);
             });
         }
@@ -217,13 +208,15 @@ $(document).ready(function() {
             $(data).each((e)=>{
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
+              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+              clone.find('#likeButton').attr('val',data[e].projectId);
               $('#projects-list').append(clone);
             });
         }
     });
   });
 
+  //logout of account
   $('#logout').click(() => {
   	sessionStorage.clear();
   	console.log(sessionStorage.getItem('id'));
@@ -244,6 +237,13 @@ $(document).ready(function() {
       $('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
     }
   });
+
+  //redirect to project owner profile
+  $('body').on('click','#projectOwner',()=>{
+    sessionStorage.setItem('profileClickedId',$(event.target).attr('val'));
+    window.location.href = '/profile.html';
+  });
+
   //default images displayed on page load are trending images
   const trendingRequestUrl = '/trending';
   $.ajax({
@@ -257,60 +257,65 @@ $(document).ready(function() {
           $(data).each((e)=>{
             let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
             clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-            clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
+            clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+            clone.find('#likeButton').attr('val',data[e].projectId);
+            /*$.ajax({
+              url: '/isProjectLiked/' + sessionStorage.getItem('id') + '/' + data[e].projectId,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+
+              }
+            });*/
             $('#projects-list').append(clone);
           });
       }
   });
 
+  //send userId and projectId to database when like button is clicked
   const likeProjectUrl = '/likeProject';
-      $('#likeButton').click(() => {
-        if($('#likeButton').hasClass('fas')){
-          $('#likeButton').removeClass('fas').addClass('far');
-        } else {
-          $.ajax({
-            url: likeProjectUrl,
-            type: 'POST',
-            datatype: 'JSON',
-            data: {
-              userId: userId,
-              projectId: projectClickedId
-            },
-            success: (data) => {
-                //change appearance of like button
-                console.log('Liked');
-                $('#likeButton').removeClass('far').addClass('fas');
-            }
+  const dislikeProjectUrl = '/dislikeProject';
+  $('body').on('click','#likeButton',() => {
+    let likeTarget = $(event.target);
+   if(likeTarget.hasClass('fas')){
+        $.ajax({
+          url: dislikeProjectUrl,
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: likeTarget.attr('val')
+          },
+          success: (data) => {
+            likeTarget.removeClass('fas').addClass('far');
+          }
         });
+    } else {
+      $.ajax({
+        url: likeProjectUrl,
+        type: 'POST',
+        datatype: 'JSON',
+        data: {
+          userId: userId,
+          projectId: likeTarget.attr('val')
+        },
+        success: (data) => {
+            //change appearance of like button
+            likeTarget.removeClass('far').addClass('fas');
+            console.log("like");
         }
-      });
-
-  // $('body').on('mouseenter', '.project',(e)=>{
-  //   $(event.target).next().css('display','block');
-  //   $(event.target).next().next().css('display','block');
-  // });
-  // $('body').on('mouseleave','.project',(e)=>{
-  //   $(event.target).next().css('display','none');
-  //    $(event.target).next().next().css('display','none');
-  // });
-
-  $('#searchButton').click(()=>{
-		if($('#search').val()){
-    let searchKey = '/search/' + $('#search').val();
-    $.ajax({
-      url: searchKey,
-      type: 'GET',
-      datatype: 'JSON',
-      success: (data) => {
-        console.log('SEARCH: ' + data);
-      }
     });
-	}
-	else {
-		console.log('empty search value');
-		}
+    }
   });
 
+
+
+  
+  //redirect to search results page
+  $('#searchButton').click(()=>{
+    let searchKey = '/search/' + $('#search').val(); 
+    window.location.href = 'search.html?' + searchKey;
+  });
 });
 </script>
 </body>
