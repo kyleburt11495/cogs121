@@ -12,7 +12,7 @@
 	<script src="SendBird.min.js"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg" id="nav">
+	<!-- <nav class="navbar navbar-expand-lg" id="nav">
 		<a class="navbar-brand" href="home.html">InLook</a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
@@ -34,9 +34,43 @@
 				</li>
 			</ul>
 		</div>
+	</nav> -->
+
+	<nav class="navbar navbar-expand-lg" id="nav">
+
+		<form>
+			<div class="box" id="navbarSupportedContent">
+				 <div class="container-2">
+				    <span class="icon">
+							<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+						</span>
+				    <input type="search" id="search" />
+				 </div>
+			</div>
+		</form>
+
+		<div class="navbar-header">
+			<a class="navbar-brand" href="home.html">INLOOK</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+
+		<div id="menuToggle">
+			<input type="checkbox"/>
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul id="menu">
+				<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
+				<a class="menu-options" href="messages.html"><li>Messages</li></a>
+				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
+			</ul>
+		</div>
 	</nav>
+
 	<div class="main">
-		<h4>Messages</h4>
+		<h4>MESSAGES</h4>
 		<template class="person-template">
 			<div class="person">
 				<div class="person-name">
@@ -179,6 +213,7 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									}
 									else
+
 									console.log('did not match');
 								}
 								sb.addChannelHandler(1, channelHandler);
@@ -234,6 +269,7 @@
 									});
                                     sessionStorage.setItem('mostRecentConversation', otherUserId);
 								});
+
 								//send message button click handler
 								$('#send-message-button').unbind('click');
 								$('#send-message-button').click(() => {
