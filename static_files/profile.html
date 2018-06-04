@@ -86,7 +86,7 @@
 				<form id="uploadPicture" action="/editbio" method="post" enctype="multipart/form-data" target="_self">
 					<div class="form-group">
 						<label for="image">Upload Profile Photo</label>
-						<input type="file" name="image" id="image" class="form-control">
+						<input type="file" name="image" id="imagePic" class="form-control" value="hello">
 					</div>
 					<div class="form-group">
 						<label for="editName">First Name</label>
@@ -149,10 +149,10 @@
 			</br>
 				<div class="profile-important">
 					<div class="profile-photo">
-						<img src="defaultpicture.png"  id="profpic" alt="profile picture"></br></br>
+						<img src="defaultpicture.png" id="profpic" alt="profile picture"></br></br>
 					</div>
 					<h3 class="username profileName" id="profileName">User</h3>
-					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
+					<div class="bio" id="bioinfo">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
 					<div class="profile-buttons">
 						<button type="button" class="btn-sm-follow" id="followUser">Follow</button>
 						<button type="button" class="btn-sm-message" id="messageButton">Message</button>
@@ -262,11 +262,14 @@ $(document).ready(() => {
           success: (data) => {
               console.log('Recieved user profile info');
               console.log(data);
+							$('#bioinfo').html(data.bio);
               $('.profileName').html(data.firstName + ' ' + data.lastName);
 							$('#editName').attr("value", data.firstName);
 							$('#editLastname').attr("value", data.lastName);
 							$('#userBio').attr("value", data.bio);
 							$('#userbioId').attr("value", data.userId);
+							$('#profpic').attr("src", data.profilePicture);
+							$('#imagePic').attr("value", data.profilePicture);
           }
       });
 
@@ -278,6 +281,22 @@ $(document).ready(() => {
       		$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
       	}
       });
+
+			$.ajax({
+				url: '/editbio',
+				type: 'POST',
+				datatype: 'JSON',
+				success: (data) =>{
+					$('#profileName').html(data.firstName + ' ' + data.lastName);
+					$('.bio').html(data.bio);
+					$('#profpic').attr("src", data.profilePicture);
+					window.location.href = "profile.html";
+					//res.redirect('/profile.html');
+				}
+			});
+
+
+
 
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
@@ -435,6 +454,7 @@ $(document).ready(() => {
           success: (data) => {
             //change appearance of follow button
             console.log('Follow button should change now');
+						$('#followUser').html('Unfollow');
           }
         });
       });

@@ -71,44 +71,45 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 });
 
 //edit profile (bio & picture)
-app.post('/editbio', upload.single('image'), (req, res) => {
-  console.log(req.body);
-  // console.log(req.file.filename); gets an error if the user does not provide a file for the profile picture NOT GOOD
+// app.post('/editbio', upload.single('image'), (req, res) => {
+app.post('/editbio', upload.single('image'), (req, res) =>{
+  console.log(req.body.userId);
   console.log(req.body.editName);
   console.log(req.body.editLastname);
-  console.log(req.body.editbio);
-  const userId = req.body.userId;
-  const firstName = req.body.editName;
-  const lastName = req.body.editLastname;
-  const userBio = req.body.editBio;
-  const profilePicture = req.file.filename;
+  console.log(req.body.userBio);
 
-  db.run('UPDATE users_account SET firstName =$firstName, lastName =$lastName, bio=$userBio, profilePicture=$mainImg WHERE userId=$userId',
+  const userId = req.body.userId;
+
+  db.run("UPDATE users_account SET firstName = $firstName, lastName = $lastName, bio = $userBio, profilePicture = $profilePicture WHERE userId=$userId",
 {
   $firstName: req.body.editName,
   $lastName: req.body.editLastname,
-  $bio:req.body.editBio,
-  $profilePicture:req.file.filename,
+  $userBio: req.body.userBio,
+  $profilePicture: req.file.filename,
+  $userId: req.body.userId,
 },
 (err, row) => {
   if(err){
     console.log(err.message);
     res.send({}) //send empty string
   } else {
-    return res.redirect('/profile.html');
+    console.log("HELLO");
+    db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId},
+    (err, row) =>{
+      if(err) {
+        console.log(err.message);
+      } else {
+        console.log('bye');
+        console.log(row[0]);
+        res.send(row[0]);
+      }
+    }
+  )
 
   }
-})
-
-
-
-
-
-
-//  return res.redirect('/profile.html');
-
-  //console.log(req.file.filename);
-})
+});
+//return res.redirect('/profile.html');
+});
 
 //like project
 app.post('/likeProject', (req, res) => {
@@ -297,23 +298,6 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
   });
 });
 
-
-app.get('/searchForUsers/:searchValue', (req, res) => {
-  const userId = '%' + req.params.searchValue + '%';
-  console.log(userId);
-  db.all("SELECT * FROM users_account WHERE firstName LIKE $userId", {$userId: userId}, (err, row) => {
-    if (err) {
-      console.error(err.message);
-    }
-    if (row.length > 0) {
-      console.log(row[0]);
-      res.send(row[0]);
-    }
-    else {
-      res.send({}); //failed so return empty string instead of undefined
-    }
-  });
-});
 
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;
