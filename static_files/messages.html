@@ -78,7 +78,7 @@
 					<span class="person-name-1">Sumedha Gupta</span>
 				</div>
 				<div class="chat-ongoing">
-					<span class="lastMessage">Hi! I was wondering if you're free for a job right now?</span>
+					<span class="lastMessage"></span>
 				</div>
 				<p class="personId"></p>
 			</div>
@@ -190,7 +190,7 @@
 								//CHANGE LATER TO USER'S NAME
 								template.content.querySelector('.person-name-1').textContent = firstName + ' ' + lastName;
 								//CHANGE LATER TO LAST MESSAGE IN CONVERSATION
-								template.content.querySelector('.lastMessage').textContent = "Hi! I was wondering if you're free for a job right now?";
+								template.content.querySelector('.lastMessage').textContent = "";
 								//clone template and append to people-list
 								let clone = document.importNode(template.content, true);
 								peopleList.appendChild(clone);
