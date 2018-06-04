@@ -7,43 +7,72 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
-		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
+		<!-- <a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		</button> -->
+
+		<form>
+			<div class="box" id="navbarSupportedContent">
+				 <div class="container-2">
+				    <span class="icon">
+							<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+						</span>
+				    <input type="search" id="search" />
+				 </div>
+			</div>
+		</form>
+
+		<!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
 				<input type="text" class="form-control" placeholder="Search..." id="searchValue">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
-			</div>
-			<ul class="navbar-nav ml-auto">
+			</div>  -->
+
+		<div class="navbar-header">
+			<a class="navbar-brand" href="home.html">INLOOK</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+
+		<div id="menuToggle">
+			<input type="checkbox"/>
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul id="menu">
+				<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
+				<a class="menu-options" href="messages.html"><li>Messages</li></a>
+				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
+			</ul>
+			<!-- <ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i>User</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
 				</li>
-				|
 				<li class="nav-item">
 					<a href="login.html" class="nav-link" id="logout"><i class="fas fa-sign-out-alt"></i></a>
 				</li>
-			</ul>
+			</ul>-->
+
 		</div>
 	</nav>
 
 	<div class="main">
 		<ul id="innerNav">
 			<li class="tablink active" id="trending">TRENDING</li>
-			|
+
 			<li class="tablink" id="popular">POPULAR</li>
-			|
+
 			<li class="tablink" id="following">FOLLOWING</li>
 		</ul>
-		<hr>
 		<div class="tabcontent" id="trendingContent">
-			<h4 class="category-title">STORIES</h4>
+			<!-- <h4 class="category-title">STORIES</h4>
 			<div id="stories">
 				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
 				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
@@ -51,12 +80,12 @@
 				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
 				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
 			</div>
-			<h4 class="category-title">PROJECTS</h4>
+			<h4 class="category-title">PROJECTS</h4> -->
       <div id="projects-list">
       </div>
 
       <div id="projectTemplate">
-        <div class="project-hover">
+        <div class="project-hover col-sm-4">
           <img class="project hidden" src="" alt="">
           <div class="text">
             <span id="projectOwner" val=""></span>
@@ -231,6 +260,14 @@ $(document).ready(function() {
             clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
             clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
             clone.find('#likeButton').attr('val',data[e].projectId);
+            /*$.ajax({
+              url: '/isProjectLiked/' + sessionStorage.getItem('id') + '/' + data[e].projectId,
+              type: 'GET',
+              datatype: 'JSON',
+              success: (data) => {
+
+              }
+            });*/
             $('#projects-list').append(clone);
           });
       }
@@ -277,7 +314,7 @@ $(document).ready(function() {
   
   //redirect to search results page
   $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#searchValue').val(); 
+    let searchKey = '/search/' + $('#search').val(); 
     window.location.href = 'search.html?' + searchKey;
   });
 });
