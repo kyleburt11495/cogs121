@@ -58,16 +58,17 @@ $(document).ready(()=>{
           else{
             $('#error').html("Incorrect username or password!");
           }
-        });
-      }
-      else {
-        $('#error').html('Missing field. Username and password required');
-      }
-    });
-    $(document).ajaxError(() => {
-      $('#error').html("Incorrect username or password!");
-    });
+        }
+      });
+    }
+    else {
+      $('#error').html('Missing field. Username and password required');
+    }
   });
+  $(document).ajaxError(() => {
+    $('#error').html("Incorrect username or password!");
+  });
+});
 </script>
 
 </body>
