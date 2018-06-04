@@ -52,7 +52,7 @@
 
 <template class="commentTemplate">
   <div class="comment">
-    <p class="commentAuthor" id="authorcomment"></p>
+    <!--<p class="commentAuthor" id="authorcomment"></p>-->
     <p class="commentText" id="userComment"></p>
   </div>
 </template>
@@ -416,8 +416,8 @@ $(document).ready(() => {
                           for(let i = 0; i < data.length; i++) {
                             console.log(data);
                             let template = document.querySelector('.commentTemplate');
-                            template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
-                            template.content.querySelector('.commentText').textContent = data[i].commentText;
+                            //template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+                            template.content.querySelector('.commentText').textContent = data[i].firstName + ' ' + data[i].lastName + ': ' + data[i].commentText;
                             let clone = document.importNode(template.content, true);
 
                             commentList.appendChild(clone);
@@ -550,8 +550,8 @@ $(document).ready(() => {
           success: (data) => {
             console.log("HELLO");
             let template = document.querySelector('.commentTemplate');
-            template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
-            template.content.querySelector('.commentText').textContent = commentText;
+            //template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+            template.content.querySelector('.commentText').textContent = $('profileName').html() + ': ' + commentText;
             let clone = document.importNode(template.content, true);
 
             document.querySelector('.commentList').appendChild(clone);

@@ -587,9 +587,11 @@ h4{
 
 }
 
+/**
 #projectComment {
 	width: 100%;
 }
+
 
 #userComment{
 	display: inline-block;
@@ -604,6 +606,7 @@ h4{
 #usernameComment{
 	width: 100%;
 }
+*/
 #commentButton{
 	width: 100%;
 }
@@ -611,6 +614,14 @@ h4{
 hr{
 	width: 100%;
 	background-color: #333;
+}
+
+.commentList {
+  overflow-y: scroll
+}
+
+#projectViewModal {
+  max-height: 600px;
 }
 
 /* @media (min-width: 992px) {
