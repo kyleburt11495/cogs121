@@ -119,7 +119,7 @@ body {
 	position: absolute;
 }
 
-.project-hover {
+.project1 {
 	display: inline-block;
 	height: 20rem;
 	width: 49%;
@@ -159,7 +159,7 @@ body {
 	text-decoration: underline;
 }
 
-#likeButton:hover {
+#likeButton:hover{
 	color: red;
 }
 
