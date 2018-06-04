@@ -1,6 +1,34 @@
-html{
+*{
+  font-family: Lato;
+}
+
+
+/* .navbar-brand {
+	margin-left: 0.3rem;
+  max-width: 7rem;
+  padding: 0;
+} */
+
+.navbar-brand:hover {
+	color: black;
+}
+
+.navbar-header{
+  float: left;
+  padding: 40px;
+  text-align: center;
   width: 100%;
-  height: 100%;
+  position: absolute;
+}
+
+.navbar-brand {
+	float:none;
+	margin-left: 0.3rem;
+	font-size: 3.00rem;
+	color: black;
+	font-weight:640;
+	letter-spacing: 10px;
+  vertical-align: middle;
 }
 
 #status {
@@ -9,12 +37,31 @@ html{
   color: red;
 }
 
-
 #nav {
-	background-color: #212121;
-	padding: 0;
-	width: 100%;
+	background-color: #FFFFFF;
+  padding: 0;
+  width: 100%;
+	height: 110px;
+	box-shadow: 0px 2px 25px #D7D7D7;
 }
+
+#signup-text{
+    /* background: #386F9A; */
+    text-align: center;
+    font-family: Lato;
+    color: black;
+    padding-top: 20px;
+    font-weight:640;
+    font-size: 40px;
+    letter-spacing: 5px;
+}
+
+html{
+
+  width: 100%;
+  height: 100%;
+}
+
 
 /* .search {
 	float: right;
@@ -22,13 +69,17 @@ html{
 	margin-right: 1rem;
 } */
 
-.navbar-brand {
+label{
+  justify-content: center;
+
+}
+/* .navbar-brand {
 	margin-left: 0.3rem;
   font-size: 2.5rem;
   color: white;
   max-width: 7rem;
   padding: 0;
-}
+} */
 
 .img-responsive{
 	width: 7rem;
@@ -38,9 +89,9 @@ html{
 	text-decoration: underline;
 }
 
-.navbar-brand:hover {
+/* .navbar-brand:hover {
 	color: red;
-}
+} */
 
 h4 {
 	text-align: center;
@@ -63,11 +114,9 @@ h4 {
 	width: 500px;
 }
 
-
-
 .container {
 	height: 100%;
-	padding: 40px;
+	padding: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -80,4 +129,31 @@ h4 {
 
 .lg {
 	margin-bottom: 20px;
+}
+
+#firstname, #lastname, #username, #password{
+  border-bottom-style: solid;
+  border-bottom-color: black;
+  border-bottom-width: thin;
+  align-content: center;
+  box-shadow: none;
+}
+
+.form-control{
+  border: none;
+}
+
+#designer, #customer{
+  font-size: 14px;
+  font-weight: medium;
+  padding-right: 20px;
+}
+.btn-primary{
+  background-color: black;
+  border: none;
+}
+
+a{
+  color: gray;
+  font-size: 14px;
 }

@@ -52,6 +52,8 @@ db.serialize(() => {
 	
   //table of conversations between users. When inserting into table or querying make sure that userId1 is lower id value than userId2
   db.run("CREATE TABLE conversations(userId1 INTEGER NOT NULL, userId2 INTEGER NOT NULL, FOREIGN KEY(userId1) REFERENCES users_account(userId), FOREIGN KEY(userId2) REFERENCES users_account(userId), PRIMARY KEY(userId1, userId2))");
+  
+  db.run("CREATE TABLE comments(commentId INTEGER PRIMARY KEY, userId INTEGER, projectId INTEGER, commentText TEXT, time REAL, FOREIGN KEY(userId) REFERENCES users_account(userId), FOREIGN KEY(projectId) REFERENCES projects(projectId))");
   /**
   db.run("CREATE TABLE message_to_user(messageId INTEGER, receiverId INTEGER, FOREIGN KEY messageId REFERENCES messages(messageId), FOREIGN KEY receiverId REFERENCES users_account(userId), PRIMARY KEY(messageId, receiverId)))", (err, row) => {
     if(err) {

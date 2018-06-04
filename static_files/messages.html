@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="messages.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -12,13 +13,13 @@
 	<script src="SendBird.min.js"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg" id="nav">
+	<!-- <nav class="navbar navbar-expand-lg" id="nav">
 		<a class="navbar-brand" href="home.html">InLook</a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" placeholder="Search..." id="searchValue">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -34,9 +35,43 @@
 				</li>
 			</ul>
 		</div>
+	</nav> -->
+
+	<nav class="navbar navbar-expand-lg" id="nav">
+
+		<form>
+			<div class="box" id="navbarSupportedContent">
+				 <div class="container-2">
+				    <span class="icon">
+							<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+						</span>
+				    <input type="search" id="search" />
+				 </div>
+			</div>
+		</form>
+
+		<div class="navbar-header">
+			<a class="navbar-brand" href="home.html">INLOOK</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+
+		<div id="menuToggle">
+			<input type="checkbox"/>
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul id="menu">
+				<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
+				<a class="menu-options" href="messages.html"><li>Messages</li></a>
+				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
+			</ul>
+		</div>
 	</nav>
+
 	<div class="main">
-		<h4>Messages</h4>
+		<h4>MESSAGES</h4>
 		<template class="person-template">
 			<div class="person">
 				<div class="person-name">
@@ -91,6 +126,9 @@
 		const userId = sessionStorage.getItem('id');
 		//id of other user in currently selected conversation
 		let otherUserId;
+        let mostRecentConversation;
+        //check if mostRecentConversation in sessionStorage is set. If it is then set otherUserId to it
+        mostRecentConversation = sessionStorage.getItem('mostRecentConversation');
 		//the current channel
 		let messageChannel;
 		// array of userId's of other users that have started conversations with current user
@@ -142,7 +180,7 @@
 								}
 								//create conversation object and store in conversation array
 								conversation = {otherUserId: channel};
-								console.log(conversation.otherUserId.lastMessage.sender.userId);
+								//console.log(conversation.otherUserId.lastMessage.sender.userId);
 								conversationsArray.push(conversation);
 
 								//clone template and store
@@ -176,11 +214,10 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									}
 									else
+
 									console.log('did not match');
 								}
 								sb.addChannelHandler(1, channelHandler);
-
-
 								//when sidebar is clicked, get correct channel and display chat history
 								$('.person').unbind();
 								$('.person').click((event) => {
@@ -231,6 +268,7 @@
 											chatMessagesDiv.appendChild(messageTemplateClone);
 										}
 									});
+                                    sessionStorage.setItem('mostRecentConversation', otherUserId);
 								});
 
 								//send message button click handler
@@ -254,6 +292,10 @@
 										chatMessagesDiv.appendChild(messageTemplateClone);
 									});
 								});
+                              
+                                if(otherUserId == mostRecentConversation) {
+                                  $('.person').last().trigger('click');
+                                }
 							});
 						}
 					}
@@ -270,9 +312,16 @@
 			success: (data) => {
 				console.log('Recieved user profile info');
 				console.log(data);
-				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+				//$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+				$('#userName li').html(data.firstName + ' ' + data.lastName);
 			}
 		});
+
+		//redirect to search results page
+	    $('#searchButton').click(()=>{
+	      let searchKey = '/search/' + $('#search').val(); 
+	      window.location.href = 'search.html?' + searchKey;
+	    });
 
 		$('#logout').click(() => {
 			sessionStorage.clear();

@@ -172,7 +172,7 @@ app.post('/followPerson', (req, res) => {
 
 
 app.get('/trending', (req, res) => {
-  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isTrending = 1", (err, row)=> {
+  db.all("SELECT likes.projectId, projects.projectTitle, projects.projectDescription, projects.mainImg, projects.userId, users_account.firstName, users_account.lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId WHERE likes.date BETWEEN julianday('now', '-7 days') AND julianday('now') GROUP BY likes.projectId ORDER BY count(*)", (err, row)=> {
     if(err) {
       console.error(err.message);
     }
@@ -183,8 +183,8 @@ app.get('/trending', (req, res) => {
 });
 
 app.get('/popular', (req, res) =>{
-  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId = users_account.userId WHERE isPopular = 1", (err, row) => {
-    if (err) {
+  db.all("SELECT likes.projectId AS projectId, projects.projectTitle AS projectTitle, projects.projectDescription AS projectDescription, projects.mainImg AS mainImg, projects.userId AS userId, users_account.firstName AS firstName, users_account.lastName AS lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId GROUP BY likes.projectId ORDER BY COUNT(*) DESC", (err, row) => {
+    if (err) { 
       console.error(err.message);
     }
     else {
@@ -212,7 +212,7 @@ app.get('/following/:userId', (req, res) =>{
 });
 
 app.get('/getFollows/:userId', (req, res) => {
-  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC", {$userId: req.params.userId}, (err, row) => {
+  db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date(date) AS date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC LIMIT 10", {$userId: req.params.userId}, (err, row) => {
     if(err) {
       console.error(err.message);
     }
@@ -250,7 +250,7 @@ app.get('/getProject/:projId',(req,res)=>{
 });
 
 app.get('/getAmountOfLikes/:projectId', (req, res) => {
-  db.all("SELECT * FROM likes where projectId = $projectId", {$projectId: req.params.projectId}, (err, row) => {
+  db.all("SELECT * FROM likes where projectId = $projectId LIMIT 10", {$projectId: req.params.projectId}, (err, row) => {
     if(err) {
       console.error(err.message);
     }
@@ -258,6 +258,31 @@ app.get('/getAmountOfLikes/:projectId', (req, res) => {
   });
 });
 
+app.post('/postComment', (req, res) => {
+  console.log(req.body.userId);
+  console.log(req.body.projectId);
+  console.log(req.body.commentText);
+  db.run("INSERT INTO comments(userId, projectId, commentText, time) VALUES($userId, $projectId, $commentText, julianday('now'))", {
+    $userId: req.body.userId,
+    $projectId: req.body.projectId,
+    $commentText: req.body.commentText
+  }, (err, row) => {
+    if(err) {
+      console.error(err);
+    }
+    res.send({message: 'successfully inserted comment into database'});
+  });
+});
+
+app.get('/getComments/:projectId', (req, res) => {
+  db.all("SELECT comments.userId AS userId, comments.commentText AS commentText, users_account.firstName as firstName, users_account.lastName AS lastName FROM comments LEFT JOIN users_account ON users_account.userId = comments.userId WHERE projectId = $projectId ORDER BY comments.time DESC", {$projectId: req.params.projectId}, (err, row) => {
+    if(err) {
+      console.error(err);
+    }
+    console.log(row);
+    res.send(row);
+  });
+});
 app.post('/createNewConversation', (req, res) => {
   //order ids so that smaller id is userId1 and larger is userId2
   let userId1;
@@ -336,7 +361,8 @@ app.get('/loadProjects/:userid', (req, res) => {
 
 app.get('/search/:searchKey',(req,res) => {
   const key = '%' + req.params.searchKey + '%';
-  db.all("SELECT users_account.userId, users_account.firstName, users_account.email, users_account.lastName, users_account.isDesigner, users_account.profilePicture, users_account.bio, projects.projectId, projects.projectTitle, projects.projectDescription, projects.isTrending, projects.isPopular, projects.mainImg FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
+  console.log("BACK " + req.params.searchKey);
+  db.all("SELECT users_account.userId, users_account.firstName, users_account.email, users_account.lastName, users_account.isDesigner, users_account.profilePicture, users_account.bio, projects.projectId, projects.projectTitle, projects.projectDescription, projects.isTrending, projects.isPopular, projects.mainImg FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName || ' ' || users_account.lastName LIKE $key OR users_account.lastName LIKE $key OR users_account.firstName LIKE $key", {$key: key}, (err,row)=>{
     if(err){
       console.error(err.message);
     } else{

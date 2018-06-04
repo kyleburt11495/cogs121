@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="profile.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <!-- JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
@@ -42,12 +43,19 @@
 					</div>
 					<input type="hidden" name="userId" id="userId">
 					<input type="submit" class="btn btn-primary" id="submitProject">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
+<template class="commentTemplate">
+  <div class="comment">
+    <p class="commentAuthor"></p>
+    <p class="commentText"></p>
+  </div>
+</template>
 
 <!--Project View Modal -->
 <div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -63,7 +71,11 @@
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 				<p id="projectTitleModal"></p>
 				<p id="projectDescriptionModal"></p>
-				<textarea placeholder="comment.." id="projectComment"> </textarea>
+                <div class="commentList"></div>
+                <div class="chat-input">
+					<input class="comment-text-field" type="text">
+					<button id="post-comment-button">Send</button>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<i id="likeButton" class="far fa-heart fa-lg"></i>
@@ -111,7 +123,7 @@
 
 
 <div class="container-fluid" id="navcontainer">
-	<nav class="navbar navbar-expand-lg" id="nav">
+	<!-- <nav class="navbar navbar-expand-lg" id="nav">
 		<a class="navbar-brand" href="home.html" id="anchor"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<div class="input-group">
@@ -127,10 +139,43 @@
 				<li class="nav-item">
 					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
 				</li>
-				|
+
 				<li class="nav-item">
 					<a class="nav-link" href="login.html" id="logout"><i class="fas fa-sign-out-alt"></i></a>
 				</li>
+			</ul>
+		</div>
+	</nav> -->
+
+	<nav class="navbar navbar-expand-lg" id="nav">
+
+		<form>
+			<div class="box" id="navbarSupportedContent">
+				 <div class="container-2">
+				    <span class="icon">
+							<button class="btn btn-default" type="button" id="searchButton"><i id="searchIcon" class="fa fa-search"></i></button>
+						</span>
+				    <input type="search" id="search" />
+				 </div>
+			</div>
+		</form>
+
+		<div class="navbar-header">
+			<a class="navbar-brand" href="home.html">INLOOK</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+
+		<div id="menuToggle">
+			<input type="checkbox"/>
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul id="menu">
+				<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
+				<a class="menu-options" href="messages.html"><li>Messages</li></a>
+				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
 			</ul>
 		</div>
 	</nav>
@@ -162,7 +207,7 @@
 				<!-- Skills list -->
 				<!-- <div class="sidebar-info-bar"> -->
 					<!-- <div class="profile-important"> -->
-						<h4>Skills & Styles </h4>
+						<h4>Skills</h4>
 						<ul class="skills-list">
 							<li>Modern</li>
 							<li>Contemporary</li>
@@ -172,7 +217,7 @@
 					<!-- </div> -->
 					<!-- <div class="sidebar-info-bar"> -->
 					<!-- <div class="profile-important"> -->
-						<h4>Social</h4>
+						<h4 id="social">Social</h4>
 						<div id="socialMedia">
 							<a href="wwww.twitter.com" class="fa fa-twitter"></a>
 							<a href="wwww.linkedin.com" class="fa fa-linkedin"></a>
@@ -195,10 +240,10 @@
 
 <div class="projects-main col-md-5 col-xs-3">
 	<ul id="innerNav">
-		<li class="tablink active" id="projectsTab">PROJECTS</li>|
+		<li class="tablink active" id="projectsTab">PROJECTS</li>
 		<li class="tablink" id="statsTab">STATS</li>
 	</ul>
-	<hr>
+
 	<div class="projects">
 		<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
 			<i class="fas fa-plus"></i>
@@ -221,8 +266,6 @@
 	</div>
 
 </div>
-</div>
-
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -245,6 +288,7 @@ $(document).ready(() => {
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
       console.log("hello" + profileClickedId);
+
 
 			if( userId != profileClickedId) {
 				$("#editProfile").hide();
@@ -286,7 +330,8 @@ $(document).ready(() => {
       	type: 'GET',
       	datatype: 'JSON',
       	success: (data) => {
-      		$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      		//$('#userName li')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+      		$('#userName li').html(data.firstName + ' ' + data.lastName);
       	}
       });
 
@@ -357,7 +402,11 @@ $(document).ready(() => {
 
                 //data visualization
 
+
                 $(".design-pics").click(function(event){
+                  //clear
+                  document.querySelector('.commentList').innerHTML = "";
+
                   //project div
                   projectDiv = $(event.target).parent().parent();
                   console.log($(event.target).parent().text());
@@ -386,8 +435,27 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
+
+                      $.ajax({
+                        url: '/getComments/' + $(projectDiv).find('#projectId').text(),
+                        type: 'GET',
+                        datatype: 'JSON',
+                        success: (data) => {
+                          let commentList = document.querySelector('.commentList');
+                          for(let i = 0; i < data.length; i++) {
+                            console.log(data);
+                            let template = document.querySelector('.commentTemplate');
+                            template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+                            template.content.querySelector('.commentText').textContent = data[i].commentText;
+                            let clone = document.importNode(template.content, true);
+
+                            commentList.appendChild(clone);
+                          }
+                          $('#projectViewModal').modal();
+
+                        }
+                      });
                       //display modal
-                      $('#projectViewModal').modal();
                     }
                   });
 
@@ -499,23 +567,49 @@ $(document).ready(() => {
             profileClickedId: profileClickedId
           },
           success: (data) => {
-
+            sessionStorage.setItem('mostRecentConversation', profileClickedId);
+            window.location.href = '/messages.html';
           }
         });
       });
 
-      //redirect to search results page
-  $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val();
-    window.location.href = 'search.html?' + searchKey;
-  });
+      $('#post-comment-button').click((event) => {
+        let commentText = $('.comment-text-field').val();
+        console.log(commentText);
+        $.ajax({
+          url: '/postComment',
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: projectClickedId,
+            commentText: commentText
+          },
+          success: (data) => {
+            console.log("HELLO");
+            let template = document.querySelector('.commentTemplate');
+            template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+            template.content.querySelector('.commentText').textContent = commentText;
+            let clone = document.importNode(template.content, true);
 
-      const getFollowsUrl = '/getFollows/' + userId;
+            document.querySelector('.commentList').appendChild(clone);
+          }
+        });
+      });
+
+          //redirect to search results page
+      $('#searchButton').click(()=>{
+        let searchKey = '/search/' + $('#search').val();
+        window.location.href = 'search.html?' + searchKey;
+      });
+
+      const getFollowsUrl = '/getFollows/' + profileClickedId;
       $.ajax({
         url: getFollowsUrl,
         type: 'GET',
         datatype: 'JSON',
         success: (data) => {
+          console.log(data);
           let outerArray = [];
           let innerArray = ['Follows'];
           let dates = [];
