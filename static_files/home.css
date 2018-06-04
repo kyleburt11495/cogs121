@@ -292,9 +292,10 @@ font-size: 1.75rem;
 	display: none;
 }
 
-.tablink .active{
-	text-decoration-color: black;
-}
+/* #innerNav li:active{
+	text-decoration: underline;
+	color: black;
+} */
 
 a {
 	color: white;
