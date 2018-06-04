@@ -378,17 +378,19 @@ $(document).ready(() => {
                         success: (data) => {
                           let commentList = document.querySelector('.commentList');
                           for(let i = 0; i < data.length; i++) {
+                            console.log(data);
                             let template = document.querySelector('.commentTemplate');
-                            template.content.querySelector(".commentAuthor").textContent = data.firstName + ' ' + data.lastName;
-                            template.content.querySelector('.commentText').textContent = data.commentText;
+                            template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+                            template.content.querySelector('.commentText').textContent = data[i].commentText;
                             let clone = document.importNode(template.content, true);
                             
                             commentList.appendChild(clone);
                           }
+                          $('#projectViewModal').modal();
+
                         }
                       });
                       //display modal
-                      $('#projectViewModal').modal();
                     }
                   });
 
@@ -498,7 +500,27 @@ $(document).ready(() => {
       });
   
       $('#post-comment-button').click((event) => {
-        $.ajax({});
+        let commentText = $('.comment-text-field').val();
+        console.log(commentText);
+        $.ajax({
+          url: '/postComment',
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: projectClickedId,
+            commentText: commentText
+          },
+          success: (data) => {
+            console.log("HELLO");
+            let template = document.querySelector('.commentTemplate');
+            template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+            template.content.querySelector('.commentText').textContent = commentText;
+            let clone = document.importNode(template.content, true);
+            
+            document.querySelector('.commentList').appendChild(clone);
+          }
+        });
       });
 
           //redirect to search results page

@@ -220,6 +220,9 @@ app.get('/getAmountOfLikes/:projectId', (req, res) => {
 });
 
 app.post('/postComment', (req, res) => {
+  console.log(req.body.userId);
+  console.log(req.body.projectId);
+  console.log(req.body.commentText);
   db.run("INSERT INTO comments(userId, projectId, commentText, time) VALUES($userId, $projectId, $commentText, julianday('now'))", {
     $userId: req.body.userId,
     $projectId: req.body.projectId,
@@ -228,12 +231,12 @@ app.post('/postComment', (req, res) => {
     if(err) {
       console.error(err);
     }
-    res.send({message: 'successfully inserted comment into database'})
+    res.send({message: 'successfully inserted comment into database'});
   });
 });
 
 app.get('/getComments/:projectId', (req, res) => {
-  db.all("SELECT * FROM comments WHERE projectId = $projectId ORDER BY time DESC", {$projectId: req.params.userId}, (err, row) => {
+  db.all("SELECT comments.userId AS userId, comments.commentText AS commentText, users_account.firstName as firstName, users_account.lastName AS lastName FROM comments LEFT JOIN users_account ON users_account.userId = comments.userId WHERE projectId = $projectId ORDER BY comments.time DESC", {$projectId: req.params.projectId}, (err, row) => {
     if(err) {
       console.error(err);
     }
