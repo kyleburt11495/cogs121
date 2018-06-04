@@ -48,6 +48,13 @@
 		</div>
 	</div>
 </div>
+  
+<template class="commentTemplate">
+  <div class="comment">
+    <p class="commentAuthor"></p>
+    <p class="commentText"></p>
+  </div>
+</template>
 
 <!--Project View Modal -->
 <div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -63,7 +70,11 @@
 				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
 				<p id="projectTitleModal"></p>
 				<p id="projectDescriptionModal"></p>
-				<textarea placeholder="comment.." id="projectComment"> </textarea>
+                <div class="commentList"></div>
+                <div class="chat-input">
+					<input class="comment-text-field" type="text">
+					<button id="post-comment-button">Send</button>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<i id="likeButton" class="far fa-heart fa-lg"></i>
@@ -208,7 +219,6 @@
 	</div>
 
 </div>
-</div>
 
 
 
@@ -329,6 +339,9 @@ $(document).ready(() => {
                 //data visualization
 
                 $(".design-pics").click(function(event){
+                  //clear
+                  document.querySelector('.commentList').innerHTML = "";
+
                   //project div
                   projectDiv = $(event.target).parent().parent();
                   console.log($(event.target).parent().text());
@@ -357,8 +370,27 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
+                      
+                      $.ajax({
+                        url: '/getComments/' + $(projectDiv).find('#projectId').text(),
+                        type: 'GET',
+                        datatype: 'JSON',
+                        success: (data) => {
+                          let commentList = document.querySelector('.commentList');
+                          for(let i = 0; i < data.length; i++) {
+                            console.log(data);
+                            let template = document.querySelector('.commentTemplate');
+                            template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+                            template.content.querySelector('.commentText').textContent = data[i].commentText;
+                            let clone = document.importNode(template.content, true);
+                            
+                            commentList.appendChild(clone);
+                          }
+                          $('#projectViewModal').modal();
+
+                        }
+                      });
                       //display modal
-                      $('#projectViewModal').modal();
                     }
                   });
 
@@ -461,23 +493,49 @@ $(document).ready(() => {
             profileClickedId: profileClickedId
           },
           success: (data) => {
-
+            sessionStorage.setItem('mostRecentConversation', profileClickedId);
+            window.location.href = '/messages.html';
+          }
+        });
+      });
+  
+      $('#post-comment-button').click((event) => {
+        let commentText = $('.comment-text-field').val();
+        console.log(commentText);
+        $.ajax({
+          url: '/postComment',
+          type: 'POST',
+          datatype: 'JSON',
+          data: {
+            userId: userId,
+            projectId: projectClickedId,
+            commentText: commentText
+          },
+          success: (data) => {
+            console.log("HELLO");
+            let template = document.querySelector('.commentTemplate');
+            template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+            template.content.querySelector('.commentText').textContent = commentText;
+            let clone = document.importNode(template.content, true);
+            
+            document.querySelector('.commentList').appendChild(clone);
           }
         });
       });
 
-      //redirect to search results page
-  $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val();
-    window.location.href = 'search.html?' + searchKey;
-  });
+          //redirect to search results page
+      $('#searchButton').click(()=>{
+        let searchKey = '/search/' + $('#search').val();
+        window.location.href = 'search.html?' + searchKey;
+      });
 
-      const getFollowsUrl = '/getFollows/' + userId;
+      const getFollowsUrl = '/getFollows/' + profileClickedId;
       $.ajax({
         url: getFollowsUrl,
         type: 'GET',
         datatype: 'JSON',
         success: (data) => {
+          console.log(data);
           let outerArray = [];
           let innerArray = ['Follows'];
           let dates = [];
