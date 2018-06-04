@@ -73,7 +73,7 @@
 
 $(document).ready(function() {
 
-	$('#searchButton').click( () =>{
+	/*$('#searchButton').click( () =>{
 		// let searchValue = $('#searchValue').val().toLowerCase();
 		let searchValue = $('#searchValue').val();
 		let i = searchValue.indexOf(' ');
@@ -94,7 +94,7 @@ $(document).ready(function() {
 				window.location.href = 'profile.html';
 			}
 		});
-	});
+	});*/
 
    //get userId from session storage
   let userId = sessionStorage.getItem('id');
@@ -273,7 +273,7 @@ $(document).ready(function() {
 
   //redirect to search results page
   $('#searchButton').click(()=>{
-    let searchKey = '/search/' + $('#search').val(); 
+    let searchKey = '/search/' + $('#searchValue').val(); 
     window.location.href = 'search.html?' + searchKey;
   });
 });

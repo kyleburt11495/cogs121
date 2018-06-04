@@ -81,7 +81,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" placeholder="Search..." id="search">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
 				</span>
 			</div>
 			<ul class="navbar-nav ml-auto">
@@ -211,7 +211,7 @@ $(document).ready(() => {
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
-      console.log(getUserProfileUrl);
+      console.log("CLICKED PROFILE :" + getUserProfileUrl);
       $.ajax({
           url: getUserProfileUrl,
           type: 'GET',
@@ -292,7 +292,8 @@ $(document).ready(() => {
 
 					console.log(data[i].mainImg);
 					let clone = document.importNode(template.content, true);
-					projectsMain.appendChild(clone);
+					//projectsMain.appendChild(clone);
+					projectsMain.insertBefore(clone, projectsMain.childNodes[6]);
 				}
                 
                 //data visualization
@@ -434,6 +435,12 @@ $(document).ready(() => {
           }
         });
       });
+
+      //redirect to search results page
+  $('#searchButton').click(()=>{
+    let searchKey = '/search/' + $('#search').val(); 
+    window.location.href = 'search.html?' + searchKey;
+  });
   
       const getFollowsUrl = '/getFollows/' + userId;
       $.ajax({

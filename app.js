@@ -221,6 +221,18 @@ app.get('/loadProfile/:userid', (req, res) => {
   });
 });
 
+app.get('/getProject/:projId',(req,res)=>{
+  const projId = req.params.projId;
+  db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId=users_account.userId WHERE projectId=$projId",{$projId: projId}, (err,row) => {
+    if(err) {
+      console.error(err.message);
+    } else {
+      console.log(row);
+      res.send(row);
+    }
+  });
+});
+
 app.get('/getAmountOfLikes/:projectId', (req, res) => {
   db.all("SELECT * FROM likes where projectId = $projectId", {$projectId: req.params.projectId}, (err, row) => {
     if(err) {
@@ -355,7 +367,7 @@ app.get('/loadProjects/:userid', (req, res) => {
 
 app.get('/search/:searchKey',(req,res) => {
   const key = '%' + req.params.searchKey + '%';
-  db.all("SELECT * FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
+  db.all("SELECT users_account.userId, users_account.firstName, users_account.email, users_account.lastName, users_account.isDesigner, users_account.profilePicture, users_account.bio, projects.projectId, projects.projectTitle, projects.projectDescription, projects.isTrending, projects.isPopular, projects.mainImg FROM users_account LEFT JOIN projects ON projects.userId = users_account.userId WHERE projects.projectDescription LIKE $key OR projects.projectTitle LIKE $key OR users_account.firstName LIKE $key OR users_account.lastName LIKE $key", {$key: key}, (err,row)=>{
     if(err){
       console.error(err.message);
     } else{ 
