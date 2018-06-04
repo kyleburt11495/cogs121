@@ -90,6 +90,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 	$(document).ready(()=>{
+        const dislikeProjectUrl= '/dislikeProject';
+        const likeProjectUrl = '/likeProject';
         let projId;
 		const userId = sessionStorage.getItem('id');
 		const getUserProfileUrl = '/loadProfile/' + userId;
@@ -179,43 +181,6 @@
 			window.location.href = 'messages.html';
 		});
 
-		const likeProjectUrl = '/likeProject';
-		const dislikeProjectUrl = '/dislikeProject';
-		$('body').on('click','.likeButton',(e) => {
-			let likeTarget = $(event.target);
-			e.stopPropagation();
-			if(likeTarget.hasClass('fas')){
-				$.ajax({
-					url: dislikeProjectUrl,
-					type: 'POST',
-					datatype: 'JSON',
-					data: {
-						userId: userId,
-						projectId: likeTarget.attr('value')
-					},
-					success: (data) => {
-						likeTarget.removeClass('fas').addClass('far');
-						console.log("unliked");
-					}
-				});
-			} else {
-				$.ajax({
-					url: likeProjectUrl,
-					type: 'POST',
-					datatype: 'JSON',
-					data: {
-						userId: userId,
-						projectId: likeTarget.attr('value')
-					},
-					success: (data) => {
-			            //change appearance of like button
-			            likeTarget.removeClass('far').addClass('fas');
-			            console.log("like");
-        			}
-    			});
-			}
-		});
-
 		$('body').on('click','.profile',()=>{
 			console.log(event.target);
 		
@@ -232,11 +197,9 @@
 			window.location.href = '/profile.html';
 		});
       
-        const likeProjectUrl = '/likeProject';
-        const dislikeProjectUrl = '/dislikeProject';
-        $('body').on('click', '#likeButton', () => {
+        $('body').on('click', '.likeButton', (event) => {
           console.log(projId);
-          if($('#likeButton').hasClass('fas')){
+          if($(event.target).hasClass('fas')){
             $.ajax({
               url: dislikeProjectUrl,
               type: 'POST',
@@ -247,7 +210,7 @@
               },
               success: (data) => {
                 console.log('disliked');
-                $('#likeButton').removeClass('fas').addClass('far');
+                $(event.target).removeClass('fas').addClass('far');
               }
             });
             } 
@@ -263,7 +226,7 @@
                   success: (data) => {
                       //change appearance of like button
                       console.log('Liked');
-                      $('#likeButton').removeClass('far').addClass('fas');
+                      $(event.target).removeClass('far').addClass('fas');
                   }
               });
             }
