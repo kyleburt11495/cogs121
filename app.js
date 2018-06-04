@@ -133,7 +133,7 @@ app.post('/followPerson', (req, res) => {
 
 
 app.get('/trending', (req, res) => {
-  db.all("SELECT likes.projectId, projects.projectTitle, projects.projectDescription, projects.mainImg, projects.userId, count(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId WHERE likes.date BETWEEN julianday('now', '-7 days') AND julianday('now') GROUP BY likes.projectId ORDER BY count(*)", (err, row)=> {
+  db.all("SELECT likes.projectId, projects.projectTitle, projects.projectDescription, projects.mainImg, projects.userId, users_account.firstName, users_account.lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId WHERE likes.date BETWEEN julianday('now', '-7 days') AND julianday('now') GROUP BY likes.projectId ORDER BY count(*)", (err, row)=> {
     if(err) {
       console.error(err.message);
     }
@@ -144,7 +144,7 @@ app.get('/trending', (req, res) => {
 });
 
 app.get('/popular', (req, res) =>{
-  db.all("SELECT likes.projectId AS projectId, projects.projectTitle AS projectTitle, projects.projectDescription AS projectDescription, projects.mainImg AS mainImg, projects.userId AS userId, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId GROUP BY likes.projectId ORDER BY COUNT(*) DESC", (err, row) => {
+  db.all("SELECT likes.projectId AS projectId, projects.projectTitle AS projectTitle, projects.projectDescription AS projectDescription, projects.mainImg AS mainImg, projects.userId AS userId, users_account.firstName AS firstName, users_account.lastName AS lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId GROUP BY likes.projectId ORDER BY COUNT(*) DESC", (err, row) => {
     if (err) { 
       console.error(err.message);
     }

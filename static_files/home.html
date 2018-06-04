@@ -122,6 +122,7 @@ $(document).ready(function() {
             console.log(data);
             $('#projects-list').empty();
             $(data).each((e)=>{
+              console.log(data);
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
               clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);

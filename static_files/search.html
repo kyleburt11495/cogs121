@@ -90,6 +90,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 	$(document).ready(()=>{
+        let projId;
 		const userId = sessionStorage.getItem('id');
 		const getUserProfileUrl = '/loadProfile/' + userId;
 		$.ajax({
@@ -188,9 +189,46 @@
 			sessionStorage.setItem('profileClickedId',id);
 			window.location.href = '/profile.html';
 		});
+      
+        const likeProjectUrl = '/likeProject';
+        const dislikeProjectUrl = '/dislikeProject';
+        $('body').on('click', '#likeButton', () => {
+          console.log(projId);
+          if($('#likeButton').hasClass('fas')){
+            $.ajax({
+              url: dislikeProjectUrl,
+              type: 'POST',
+              datatype: 'JSON',
+              data: {
+                userId: userId,
+                projectId: projId
+              },
+              success: (data) => {
+                console.log('disliked');
+                $('#likeButton').removeClass('fas').addClass('far');
+              }
+            });
+            } 
+            else {
+              $.ajax({
+                  url: likeProjectUrl,
+                  type: 'POST',
+                  datatype: 'JSON',
+                  data: {
+                      userId: userId,
+                      projectId: projId
+                  },
+                  success: (data) => {
+                      //change appearance of like button
+                      console.log('Liked');
+                      $('#likeButton').removeClass('far').addClass('fas');
+                  }
+              });
+            }
+        });
 
 		$('body').on('click','.project',()=>{
-			let projId = $(event.target).find('#projectId').val();
+			projId = $(event.target).find('#projectId').val();
 			console.log($(event.target).next().children('#projectOwner'));
 
 			if(!projId){
