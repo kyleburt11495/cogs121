@@ -160,7 +160,7 @@ padding: 0;
 }
 
 .img-responsive{
-width: 4rem;
+width: 100%;
 }
 
 #logoImg {
@@ -456,6 +456,11 @@ ul.skills-list{
 	margin-right: 0.2rem;
 	margin-bottom: 0.5rem;
 	object-fit: cover;
+}
+
+#projectImgModal {
+  width: 100%;
+  max-width: 600px;
 }
 
 .project1{
