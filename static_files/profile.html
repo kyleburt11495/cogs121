@@ -506,8 +506,8 @@ $(document).ready(() => {
       });
 
       //send userId's to database when follow button is clicked
-			let userFollowingId;
-			let userFollowedId;
+			let userFollowingId = userId;
+			let userFollowedId = profileClickedId;
       const followPersonUrl = '/followPerson';
       $('#followUser').click(() => {
         $.ajax({
