@@ -101,7 +101,8 @@ app.post('/editbio', upload.single('image'), (req, res) =>{
       } else {
         console.log('bye');
         console.log(row[0]);
-        res.send(row[0]);
+        return res.redirect('/profile.html');
+                // res.send(row[0]);
       }
     }
   )

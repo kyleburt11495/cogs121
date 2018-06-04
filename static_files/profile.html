@@ -251,6 +251,9 @@ $(document).ready(() => {
 				$("#createProject").hide();
 			}
 
+			if( userId == profileClickedId) {
+				$("#followUser").hide();
+			}
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
@@ -268,7 +271,12 @@ $(document).ready(() => {
 							$('#editLastname').attr("value", data.lastName);
 							$('#userBio').attr("value", data.bio);
 							$('#userbioId').attr("value", data.userId);
+							if(data.profilePicture){
 							$('#profpic').attr("src", data.profilePicture);
+						} else {
+							$('#profpic').attr("src", "defaultpicture.png");
+						}
+
 							$('#imagePic').attr("value", data.profilePicture);
           }
       });
@@ -281,21 +289,6 @@ $(document).ready(() => {
       		$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
       	}
       });
-
-			$.ajax({
-				url: '/editbio',
-				type: 'POST',
-				datatype: 'JSON',
-				success: (data) =>{
-					$('#profileName').html(data.firstName + ' ' + data.lastName);
-					$('.bio').html(data.bio);
-					$('#profpic').attr("src", data.profilePicture);
-					window.location.href = "profile.html";
-					//res.redirect('/profile.html');
-				}
-			});
-
-
 
 
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
@@ -441,6 +434,8 @@ $(document).ready(() => {
       });
 
       //send userId's to database when follow button is clicked
+			let userFollowingId;
+			let userFollowedId;
       const followPersonUrl = '/followPerson';
       $('#followUser').click(() => {
         $.ajax({
@@ -458,6 +453,12 @@ $(document).ready(() => {
           }
         });
       });
+
+			if(userFollowingId == userFollowedId){
+				$('#followUser').text('Unfollow');
+			}
+
+
       $('#statsTab').click(()=>{
       	$('.stats').removeClass('hidden');
       	$('#statsTab').addClass('active');
