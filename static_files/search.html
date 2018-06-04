@@ -206,10 +206,28 @@
 					$('#projectOwnerModal').html(data[0].firstName + " " + data[0].lastName);
 					$('#projectImgModal').attr('src',data[0].mainImg);
 					$('#projectDescriptionModal').html(data[0].projectDescription);
+                  
+                    const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projId;
+                    $.ajax({
+                      url: isProjectLikedUrl,
+                      type: 'GET',
+                      datatype: 'JSON',
+                      success: (data) => {
+                        console.log('Checked if disliked or not');
+                        //if data exists then project was disliked
+                        if (data) {
+                          //set appearance of like button to already liked
+                          $('#likeButton').removeClass('far').addClass('fas');
+                        }
+                        else {
+                          $('#likeButton').removeClass('fas').addClass('far');
+                        }
+                        $('#projectViewModal').modal();
+                      }
+                    });
 				}
 			});
 			
-			$('#projectViewModal').modal();
 		});
 	});
 	</script>
