@@ -70,8 +70,47 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
 
 });
 
-//upload profile picture
+//edit profile (bio & picture)
+// app.post('/editbio', upload.single('image'), (req, res) => {
+app.post('/editbio', upload.single('image'), (req, res) =>{
+  console.log(req.body.userId);
+  console.log(req.body.editName);
+  console.log(req.body.editLastname);
+  console.log(req.body.userBio);
 
+  const userId = req.body.userId;
+
+  db.run("UPDATE users_account SET firstName = $firstName, lastName = $lastName, bio = $userBio, profilePicture = $profilePicture WHERE userId=$userId",
+{
+  $firstName: req.body.editName,
+  $lastName: req.body.editLastname,
+  $userBio: req.body.userBio,
+  $profilePicture: req.file.filename,
+  $userId: req.body.userId,
+},
+(err, row) => {
+  if(err){
+    console.log(err.message);
+    res.send({}) //send empty string
+  } else {
+    console.log("HELLO");
+    db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId},
+    (err, row) =>{
+      if(err) {
+        console.log(err.message);
+      } else {
+        console.log('bye');
+        console.log(row[0]);
+        return res.redirect('/profile.html');
+                // res.send(row[0]);
+      }
+    }
+  )
+
+  }
+});
+//return res.redirect('/profile.html');
+});
 
 //like project
 app.post('/likeProject', (req, res) => {
@@ -285,23 +324,6 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
   });
 });
 
-
-app.get('/searchForUsers/:searchValue', (req, res) => {
-  const userId = '%' + req.params.searchValue + '%';
-  console.log(userId);
-  db.all("SELECT * FROM users_account WHERE firstName LIKE $userId", {$userId: userId}, (err, row) => {
-    if (err) {
-      console.error(err.message);
-    }
-    if (row.length > 0) {
-      console.log(row[0]);
-      res.send(row[0]);
-    }
-    else {
-      res.send({}); //failed so return empty string instead of undefined
-    }
-  });
-});
 
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;

@@ -49,7 +49,7 @@
 		</div>
 	</div>
 </div>
-  
+
 <template class="commentTemplate">
   <div class="comment">
     <p class="commentAuthor"></p>
@@ -89,18 +89,30 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Upload Profile Picture</h5>
+				<h5 class="modal-title" id="exampleModalLongTitle">Edit Profile</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form id="uploadPicture" action="/uploadProfilePicture" method="post" enctype="multipart/form-data" target="_self">
+				<form id="uploadPicture" action="/editbio" method="post" enctype="multipart/form-data" target="_self">
 					<div class="form-group">
-						<label for="image">Upload Image</label>
-						<input type="file" name="image" id="image" class="form-control">
+						<label for="image">Upload Profile Photo</label>
+						<input type="file" name="image" id="imagePic" class="form-control" value="hello">
 					</div>
-					<input type="hidden" name="userId" id="userId">
+					<div class="form-group">
+						<label for="editName">First Name</label>
+						<input name="editName" type="text" class="form-control" id="editName" placeholder="First name" value="">
+					</div>
+					<div class="form-group">
+						<label for="editLastname">Last Name</label>
+						<input name="editLastname" type="text" class="form-control" id="editLastname" placeholder="Last Name" value="">
+					</div>
+					<div class="form-group">
+						<label for="userBio">About me</label>
+						<input name="userBio" type="text" class="form-control" id="userBio" placeholder="Bio" value="">
+					</div>
+					<input type="hidden" name="userId" id="userbioId" value="">
 					<input type="submit" class="btn btn-primary" id="submitProfilepic">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				</form>
@@ -178,13 +190,14 @@
 		<div class="col-md-5 col-xs-3">
 			<div class="sidebar-profile-info" id="userinfo">
 				<!-- Profile essential details -->
+				<button type="button" id="editProfile" class="btn-sm-setting" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile"><i class="fa fa-cog" style="color:black"></i></button>
+			</br>
 				<div class="profile-important">
 					<div class="profile-photo">
-						<img src="defaultpicture.png"  id="profpic" alt=""></br></br>
-						<button type="button" id="profileUploadButton" class="btn-sm-message" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile">Upload Profile Picture </button>
+						<img src="defaultpicture.png" id="profpic" alt="profile picture"></br></br>
 					</div>
 					<h3 class="username profileName" id="profileName">User</h3>
-					<div class="bio">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
+					<div class="bio" id="bioinfo">Hi, My name is <span class="profileName"></span>! Message me if you wanna work together!</div>
 					<div class="profile-buttons">
 						<button type="button" class="btn-sm-follow" id="followUser">Follow</button>
 						<button type="button" class="btn-sm-message" id="messageButton">Message</button>
@@ -278,8 +291,12 @@ $(document).ready(() => {
 
 
 			if( userId != profileClickedId) {
-				$("#profileUploadButton").hide();
+				$("#editProfile").hide();
 				$("#createProject").hide();
+			}
+
+			if( userId == profileClickedId) {
+				$("#followUser").hide();
 			}
       $('#userId').val(userId);
       console.log("userId " + userId);
@@ -292,7 +309,19 @@ $(document).ready(() => {
           success: (data) => {
               console.log('Recieved user profile info');
               console.log(data);
+							$('#bioinfo').html(data.bio);
               $('.profileName').html(data.firstName + ' ' + data.lastName);
+							$('#editName').attr("value", data.firstName);
+							$('#editLastname').attr("value", data.lastName);
+							$('#userBio').attr("value", data.bio);
+							$('#userbioId').attr("value", data.userId);
+							if(data.profilePicture){
+							$('#profpic').attr("src", data.profilePicture);
+						} else {
+							$('#profpic').attr("src", "defaultpicture.png");
+						}
+
+							$('#imagePic').attr("value", data.profilePicture);
           }
       });
 
@@ -305,6 +334,7 @@ $(document).ready(() => {
       		$('#userName li').html(data.firstName + ' ' + data.lastName);
       	}
       });
+
 
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
@@ -405,7 +435,7 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
-                      
+
                       $.ajax({
                         url: '/getComments/' + $(projectDiv).find('#projectId').text(),
                         type: 'GET',
@@ -418,7 +448,7 @@ $(document).ready(() => {
                             template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
                             template.content.querySelector('.commentText').textContent = data[i].commentText;
                             let clone = document.importNode(template.content, true);
-                            
+
                             commentList.appendChild(clone);
                           }
                           $('#projectViewModal').modal();
@@ -472,6 +502,8 @@ $(document).ready(() => {
       });
 
       //send userId's to database when follow button is clicked
+			let userFollowingId;
+			let userFollowedId;
       const followPersonUrl = '/followPerson';
       $('#followUser').click(() => {
         $.ajax({
@@ -485,9 +517,16 @@ $(document).ready(() => {
           success: (data) => {
             //change appearance of follow button
             console.log('Follow button should change now');
+						$('#followUser').html('Unfollow');
           }
         });
       });
+
+			if(userFollowingId == userFollowedId){
+				$('#followUser').text('Unfollow');
+			}
+
+
       $('#statsTab').click(()=>{
       	$('.stats').removeClass('hidden');
       	$('#statsTab').addClass('active');
@@ -533,7 +572,7 @@ $(document).ready(() => {
           }
         });
       });
-  
+
       $('#post-comment-button').click((event) => {
         let commentText = $('.comment-text-field').val();
         console.log(commentText);
@@ -552,7 +591,7 @@ $(document).ready(() => {
             template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
             template.content.querySelector('.commentText').textContent = commentText;
             let clone = document.importNode(template.content, true);
-            
+
             document.querySelector('.commentList').appendChild(clone);
           }
         });
