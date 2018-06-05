@@ -24,6 +24,7 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('users.db');
 
+
 app.use(express.static('static_files'));
 //to insert new accounts
 app.use(bodyParser.urlencoded({extended: true})); //hook to the app
@@ -56,53 +57,48 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       if(err) {
         console.err(err.message);
       }
-      
-  return res.redirect('/profile.html');
-});
-});
+      // redirect to profile page after uploading a new project
+      return res.redirect('/profile.html');
+    });
+  });
 
 });
 
-//edit profile (bio & picture)
-// app.post('/editbio', upload.single('image'), (req, res) => {
+//post request from profile page to edit bio and upload a profile picture
 app.post('/editbio', upload.single('image'), (req, res) =>{
-  console.log(req.body.userId);
-  console.log(req.body.editName);
-  console.log(req.body.editLastname);
-  console.log(req.body.userBio);
 
+  //store userId from the user
   const userId = req.body.userId;
 
+  //SQL query to update the user's info including the profile picture in the database
   db.run("UPDATE users_account SET firstName = $firstName, lastName = $lastName, bio = $userBio, profilePicture = $profilePicture WHERE userId=$userId",
-{
-  $firstName: req.body.editName,
-  $lastName: req.body.editLastname,
-  $userBio: req.body.userBio,
-  $profilePicture: req.file.filename,
-  $userId: req.body.userId,
-},
-(err, row) => {
-  if(err){
-    console.log(err.message);
-    res.send({}) //send empty string
-  } else {
-    console.log("HELLO");
-    db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId},
-    (err, row) =>{
-      if(err) {
-        console.log(err.message);
-      } else {
-        console.log('bye');
-        console.log(row[0]);
-        return res.redirect('/profile.html');
-                // res.send(row[0]);
+  {
+    $firstName: req.body.editName,
+    $lastName: req.body.editLastname,
+    $userBio: req.body.userBio,
+    $profilePicture: req.file.filename,
+    $userId: req.body.userId,
+  },
+  (err, row) => {
+    //error check
+    if(err){
+      console.log(err.message);
+      res.send({}) //send empty string
+    } else {
+
+      db.all("SELECT * FROM users_account WHERE userId=$userId", {$userId: userId},
+      (err, row) =>{
+        if(err) {
+          console.log(err.message);
+        } else {
+          return res.redirect('/profile.html');
+          // res.send(row[0]);
+        }
       }
-    }
-  )
+    )
 
   }
 });
-//return res.redirect('/profile.html');
 });
 
 //like project
@@ -208,6 +204,7 @@ app.get('/following/:userId', (req, res) =>{
   });
 });
 
+//follow other users
 app.get('/getFollows/:userId', (req, res) => {
   db.all("SELECT followedPeopleId, userFollowingId, userFollowedId, date(date) AS date FROM followed_people WHERE userFollowedId = $userId ORDER BY date DESC LIMIT 10", {$userId: req.params.userId}, (err, row) => {
     if(err) {
@@ -234,7 +231,7 @@ app.get('/loadProfile/:userid', (req, res) => {
     }
   });
 });
-
+//get a project
 app.get('/getProject/:projId',(req,res)=>{
   const projId = req.params.projId;
   db.all("SELECT projects.*, users_account.firstName, users_account.lastName FROM projects INNER JOIN users_account ON projects.userId=users_account.userId WHERE projectId=$projId",{$projId: projId}, (err,row) => {
@@ -246,7 +243,7 @@ app.get('/getProject/:projId',(req,res)=>{
     }
   });
 });
-
+//get amount of likes, used for data visualization as well
 app.get('/getAmountOfLikes/:projectId', (req, res) => {
   db.all("SELECT * FROM likes where projectId = $projectId LIMIT 10", {$projectId: req.params.projectId}, (err, row) => {
     if(err) {
@@ -255,7 +252,7 @@ app.get('/getAmountOfLikes/:projectId', (req, res) => {
     res.send(row);
   });
 });
-
+//post comments on a project
 app.post('/postComment', (req, res) => {
   console.log(req.body.userId);
   console.log(req.body.projectId);
@@ -272,6 +269,7 @@ app.post('/postComment', (req, res) => {
   });
 });
 
+//get comments
 app.get('/getComments/:projectId', (req, res) => {
   db.all("SELECT comments.userId AS userId, comments.commentText AS commentText, users_account.firstName as firstName, users_account.lastName AS lastName FROM comments LEFT JOIN users_account ON users_account.userId = comments.userId WHERE projectId = $projectId ORDER BY comments.time DESC", {$projectId: req.params.projectId}, (err, row) => {
     if(err) {
@@ -281,6 +279,8 @@ app.get('/getComments/:projectId', (req, res) => {
     res.send(row);
   });
 });
+
+//create new conversation
 app.post('/createNewConversation', (req, res) => {
   //order ids so that smaller id is userId1 and larger is userId2
   let userId1;
@@ -301,11 +301,12 @@ app.post('/createNewConversation', (req, res) => {
     if (err) {
       console.error(err);
     }
-    res.send({message: 'sucees'});
+    res.send({message: 'success'});
 
   });
 });
 
+//get the projects and likes associated with that project and user
 app.get('/getProjectsAndLikes/:userId', (req, res) => {
   db.all("SELECT * FROM projects LEFT OUTER JOIN likes ON (likes.userId = projects.userId) WHERE projects.userId = $userId", {$userId: req.params.userId}, (err, row) => {
     if (err) {
@@ -322,7 +323,7 @@ app.get('/getProjectsAndLikes/:userId', (req, res) => {
   });
 });
 
-
+//get the current conversation between two users
 app.get('/getConversations/:userId', (req, res) => {
   const userId = req.params.userId;
   db.all("SELECT userId1, userId2, firstName, lastName FROM conversations INNER JOIN users_account ON (conversations.userId1 = users_account.userId or conversations.userId2 = users_account.userId) WHERE ((conversations.userId1 = $userId OR conversations.userId2 = $userId) AND (users_account.userId != $userId))", {$userId: userId}, (err, rows) => {
@@ -393,21 +394,21 @@ app.post('/users', (req,res) => {
 
 // create user account
 app.post('/signup', (req, res)=>{
-  // let match = false;
+  //perform a query to get emails in the database
   db.all('SELECT email from users_account', (err,row)=> {
     let match = false;
     row.forEach((e) =>{
+      //heck if the email has been used before
       if(e.email == req.body.email){
-        console.log('match');
         match = true;
         return match;
       }
     });
     if(match){
-      console.log('user already exists');
       res.send({});
       return;
     }
+    //if the email has not been used perform a query to insert new users
     else{
       db.run(
         'INSERT INTO users_account(firstName, email, lastName, isDesigner, password) VALUES ($firstName, $email, $lastName, $isDesigner, $password)',
@@ -430,7 +431,6 @@ app.post('/signup', (req, res)=>{
               if(err){
                 console.log(err.message);
               } else{
-                console.log('New user');
                 console.log(row[0]);
                 res.send(row[0]);
 

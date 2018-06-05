@@ -13,94 +13,52 @@ This page also includes an error check to prevent the users from creating an acc
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
+  <!-- The navigation bar for the sign up page -->
   <nav class="navbar navbar-expand-lg" id="nav">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">INLOOK</a>
     </div>
   </nav>
-    <h4 id="signup-text">SIGN UP</h4>
-        <div class="container">
-          <div class="form-horizontal">
-            <div class="input-group">
-              <input id="firstname" type="text" class="form-control" placeholder="First Name" size="40" required>
-            </div>
-            <br>
-            <div class="input-group">
-              <input id="lastname" type="text" class="form-control" placeholder="Last Name" size="40" required>
-            </div>
-            <br>
-            <div class="input-group">
-              <input id="username" type="text" class="form-control" placeholder="Email" size="40" required>
-            </div>
-            <br>
-            <div class="input-group">
-              <input id="password" type="password" class="form-control" placeholder="Password" size="40" required>
-            </div>
-            <br>
-            <label for="designerOrCustomer">Are You a Designer or Customer?</label>
-            <div class="input-group">
-              <input class="form-check-input" type="radio" name="isDesigner" id="developer" value="1" required>
-              <label id= "designer" for="developer">Designer</label>
-              <input class="form-check-input" type="radio" name="isDesigner" id="customer" value="0" required>
-              <label id="customer" for="developer">Customer</label>
-            </div>
-            <div class="form-group in">
-              <button id="submitButton" type="submit" class="btn btn-primary btn-sm btn-block">Create Account</button></br>
-              <a class="hasAccount" href="login.html">Have an account? Log in!</a>
-            </div>
-          </div>
-        </div>
-    <div id="#status"> </div>
-<!--
-    <a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="logo" id="imglogo"></a>
-  </nav>
-  <div id="status"></div>
-  <h4>Signup</h4>
+  <h4 id="signup-text">SIGN UP</h4>
+  <!-- Form field for signing up (First name, last name, email, password, designer or customer) -->
   <div class="container">
     <div class="form-horizontal">
-      <label for="firstname">First Name</label>
       <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-        <input id="firstname" type="text" class="form-control" placeholder="First Name" required>
+        <input id="firstname" type="text" class="form-control" placeholder="First Name" size="40" required>
       </div>
       <br>
-      <label for="lastname">Last Name</label>
       <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-        <input id="lastname" type="text" class="form-control" placeholder="Last Name" required>
+        <input id="lastname" type="text" class="form-control" placeholder="Last Name" size="40" required>
       </div>
       <br>
-      <label for="username">Email</label>
       <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-        <input id="username" type="text" class="form-control" placeholder="Email" required>
+        <input id="username" type="text" class="form-control" placeholder="Email" size="40" required>
       </div>
       <br>
-      <label for="password">Password</label>
       <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-        <input id="password" type="password" class="form-control" placeholder="Password" required>
+        <input id="password" type="password" class="form-control" placeholder="Password" size="40" required>
       </div>
       <br>
       <label for="designerOrCustomer">Are You a Designer or Customer?</label>
       <div class="input-group">
         <input class="form-check-input" type="radio" name="isDesigner" id="developer" value="1" required>
-        <label for="developer">Designer</label>
+        <label id= "designer" for="developer">Designer</label>
         <input class="form-check-input" type="radio" name="isDesigner" id="customer" value="0" required>
-        <label for="developer">Customer</label>
+        <label id="customer" for="developer">Customer</label>
       </div>
       <div class="form-group in">
-        <button id="submitButton" class="btn btn-primary btn-sm btn-block">Create Account</button></br>
-        <a href="login.html">Have an account? Log in!</a>
+        <button id="submitButton" type="submit" class="btn btn-primary btn-sm btn-block">Create Account</button></br>
+        <a class="hasAccount" href="login.html">Have an account? Log in!</a>
       </div>
-    </form>
+    </div>
   </div>
--->
+  <div id="#status"> </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
   <script type="text/javascript">
   $('#submitButton').click(()=>{
+    // check if the all the form fields are field
     if($('#firstname').val() && $('#lastname').val() && $('#username').val() && $('#password').val() ){
       $.ajax({
         url:'/signup',
@@ -113,19 +71,19 @@ This page also includes an error check to prevent the users from creating an acc
           password:$('#password').val(),
         },
         success: (data)=>{
+          // store the user id in new_id
           if(data.userId) {
             const new_id = data.userId;
             sessionStorage.setItem('id', new_id);
+            //redirect to the homepage after a successful sign up
             window.location.assign('home.html');
           } else {
-            //  $('#status').html('');
             $('#status').html("Email address has already been used");
           }
         }
       });
     }
     else {
-      //  $('#status').html('');
       $('#status').html("Please enter all fields!");
     }
   });

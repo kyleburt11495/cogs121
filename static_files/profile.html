@@ -20,191 +20,166 @@ The profile page ‘stats’ tab displays the tables that show the number of lik
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="profile.css">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <!-- JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3@5.4.0/dist/d3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.js"></script>
+	<!-- JS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/d3@5.4.0/dist/d3.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/c3@0.6.0/c3.min.js"></script>
 </head>
 <body>
 
 
-<!--Project Creation Modal -->
-<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Add a New Project</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data" target="_self">
-					<div class="form-group">
-						<label for="projectTitle">Name Your Project</label>
-						<input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Project Title">
-					</div>
-					<div class="form-group">
-						<label for="projectDescription">What does your project show?</label>
-						<input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Project Description">
-					</div>
-					<div class="form-group">
-						<label for="image">Upload Image</label>
-						<input type="file" name="image" id="image" class="form-control">
-					</div>
-					<input type="hidden" name="userId" id="userId">
-					<input type="submit" class="btn btn-primary" id="submitProject">
-					<button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-
-<template class="commentTemplate">
-  <div class="comment">
-    <!--<p class="commentAuthor"></p>-->
-    <p class="commentText"></p>
-  </div>
-</template>
-
-<!--Project View Modal -->
-<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle"></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div id="project-view-modal" class="modal-body">
-				<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
-				<p id="projectTitleModal"></p>
-				<p id="projectDescriptionModal"></p>
-              <hr>
-                <div class="commentList"></div>
-                <div class="chat-input">
-					<input class="comment-text-field" type="text">
-					<button id="post-comment-button">Send</button>
+	<!--Project Creation Modal -->
+	<div class="modal fade" id="projectCreationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Add a New Project</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="uploadForm" action="/uploadFile" method="post" enctype="multipart/form-data" target="_self">
+						<div class="form-group">
+							<label for="projectTitle">Name Your Project</label>
+							<input name="projectTitle" type="text" class="form-control" id="projectTitle" placeholder="Project Title">
+						</div>
+						<div class="form-group">
+							<label for="projectDescription">What does your project show?</label>
+							<input name="projectDescription" type="text" class="form-control" id="projectDescription" placeholder="Project Description">
+						</div>
+						<div class="form-group">
+							<label for="image">Upload Image</label>
+							<input type="file" name="image" id="image" class="form-control">
+						</div>
+						<input type="hidden" name="userId" id="userId">
+						<input type="submit" class="btn btn-primary" id="submitProject">
+						<button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					</form>
 				</div>
 			</div>
-			<div class="modal-footer">
-				<i id="likeButton" class="far fa-heart fa-lg"></i>
+		</div>
+	</div>
+
+	<!-- template for project comments -->
+	<template class="commentTemplate">
+		<div class="comment">
+			<p class="commentText"></p>
+		</div>
+	</template>
+
+	<!--Project View Modal -->
+	<div class="modal fade" id="projectViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div id="project-view-modal" class="modal-body">
+					<img src="" alt="Project Image" class="design-pics img-responsive" id="projectImgModal">
+					<p id="projectTitleModal"></p>
+					<p id="projectDescriptionModal"></p>
+					<hr>
+					<div class="commentList"></div>
+					<div class="chat-input">
+						<input class="comment-text-field" type="text">
+						<button id="post-comment-button">Send</button>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<i id="likeButton" class="far fa-heart fa-lg"></i>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<!-- Upload Profile Picture Modal -->
-<div class="modal fade" id="profilePictureUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Edit Profile</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
+	<!-- Edit user bio and upload profile picture Modal -->
+	<div class="modal fade" id="profilePictureUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Edit Profile</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="uploadPicture" action="/editbio" method="post" enctype="multipart/form-data" target="_self">
+						<div class="form-group">
+							<label for="image">Upload Profile Photo</label>
+							<input type="file" name="image" id="imagePic" class="form-control" value="hello">
+						</div>
+						<div class="form-group">
+							<label for="editName">First Name</label>
+							<input name="editName" type="text" class="form-control" id="editName" placeholder="First name" value="">
+						</div>
+						<div class="form-group">
+							<label for="editLastname">Last Name</label>
+							<input name="editLastname" type="text" class="form-control" id="editLastname" placeholder="Last Name" value="">
+						</div>
+						<div class="form-group">
+							<label for="userBio">About me</label>
+							<input name="userBio" type="text" class="form-control" id="userBio" placeholder="Bio" value="">
+						</div>
+						<input type="hidden" name="userId" id="userbioId" value="">
+						<input type="submit" class="btn btn-primary" id="submitProfilepic">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- navigation bar for the profile page -->
+	<div class="container-fluid" id="navcontainer">
+		<nav class="navbar navbar-expand-lg" id="nav">
+			<form>
+				<div class="box" id="navbarSupportedContent">
+					<div class="container-2">
+						<input type="search" id="search" />
+						<span class="icon">
+							<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+						</span>
+					</div>
+				</div>
+			</form>
+
+			<div class="navbar-header">
+				<a class="navbar-brand" href="home.html">INLOOK</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form id="uploadPicture" action="/editbio" method="post" enctype="multipart/form-data" target="_self">
-					<div class="form-group">
-						<label for="image">Upload Profile Photo</label>
-						<input type="file" name="image" id="imagePic" class="form-control" value="hello">
-					</div>
-					<div class="form-group">
-						<label for="editName">First Name</label>
-						<input name="editName" type="text" class="form-control" id="editName" placeholder="First name" value="">
-					</div>
-					<div class="form-group">
-						<label for="editLastname">Last Name</label>
-						<input name="editLastname" type="text" class="form-control" id="editLastname" placeholder="Last Name" value="">
-					</div>
-					<div class="form-group">
-						<label for="userBio">About me</label>
-						<input name="userBio" type="text" class="form-control" id="userBio" placeholder="Bio" value="">
-					</div>
-					<input type="hidden" name="userId" id="userbioId" value="">
-					<input type="submit" class="btn btn-primary" id="submitProfilepic">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-				</form>
+
+			<div id="menuToggle">
+				<input type="checkbox"/>
+				<span></span>
+				<span></span>
+				<span></span>
+				<ul id="menu">
+					<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
+					<a class="menu-options" href="messages.html"><li>Messages</li></a>
+					<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
+				</ul>
 			</div>
-		</div>
+		</nav>
 	</div>
-</div>
-
-
-<div class="container-fluid" id="navcontainer">
-	<!-- <nav class="navbar navbar-expand-lg" id="nav">
-		<a class="navbar-brand" href="home.html" id="anchor"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search..." id="search">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
-				</span>
-			</div>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="profile.html" id="userName"><i class="fas fa-user-circle"></i> User </a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-				</li>
-
-				<li class="nav-item">
-					<a class="nav-link" href="login.html" id="logout"><i class="fas fa-sign-out-alt"></i></a>
-				</li>
-			</ul>
-		</div>
-	</nav> -->
-
-	<nav class="navbar navbar-expand-lg" id="nav">
-
-		<form>
-			<div class="box" id="navbarSupportedContent">
-				 <div class="container-2">
-				    <input type="search" id="search" />
-				    <span class="icon">
-						<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
-					</span>
-				 </div>
-			</div>
-		</form>
-
-		<div class="navbar-header">
-			<a class="navbar-brand" href="home.html">INLOOK</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-		</div>
-
-		<div id="menuToggle">
-			<input type="checkbox"/>
-			<span></span>
-			<span></span>
-			<span></span>
-			<ul id="menu">
-				<a id="userName" class="menu-options" href="profile.html"><li>Profile</li></a>
-				<a class="menu-options" href="messages.html"><li>Messages</li></a>
-				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
-			</ul>
-		</div>
-	</nav>
-</div>
-<div class="main">
+	<div class="main">
 
 
 
-	<!-- main content- bio, profile pic,
-	following button, message button, project number, followers/following number-->
-	<div class="row" id="sideinfo">
-		<div class="col-md-5 col-xs-3">
-			<div class="sidebar-profile-info" id="userinfo">
-				<!-- Profile essential details -->
-				<button type="button" id="editProfile" class="btn-sm-setting" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile"><i class="fa fa-cog" style="color:black"></i></button>
-			</br>
+		<!-- main content- bio, profile pic,
+		following button, message button, project number, followers/following number-->
+		<div class="row" id="sideinfo">
+			<div class="col-md-5 col-xs-3">
+				<div class="sidebar-profile-info" id="userinfo">
+					<!-- Profile essential details -->
+					<button type="button" id="editProfile" class="btn-sm-setting" data-toggle="modal" data-target="#profilePictureUpload" id="uploadProfile"><i class="fa fa-cog" style="color:black"></i></button>
+				</br>
 				<div class="profile-important">
 					<div class="profile-photo">
 						<img src="defaultpicture.png" id="profpic" alt="profile picture"></br></br>
@@ -216,477 +191,441 @@ The profile page ‘stats’ tab displays the tables that show the number of lik
 						<button type="button" class="btn-sm-message" id="messageButton">Message</button>
 					</div>
 				</div>
-
-				<!-- Skills list -->
-				<!-- <div class="sidebar-info-bar"> -->
-					<!-- <div class="profile-important"> -->
-
-					<!-- </div> -->
-					<!-- </div> -->
-					<!-- <div class="sidebar-info-bar"> -->
-					<!-- <div class="profile-important"> -->
-						<!--<h4 id="social">Social</h4>
-						<div id="socialMedia">
-							<a href="wwww.twitter.com" class="fa fa-twitter"></a>
-							<a href="wwww.linkedin.com" class="fa fa-linkedin"></a>
-							<a href="www.instagram.com" class="fa fa-instagram"></a>
-						</div>-->
-
-					<!-- </div> -->
-				<!-- </div> -->
 			</div>
 		</div>
-
-		<!-- <div class="col-md-7 col-xs-9">
-		<div class="project1" id="profileProjects">
-		<img class="img-responsive" src="profile_interior.jpg" alt="">
-		<img class="img-responsive" src="profile_interior.jpg" alt="">
-		<img class="img-responsive" src="profile_interior.jpg" alt="">
-		<img class="img-responsive" src="profile_interior.jpg" alt="">
-	</div>
-</div> -->
-
-<div class="projects-main col-md-5 col-xs-3">
-	<ul id="innerNav">
-		<li class="tablink active" id="projectsTab">PROJECTS</li>
-		<li class="tablink" id="statsTab">STATS</li>
-	</ul>
-
-	<div class="projects">
-		<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
-			<i class="fas fa-plus"></i>
-		</button>
-		<template class="projectTemplate">
-			<div class="project">
-				<div class="project-pic">
-					<img src="" alt="" class="design-pics img-responsive" id="projectImg">
-				</div>
-				<p class="projectInfo" id="projectTitle"></p>
-				<p class="projectInfo" id="projectDescription"></p>
-				<p class="projectInfo" id="projectId"></p>
+		<div class="projects-main col-md-5 col-xs-3">
+			<ul id="innerNav">
+				<li class="tablink active" id="projectsTab">PROJECTS</li>
+				<li class="tablink" id="statsTab">STATS</li>
+			</ul>
+			<div class="projects">
+				<button type="button btn-sm" id="createProject" class="btn btn-primary" data-toggle="modal" data-target="#projectCreationModal" >
+					<i class="fas fa-plus"></i>
+				</button>
+				<template class="projectTemplate">
+					<div class="project">
+						<div class="project-pic">
+							<img src="" alt="" class="design-pics img-responsive" id="projectImg">
+						</div>
+						<p class="projectInfo" id="projectTitle"></p>
+						<p class="projectInfo" id="projectDescription"></p>
+						<p class="projectInfo" id="projectId"></p>
+					</div>
+				</template>
 			</div>
-		</template>
-	</div>
-	<div class="stats hidden ">
-		<h3 class="text-center">Project Likes</h3>
-		<div id="likeChart"></div>
-        <div id="followChart"></div>
-	</div>
+			<div class="stats hidden ">
+				<h3 class="text-center">Project Likes</h3>
+				<div id="likeChart"></div>
+				<div id="followChart"></div>
+			</div>
 
-</div>
+		</div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-  let projectClickedId;
-  let columns = [];
-  let columns1 = ['Likes'];
-  columns.push(columns1);
-  let categories = [];
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script>
+		let projectClickedId;
+		let columns = [];
+		let columns1 = ['Likes'];
+		columns.push(columns1);
+		let categories = [];
 
 
 
-$(document).ready(() => {
-	// $(document).on('click', 'img', () => {
-	//             $('#projectViewModal').modal();
-	//           });
+		$(document).ready(() => {
+			//get userId and store in modal form field
+			const userId = sessionStorage.getItem('id');
+			//get id of viewed profile
+			const profileClickedId = sessionStorage.getItem('profileClickedId');
+			const name = '';
+			console.log("hello" + profileClickedId);
 
-      //get userId and store in modal form field
-      const userId = sessionStorage.getItem('id');
-      //get id of viewed profile
-      const profileClickedId = sessionStorage.getItem('profileClickedId');
-      const name = '';
-      console.log("hello" + profileClickedId);
-
-
+			//hide the edit option and create project from other users
 			if( userId != profileClickedId) {
 				$("#editProfile").hide();
 				$("#createProject").hide();
 			}
 
+			//hide the follow button when the user goes on their profile page
 			if( userId == profileClickedId) {
 				$("#followUser").hide();
 			}
-  
-      /**get user profile information and populate info panel on left of page with it */
-      $('#userId').val(userId);
-      console.log("userId " + userId);
-      const getUserProfileUrl = '/loadProfile/' + profileClickedId;
-      console.log("CLICKED PROFILE :" + getUserProfileUrl);
-      $.ajax({
-          url: getUserProfileUrl,
-          type: 'GET',
-          datatype: 'JSON',
-          success: (data) => {
-              console.log('Recieved user profile info');
-              console.log(data);
-							$('#bioinfo').html(data.bio);
-              $('.profileName').html(data.firstName + ' ' + data.lastName);
-							$('#editName').attr("value", data.firstName);
-							$('#editLastname').attr("value", data.lastName);
-							$('#userBio').attr("value", data.bio);
-							$('#userbioId').attr("value", data.userId);
-							if(data.profilePicture){
-							$('#profpic').attr("src", data.profilePicture);
-						} else {
-							$('#profpic').attr("src", "defaultpicture.png");
+
+			/**get user profile information and populate info panel on left of page with it */
+			$('#userId').val(userId);
+			console.log("userId " + userId);
+			const getUserProfileUrl = '/loadProfile/' + profileClickedId;
+			console.log("CLICKED PROFILE :" + getUserProfileUrl);
+			$.ajax({
+				url: getUserProfileUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log('Recieved user profile info');
+					console.log(data);
+					$('#bioinfo').html(data.bio);
+					$('.profileName').html(data.firstName + ' ' + data.lastName);
+					$('#editName').attr("value", data.firstName);
+					$('#editLastname').attr("value", data.lastName);
+					$('#userBio').attr("value", data.bio);
+					$('#userbioId').attr("value", data.userId);
+					if(data.profilePicture){
+						$('#profpic').attr("src", data.profilePicture);
+					} else {
+						$('#profpic').attr("src", "defaultpicture.png");
+					}
+
+					$('#imagePic').attr("value", data.profilePicture);
+					name = data.firstName + ' ' + data.lastName;
+				}
+			});
+
+			$.ajax({
+				url: '/loadProfile/' + userId,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					$('#userName li').html(data.firstName + ' ' + data.lastName);
+				}
+			});
+
+			/** Get projects created by user from database and populate templates with data Also get info for data visualization */
+			const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
+			$.ajax({
+				url: getUserProjectsUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					//console.log(data);
+					if (data[0] != null) {
+						const template = document.querySelector('.projectTemplate');
+						const projectsMain = document.querySelector('.projects-main');
+						for(let i = 0; i < data.length; i++) {
+							template.content.querySelector('.design-pics').src = data[i].mainImg;
+							template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
+							template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
+							template.content.querySelector('#projectId').textContent = data[i].projectId;
+
+							const currentProjectTitle = data[i].projectTitle;
+
+							/** Get amount of likes each project has from database and display in stats tab */
+							const getAmountOfLikesUrl = 'getAmountOfLikes/' + data[i].projectId;
+							$.ajax({
+								url: getAmountOfLikesUrl,
+								type: 'GET',
+								datatype: 'JSON',
+								success: (data) => {
+									columns1.push(data.length);
+									categories.push(currentProjectTitle);
+									var chart = c3.generate({
+										bindto: '#likeChart',
+										data: {
+											columns: columns,
+											type: 'bar'
+										},
+										axis: {
+											x: {
+												label: {
+													text: 'projects',
+													position: 'outer-center'
+												},
+												type: 'category',
+												categories: categories,
+												tick: {
+													centered: true
+												}
+											}
+										},
+										bar: {
+											width: {
+												ratio: 0.25 // this makes bar width 50% of length between ticks
+											}
+											// or
+											//width: 100 // this makes bar width 100px
+										}
+									});
+								}
+							});
+
+							console.log(data[i].mainImg);
+							let clone = document.importNode(template.content, true);
+							//projectsMain.appendChild(clone);
+							projectsMain.insertBefore(clone, projectsMain.childNodes[6]);
 						}
 
-							$('#imagePic').attr("value", data.profilePicture);
-							name = data.firstName + ' ' + data.lastName;
-          }
-      });
+						//data visualization
 
-      $.ajax({
-      	url: '/loadProfile/' + userId,
-      	type: 'GET',
-      	datatype: 'JSON',
-      	success: (data) => {
-      		//$('#userName li')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-      		$('#userName li').html(data.firstName + ' ' + data.lastName);
-      	}
-      });
+						/** If a picture is clicked, populate model with project info and make modal visible */
+						$(".design-pics").click(function(event){
+							//clear
+							document.querySelector('.commentList').innerHTML = "";
 
-      /** Get projects created by user from database and populate templates with data Also get info for data visualization */
-      const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
-      $.ajax({
-          url: getUserProjectsUrl,
-          type: 'GET',
-          datatype: 'JSON',
-          success: (data) => {
-              //console.log(data);
-              if (data[0] != null) {
-                const template = document.querySelector('.projectTemplate');
-                const projectsMain = document.querySelector('.projects-main');
-                for(let i = 0; i < data.length; i++) {
-                  template.content.querySelector('.design-pics').src = data[i].mainImg;
-                  template.content.querySelector('#projectTitle').textContent = data[i].projectTitle;
-                  template.content.querySelector('#projectDescription').textContent = data[i].projectDescription;
-                  template.content.querySelector('#projectId').textContent = data[i].projectId;
+							//project div
+							projectDiv = $(event.target).parent().parent();
+							console.log($(event.target).parent().text());
+							console.log($(event.target).attr("src"));
+							$("#projectImgModal").attr("src", $(event.target).attr("src"));
+							console.log($(projectDiv).find('#projectTitle').text());
+							$('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
+							$('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
 
-                  const currentProjectTitle = data[i].projectTitle;
-                  
-                  /** Get amount of likes each project has from database and display in stats tab */
-                  const getAmountOfLikesUrl = 'getAmountOfLikes/' + data[i].projectId;
-                  $.ajax({
-                    url: getAmountOfLikesUrl,
-                    type: 'GET',
-                    datatype: 'JSON',
-                    success: (data) => {
-                      columns1.push(data.length);
-                      categories.push(currentProjectTitle);
-                      //console.log(columns);
-                      //console.log(categories);
-                      var chart = c3.generate({
-                            bindto: '#likeChart',
-                         data: {
-                             columns: columns,
-                             type: 'bar'
-                         },
-                         axis: {
-                             x: {
-                                 label: {
-                                     text: 'projects',
-                                     position: 'outer-center'
-                                 },
-                                 type: 'category',
-                                 categories: categories,
-                                 tick: {
-                                     centered: true
-                                 }
-                             }
-                         },
-                         bar: {
-                             width: {
-                                 ratio: 0.25 // this makes bar width 50% of length between ticks
-                             }
-                             // or
-                             //width: 100 // this makes bar width 100px
-                         }
-                      });
-                    }
-                  });
+							//set projectClickedId to projectId of clicked project
+							projectClickedId = $(projectDiv).find('#projectId').text();
 
-					console.log(data[i].mainImg);
-					let clone = document.importNode(template.content, true);
-					//projectsMain.appendChild(clone);
-					projectsMain.insertBefore(clone, projectsMain.childNodes[6]);
+							//make query to database to determine whether this project was liked by user or not
+							const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projectClickedId;
+							$.ajax({
+								url: isProjectLikedUrl,
+								type: 'GET',
+								datatype: 'JSON',
+								success: (data) => {
+									console.log('Checked if disliked or not');
+									//if data exists then project was disliked
+									if (data) {
+										//set appearance of like button to already liked
+										$('#likeButton').removeClass('far').addClass('fas');
+									}
+									else {
+										$('#likeButton').removeClass('fas').addClass('far');
+									}
+
+									$.ajax({
+										url: '/getComments/' + $(projectDiv).find('#projectId').text(),
+										type: 'GET',
+										datatype: 'JSON',
+										success: (data) => {
+											let commentList = document.querySelector('.commentList');
+											for(let i = 0; i < data.length; i++) {
+												console.log(data);
+												let template = document.querySelector('.commentTemplate');
+												//template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
+												template.content.querySelector('.commentText').textContent = data[i].firstName + ' ' + data[i].lastName + ": " + data[i].commentText;
+												let clone = document.importNode(template.content, true);
+
+												commentList.appendChild(clone);
+											}
+											$('#projectViewModal').modal();
+
+										}
+									});
+									//display modal
+								}
+							});
+
+
+						});
+					}
 				}
+			});
 
-                //data visualization
+			//send userId and projectId to database when like button is clicked
+			const likeProjectUrl = '/likeProject';
+			const dislikeProjectUrl = '/dislikeProject';
+			$('#likeButton').click(() => {
+				if($('#likeButton').hasClass('fas')){
+					$.ajax({
+						url: dislikeProjectUrl,
+						type: 'POST',
+						datatype: 'JSON',
+						data: {
+							userId: userId,
+							projectId: projectClickedId
+						},
+						success: (data) => {
+							console.log('disliked');
+							$('#likeButton').removeClass('fas').addClass('far');
+						}
+					});
+				} else {
+					$.ajax({
+						url: likeProjectUrl,
+						type: 'POST',
+						datatype: 'JSON',
+						data: {
+							userId: userId,
+							projectId: projectClickedId
+						},
+						success: (data) => {
+							//change appearance of like button
+							console.log('Liked');
+							$('#likeButton').removeClass('far').addClass('fas');
+						}
+					});
+				}
+			});
 
-                /** If a picture is clicked, populate model with project info and make modal visible */
-                $(".design-pics").click(function(event){
-                  //clear
-                  document.querySelector('.commentList').innerHTML = "";
-
-                  //project div
-                  projectDiv = $(event.target).parent().parent();
-                  console.log($(event.target).parent().text());
-                  console.log($(event.target).attr("src"));
-                  $("#projectImgModal").attr("src", $(event.target).attr("src"));
-                  console.log($(projectDiv).find('#projectTitle').text());
-                  $('#projectTitleModal').text($(projectDiv).find('#projectTitle').text());
-                  $('#projectDescriptionModal').text($(projectDiv).find('#projectDescription').text());
-
-                  //set projectClickedId to projectId of clicked project
-                  projectClickedId = $(projectDiv).find('#projectId').text();
-
-                  //make query to database to determine whether this project was liked by user or not
-                  const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projectClickedId;
-                  $.ajax({
-                    url: isProjectLikedUrl,
-                    type: 'GET',
-                    datatype: 'JSON',
-                    success: (data) => {
-                      console.log('Checked if disliked or not');
-                      //if data exists then project was disliked
-                      if (data) {
-                        //set appearance of like button to already liked
-                        $('#likeButton').removeClass('far').addClass('fas');
-                      }
-                      else {
-                        $('#likeButton').removeClass('fas').addClass('far');
-                      }
-                      
-                      $.ajax({
-                        url: '/getComments/' + $(projectDiv).find('#projectId').text(),
-                        type: 'GET',
-                        datatype: 'JSON',
-                        success: (data) => {
-                          let commentList = document.querySelector('.commentList');
-                          for(let i = 0; i < data.length; i++) {
-                            console.log(data);
-                            let template = document.querySelector('.commentTemplate');
-                            //template.content.querySelector(".commentAuthor").textContent = data[i].firstName + ' ' + data[i].lastName;
-                            template.content.querySelector('.commentText').textContent = data[i].firstName + ' ' + data[i].lastName + ": " + data[i].commentText;
-                            let clone = document.importNode(template.content, true);
-
-                            commentList.appendChild(clone);
-                          }
-                          $('#projectViewModal').modal();
-
-                        }
-                      });
-                      //display modal
-                    }
-                  });
-
-
-                });
-              }
-          }
-      });
-
-      //send userId and projectId to database when like button is clicked
-      const likeProjectUrl = '/likeProject';
-      const dislikeProjectUrl = '/dislikeProject';
-      $('#likeButton').click(() => {
-      	if($('#likeButton').hasClass('fas')){
-            $.ajax({
-              url: dislikeProjectUrl,
-              type: 'POST',
-              datatype: 'JSON',
-              data: {
-                userId: userId,
-                projectId: projectClickedId
-              },
-              success: (data) => {
-                console.log('disliked');
-                $('#likeButton').removeClass('fas').addClass('far');
-              }
-            });
-      	} else {
-      		$.ajax({
-      			url: likeProjectUrl,
-      			type: 'POST',
-      			datatype: 'JSON',
-      			data: {
-      				userId: userId,
-      				projectId: projectClickedId
-      			},
-      			success: (data) => {
-            		//change appearance of like button
-            		console.log('Liked');
-            		$('#likeButton').removeClass('far').addClass('fas');
-        		}
-    		});
-      	}
-      });
-
-      //send userId's to database when follow button is clicked
+			//send userId's to database when follow button is clicked
 			let userFollowingId = userId;
 			let userFollowedId = profileClickedId;
-      const followPersonUrl = '/followPerson';
-      $('#followUser').click(() => {
-        $.ajax({
-          url: followPersonUrl,
-          type: 'POST',
-          datatype: 'JSON',
-          data: {
-            userFollowingId: userId,
-            userFollowedId: profileClickedId
-          },
-          success: (data) => {
-            //change appearance of follow button
-            console.log('Follow button should change now');
+			const followPersonUrl = '/followPerson';
+			$('#followUser').click(() => {
+				$.ajax({
+					url: followPersonUrl,
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userFollowingId: userId,
+						userFollowedId: profileClickedId
+					},
+					success: (data) => {
+						//change appearance of follow button
+						console.log('Follow button should change now');
 						$('#followUser').html('Unfollow');
-          }
-        });
-      });
+					}
+				});
+			});
 
 			if(userFollowingId == userFollowedId){
 				$('#followUser').text('Unfollow');
 			}
 
 
-      $('#statsTab').click(()=>{
-      	$('.stats').removeClass('hidden');
-      	$('#statsTab').addClass('active');
-      	$('.project, .projects').addClass('hidden');
-      	$('#projectsTab').removeClass('active');
-      });
-      $('#projectsTab').click(()=>{
-      	$('.stats').addClass('hidden');
-      	$('#statsTab').removeClass('active');
-      	$('.projects, .project').removeClass('hidden');
-      	$('#projectsTab').addClass('active');
-      });
-      document.querySelector('#projectTitleModal').text = "Hello";
-      $('#logout').click(() => {
-          sessionStorage.clear();
-          console.log(sessionStorage.getItem('id'));
-      });
+			$('#statsTab').click(()=>{
+				$('.stats').removeClass('hidden');
+				$('#statsTab').addClass('active');
+				$('.project, .projects').addClass('hidden');
+				$('#projectsTab').removeClass('active');
+			});
+			$('#projectsTab').click(()=>{
+				$('.stats').addClass('hidden');
+				$('#statsTab').removeClass('active');
+				$('.projects, .project').removeClass('hidden');
+				$('#projectsTab').addClass('active');
+			});
+			document.querySelector('#projectTitleModal').text = "Hello";
+			$('#logout').click(() => {
+				sessionStorage.clear();
+				console.log(sessionStorage.getItem('id'));
+			});
 
-      const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId
-      $.ajax({
-        url: getProjectsAndLikesUrl,
-        type: 'GET',
-        datatype: 'JSON',
-        success: (data) => {
-          console.log("hello");
-          console.log(data);
-        }
-      });
-      
-      /** When message button is clicked, create new conversation record in database and open messages page with new conversation open */
-      $('#messageButton').click((event) => {
-        const createNewConversationUrl = '/createNewConversation'
-        $.ajax({
-          url: createNewConversationUrl,
-          type: 'POST',
-          datatype: 'JSON',
-          data: {
-            userId: userId,
-            profileClickedId: profileClickedId
-          },
-          success: (data) => {
-            sessionStorage.setItem('mostRecentConversation', profileClickedId);
-            window.location.href = '/messages.html';
-          }
-        });
-      });
+			const getProjectsAndLikesUrl = '/getProjectsAndLikes/' + userId
+			$.ajax({
+				url: getProjectsAndLikesUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log("hello");
+					console.log(data);
+				}
+			});
 
-      /** Save comment to database and append to comment box */
-      $('#post-comment-button').click((event) => {
-        let commentText = $('.comment-text-field').val();
-        console.log(commentText);
-        $.ajax({
-          url: '/postComment',
-          type: 'POST',
-          datatype: 'JSON',
-          data: {
-            userId: userId,
-            projectId: projectClickedId,
-            commentText: commentText
-          },
-          success: (data) => {
-            console.log("HELLO");
-            let template = document.querySelector('.commentTemplate');
-            //template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
-            template.content.querySelector('.commentText').textContent =$('.profileName').text(name) + ": " + commentText;
-            console.log(name);
-            let clone = document.importNode(template.content, true);
+			/** When message button is clicked, create new conversation record in database and open messages page with new conversation open */
+			$('#messageButton').click((event) => {
+				const createNewConversationUrl = '/createNewConversation'
+				$.ajax({
+					url: createNewConversationUrl,
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userId: userId,
+						profileClickedId: profileClickedId
+					},
+					success: (data) => {
+						sessionStorage.setItem('mostRecentConversation', profileClickedId);
+						window.location.href = '/messages.html';
+					}
+				});
+			});
 
-            document.querySelector('.commentList').appendChild(clone);
-          }
-        });
-      });
+			/** Save comment to database and append to comment box */
+			$('#post-comment-button').click((event) => {
+				let commentText = $('.comment-text-field').val();
+				console.log(commentText);
+				$.ajax({
+					url: '/postComment',
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userId: userId,
+						projectId: projectClickedId,
+						commentText: commentText
+					},
+					success: (data) => {
+						console.log("HELLO");
+						let template = document.querySelector('.commentTemplate');
+						//template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
+						template.content.querySelector('.commentText').textContent =$('.profileName').text(name) + ": " + commentText;
+						console.log(name);
+						let clone = document.importNode(template.content, true);
 
-      //redirect to search results page
-      $('#searchButton').click(()=>{
-        let searchKey = '/search/' + $('#search').val();
-        window.location.href = 'search.html?' + searchKey;
-      });
+						document.querySelector('.commentList').appendChild(clone);
+					}
+				});
+			});
 
-      /**get stats of how many users have followed this user to display in stats tab */
-      const getFollowsUrl = '/getFollows/' + profileClickedId;
-      $.ajax({
-        url: getFollowsUrl,
-        type: 'GET',
-        datatype: 'JSON',
-        success: (data) => {
-          console.log(data);
-          let outerArray = [];
-          let innerArray = ['Follows'];
-          let dates = [];
+			//redirect to search results page
+			$('#searchButton').click(()=>{
+				let searchKey = '/search/' + $('#search').val();
+				window.location.href = 'search.html?' + searchKey;
+			});
 
-          for(let i = 0; i < data.length; i++) {
-            if(!dates.includes(data[i].date)) {
-              dates.push(data[i].date);
-              console.log(data[i].date);
-            }
-          }
+			/**get stats of how many users have followed this user to display in stats tab */
+			const getFollowsUrl = '/getFollows/' + profileClickedId;
+			$.ajax({
+				url: getFollowsUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log(data);
+					let outerArray = [];
+					let innerArray = ['Follows'];
+					let dates = [];
 
-          for(let i = 0; i < dates.length; i++) {
-            let dateCount = 0;
-            for (let j = 0; j < data.length; j++) {
-              if(data[j].date == dates[i])
-                dateCount++;
-            }
-            innerArray.push(dateCount);
-          }
-          //innerArray.push(data.length);
+					for(let i = 0; i < data.length; i++) {
+						if(!dates.includes(data[i].date)) {
+							dates.push(data[i].date);
+							console.log(data[i].date);
+						}
+					}
 
-          outerArray.push(innerArray);
+					for(let i = 0; i < dates.length; i++) {
+						let dateCount = 0;
+						for (let j = 0; j < data.length; j++) {
+							if(data[j].date == dates[i])
+							dateCount++;
+						}
+						innerArray.push(dateCount);
+					}
 
-
-          var chart = c3.generate({
-            bindto: '#followChart',
-            data: {
-               columns: outerArray,
-               type: 'bar'
-            },
-            axis: {
-               x: {
-                   label: {
-                       text: 'dates',
-                       position: 'outer-center'
-                   },
-                   type: 'category',
-                   categories: dates,
-                   tick: {
-                       centered: true
-                   }
-               }
-            },
-            bar: {
-               width: {
-                   ratio: 0.25 // this makes bar width 50% of length between ticks
-               }
-               // or
-               //width: 100 // this makes bar width 100px
-            }
-          });
-        }
-      });
-  });
+					outerArray.push(innerArray);
 
 
-</script>
+					var chart = c3.generate({
+						bindto: '#followChart',
+						data: {
+							columns: outerArray,
+							type: 'bar'
+						},
+						axis: {
+							x: {
+								label: {
+									text: 'dates',
+									position: 'outer-center'
+								},
+								type: 'category',
+								categories: dates,
+								tick: {
+									centered: true
+								}
+							}
+						},
+						bar: {
+							width: {
+								ratio: 0.25 // this makes bar width 50% of length between ticks
+							}
+							// or
+							//width: 100 // this makes bar width 100px
+						}
+					});
+				}
+			});
+		});
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	</script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -18,29 +18,31 @@ saved in the database. If it does, the user will be redirected to the home page 
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
+  <!-- The navbar for the login page -->
   <nav class="navbar navbar-expand-lg" id="nav">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">INLOOK</a>
     </div>
   </nav>
 
-  <!-- <section class="container"> -->
+  <!--Username and password fields -->
   <div class="container" id="userLogin">
     <div class="logo">
-     <h1 id="logintext">Login</h1>
-   </div>
-   <div id="error"></div>
-   <div id="userLogin">
-   <div class="input-group span-1"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" placeholder="Email" id="username"></div>
-   <br/><br/>
-   <div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i></span><input type="password" class="form-control" placeholder="Password" id="password"></div>
-   <br/>
- </div>
- <a class="btn btn-primary" id="login" href="#">Log In</a><br/><a href="/signup.html" id="newUser">New user? Create a new account!</a>
-</form>
+      <h1 id="logintext">Login</h1>
+    </div>
+    <div id="error"></div>
+    <div id="userLogin">
+      <div class="input-group span-1"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" placeholder="Email" id="username"></div>
+      <br/><br/>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i></span><input type="password" class="form-control" placeholder="Password" id="password"></div>
+      <br/>
+    </div>
+    <a class="btn btn-primary" id="login" href="#">Log In</a><br/><a href="/signup.html" id="newUser">New user? Create a new account!</a>
+  </form>
 </div>
 <script>
 $(document).ready(()=>{
+  /* Checks if the user enters a username and password */
   $('#login').click(()=>{
     if($('#username').val() && $('#password').val()){
       $.ajax({
@@ -51,12 +53,10 @@ $(document).ready(()=>{
           password: $('#password').val(),
         },
         success: (data) => {
+          /* Check if the user has a user id or if the user exists in the database*/
           if(data.userId){
+            //store user id to a session storage
             sessionStorage.setItem("id",data.userId);
-
-            //connect to sendbird
-
-
             window.top.location = "home.html";
           }
           else{
@@ -74,6 +74,5 @@ $(document).ready(()=>{
   });
 });
 </script>
-
 </body>
 </html>

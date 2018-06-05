@@ -9,19 +9,18 @@ click on a project. Users can search for other users or certain projects in the 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="home.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
-
 		<form>
 			<div class="box" id="navbarSupportedContent">
-				 <div class="container-2">
-				    <input type="search" id="search" />
-            <span class="icon">
-            <button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
-          </span>
-				 </div>
+				<div class="container-2">
+					<input type="search" id="search" />
+					<span class="icon">
+						<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+					</span>
+				</div>
 			</div>
 		</form>
 
@@ -55,18 +54,18 @@ click on a project. Users can search for other users or certain projects in the 
 			<li class="tablink" id="following">FOLLOWING</li>
 		</ul>
 		<div class="tabcontent" id="trendingContent">
-      <div id="projects-list" class="ml-3">
-      </div>
+			<div id="projects-list" class="ml-3">
+			</div>
 
-      <div id="projectTemplate" class="hidden">
-        <div class="project-hover col-sm-5">
-          <img class="project hidden" src="" alt="" width="550px" height="500px" value="">
-          <div class="text">
-            <span id="projectOwner" val=""></span>
-            <i id="likeButton" class="far fa-heart fa-lg" val=""></i>
-          </div>
-        </div>
-      </div>
+			<div id="projectTemplate" class="hidden">
+				<div class="project-hover col-sm-5">
+					<img class="project hidden" src="" alt="" width="550px" height="500px" value="">
+					<div class="text">
+						<span id="projectOwner" val=""></span>
+						<i id="likeButton" class="far fa-heart fa-lg" val=""></i>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -74,207 +73,199 @@ click on a project. Users can search for other users or certain projects in the 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 
-$(document).ready(function() {
+	$(document).ready(function() {
 
-   //get userId from session storage
-  let userId = sessionStorage.getItem('id');
-  //redirect to profile page of logged in user
-  const profileUrl = '/profile'
-  $('#userName').click((e) => {
-    sessionStorage.setItem('profileClickedId', userId);
-    window.location.href = 'profile.html';
-  });
+		//get userId from session storage
+		let userId = sessionStorage.getItem('id');
+		//redirect to profile page of logged in user
+		const profileUrl = '/profile'
+		$('#userName').click((e) => {
+			sessionStorage.setItem('profileClickedId', userId);
+			window.location.href = 'profile.html';
+		});
 
-  /** display popular projects */
-  $('#popular').click((e)=>{
-    //display popular images
-    $('#trending').removeClass('active');
-    $('#following').removeClass('active');
-    $('#popular').addClass('active');
-    const popularRequestUrl = '/popular';
-    console.log('Clicked popular');
-    $.ajax({
-        url: popularRequestUrl,
-        type: 'GET',
-        datatype: 'JSON',
-        success: (data) => {
-            console.log('Received popular pictures');
-            console.log(data);
-            $('#projects-list').empty();
-            $(data).each((e)=>{
-              /** Clone a template and populate clone with data retrieved from database, then append to page **/
-              console.log(data);
-              let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
-              clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
-              clone.find('#likeButton').attr('val',data[e].projectId);
-              $('#projects-list').append(clone);
-            });
-        }
-    });
-  });
+		/** display popular projects */
+		$('#popular').click((e)=>{
+			//display popular images
+			$('#trending').removeClass('active');
+			$('#following').removeClass('active');
+			$('#popular').addClass('active');
+			const popularRequestUrl = '/popular';
+			console.log('Clicked popular');
+			$.ajax({
+				url: popularRequestUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log('Received popular pictures');
+					console.log(data);
+					$('#projects-list').empty();
+					$(data).each((e)=>{
+						/** Clone a template and populate clone with data retrieved from database, then append to page **/
+						console.log(data);
+						let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+						clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+						clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+						clone.find('#likeButton').attr('val',data[e].projectId);
+						$('#projects-list').append(clone);
+					});
+				}
+			});
+		});
 
-  /** display projects from designers followed by user */
-  $('#following').click((e)=>{
-    $('#trending').removeClass('active');
-    $('#popular').removeClass('active');
-    $('#following').addClass('active');
+		/** display projects from designers followed by user */
+		$('#following').click((e)=>{
+			$('#trending').removeClass('active');
+			$('#popular').removeClass('active');
+			$('#following').addClass('active');
 
-    //get userId from sessionStorage
-    let userId = sessionStorage.getItem('id');
+			//get userId from sessionStorage
+			let userId = sessionStorage.getItem('id');
 
-    //display followed images
-    const followingRequestUrl = '/following/' + userId;
-    $.ajax({
-        url: followingRequestUrl,
-        type: 'GET',
-        datatype: 'JSON',
-        success: (data) => {
-            console.log('Received followed pictures');
-            console.log(data);
-            $('#projects-list').empty();
-            $(data).each((e)=>{
-               /** Clone a template and populate clone with data retrieved from database, then append to page **/
-              let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
-              clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
-              clone.find('#likeButton').attr('val',data[e].projectId);
-              $('#projects-list').append(clone);
-            });
-        }
-    });
-  });
+			//display followed images
+			const followingRequestUrl = '/following/' + userId;
+			$.ajax({
+				url: followingRequestUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log('Received followed pictures');
+					console.log(data);
+					$('#projects-list').empty();
+					$(data).each((e)=>{
+						/** Clone a template and populate clone with data retrieved from database, then append to page **/
+						let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+						clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+						clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+						clone.find('#likeButton').attr('val',data[e].projectId);
+						$('#projects-list').append(clone);
+					});
+				}
+			});
+		});
 
-  /** display projects that have the most likes within the last week */
-  $('#trending').click((e)=>{
-    $('#popular').removeClass('active');
-    $('#following').removeClass('active');
-    $('#trending').addClass('active');
+		/** display projects that have the most likes within the last week */
+		$('#trending').click((e)=>{
+			$('#popular').removeClass('active');
+			$('#following').removeClass('active');
+			$('#trending').addClass('active');
 
-    //display trending images
-    const trendingRequestUrl = '/trending';
-    $.ajax({
-        url: trendingRequestUrl,
-        type: 'GET',
-        datatype: 'JSON',
-        success: (data) => {
-            console.log('Received trending pictures');
-            console.log(data);
-            $('#projects-list').empty();
-            $(data).each((e)=>{
-              /** Clone a template and populate clone with data retrieved from database, then append to page **/
-              let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
-              clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-              clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
-              clone.find('#likeButton').attr('val',data[e].projectId);
-              $('#projects-list').append(clone);
-            });
-        }
-    });
-  });
+			//display trending images
+			const trendingRequestUrl = '/trending';
+			$.ajax({
+				url: trendingRequestUrl,
+				type: 'GET',
+				datatype: 'JSON',
+				success: (data) => {
+					console.log('Received trending pictures');
+					console.log(data);
+					$('#projects-list').empty();
+					$(data).each((e)=>{
+						/** Clone a template and populate clone with data retrieved from database, then append to page **/
+						let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+						clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+						clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+						clone.find('#likeButton').attr('val',data[e].projectId);
+						$('#projects-list').append(clone);
+					});
+				}
+			});
+		});
 
-  //logout of account
-  $('#logout').click(() => {
-  	sessionStorage.clear();
-  	console.log(sessionStorage.getItem('id'));
+		//logout of account
+		$('#logout').click(() => {
+			sessionStorage.clear();
+			console.log(sessionStorage.getItem('id'));
 
-  });
+		});
 
-  //check which user is logged in and modify page
-  //perform ajax request to get user name on topbar
-  const getUserProfileUrl = '/loadProfile/' + userId;
-  console.log(getUserProfileUrl);
-  $.ajax({
-    url: getUserProfileUrl,
-    type: 'GET',
-    datatype: 'JSON',
-    success: (data) => {
-      console.log('Recieved user profile info');
-      console.log(data);
-      //$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-      $('#userName li').html(data.firstName + ' ' + data.lastName);
-    }
-  });
+		//check which user is logged in and modify page
+		//perform ajax request to get user name on topbar
+		const getUserProfileUrl = '/loadProfile/' + userId;
+		console.log(getUserProfileUrl);
+		$.ajax({
+			url: getUserProfileUrl,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				console.log('Recieved user profile info');
+				console.log(data);
+				//$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
+				$('#userName li').html(data.firstName + ' ' + data.lastName);
+			}
+		});
 
-  //redirect to project owner profile
-  $('body').on('click','#projectOwner',()=>{
-    sessionStorage.setItem('profileClickedId',$(event.target).attr('val'));
-    window.location.href = '/profile.html';
-  });
+		//redirect to project owner profile
+		$('body').on('click','#projectOwner',()=>{
+			sessionStorage.setItem('profileClickedId',$(event.target).attr('val'));
+			window.location.href = '/profile.html';
+		});
 
-  //default images displayed on page load are trending images
-  const trendingRequestUrl = '/trending';
-  $.ajax({
-      url: trendingRequestUrl,
-      type: 'GET',
-      datatype: 'JSON',
-      success: (data) => {
-          console.log('Received trending pictures');
-          console.log(data);
-          $('#projects-list').empty();
-          $(data).each((e)=>{
-            let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
-            clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
-            clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
-            clone.find('#likeButton').attr('val',data[e].projectId);
-            /*$.ajax({
-              url: '/isProjectLiked/' + sessionStorage.getItem('id') + '/' + data[e].projectId,
-              type: 'GET',
-              datatype: 'JSON',
-              success: (data) => {
+		//default images displayed on page load are trending images
+		const trendingRequestUrl = '/trending';
+		$.ajax({
+			url: trendingRequestUrl,
+			type: 'GET',
+			datatype: 'JSON',
+			success: (data) => {
+				console.log('Received trending pictures');
+				console.log(data);
+				$('#projects-list').empty();
+				$(data).each((e)=>{
+					let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
+					clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
+					clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
+					clone.find('#likeButton').attr('val',data[e].projectId);
+					$('#projects-list').append(clone);
+				});
+			}
+		});
 
-              }
-            });*/
-            $('#projects-list').append(clone);
-          });
-      }
-  });
-
-  //send userId and projectId to database when like button is clicked
-  const likeProjectUrl = '/likeProject';
-  const dislikeProjectUrl = '/dislikeProject';
-  $('body').on('click','#likeButton',() => {
-    let likeTarget = $(event.target);
-   if(likeTarget.hasClass('fas')){
-        $.ajax({
-          url: dislikeProjectUrl,
-          type: 'POST',
-          datatype: 'JSON',
-          data: {
-            userId: userId,
-            projectId: likeTarget.attr('val')
-          },
-          success: (data) => {
-            likeTarget.removeClass('fas').addClass('far');
-          }
-        });
-    } else {
-      $.ajax({
-        url: likeProjectUrl,
-        type: 'POST',
-        datatype: 'JSON',
-        data: {
-          userId: userId,
-          projectId: likeTarget.attr('val')
-        },
-        success: (data) => {
-            //change appearance of like button
-            likeTarget.removeClass('far').addClass('fas');
-            console.log("like");
-        }
-    });
-    }
-  });
+		//send userId and projectId to database when like button is clicked
+		const likeProjectUrl = '/likeProject';
+		const dislikeProjectUrl = '/dislikeProject';
+		$('body').on('click','#likeButton',() => {
+			let likeTarget = $(event.target);
+			if(likeTarget.hasClass('fas')){
+				$.ajax({
+					url: dislikeProjectUrl,
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userId: userId,
+						projectId: likeTarget.attr('val')
+					},
+					success: (data) => {
+						likeTarget.removeClass('fas').addClass('far');
+					}
+				});
+			} else {
+				$.ajax({
+					url: likeProjectUrl,
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userId: userId,
+						projectId: likeTarget.attr('val')
+					},
+					success: (data) => {
+						//change appearance of like button
+						likeTarget.removeClass('far').addClass('fas');
+						console.log("like");
+					}
+				});
+			}
+		});
 
 
-  //redirect to search results page
-  $('#searchButton').click(()=>{
-    if($('#search').val() != ''){
-      let searchKey = '/search/' + $('#search').val();
-      window.location.href = 'search.html?' + searchKey;
-    }
-  });
-});
+		//redirect to search results page
+		$('#searchButton').click(()=>{
+			if($('#search').val() != ''){
+				let searchKey = '/search/' + $('#search').val();
+				window.location.href = 'search.html?' + searchKey;
+			}
+		});
+	});
 </script>
 </body>
 </html>
