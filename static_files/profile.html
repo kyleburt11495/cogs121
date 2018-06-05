@@ -295,6 +295,7 @@ $(document).ready(() => {
       const userId = sessionStorage.getItem('id');
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
+      const name = '';
       console.log("hello" + profileClickedId);
 
 
@@ -306,6 +307,8 @@ $(document).ready(() => {
 			if( userId == profileClickedId) {
 				$("#followUser").hide();
 			}
+  
+      /**get user profile information and populate info panel on left of page with it */
       $('#userId').val(userId);
       console.log("userId " + userId);
       const getUserProfileUrl = '/loadProfile/' + profileClickedId;
@@ -330,6 +333,7 @@ $(document).ready(() => {
 						}
 
 							$('#imagePic').attr("value", data.profilePicture);
+							name = data.firstName + ' ' + data.lastName;
           }
       });
 
@@ -343,7 +347,7 @@ $(document).ready(() => {
       	}
       });
 
-
+      /** Get projects created by user from database and populate templates with data Also get info for data visualization */
       const getUserProjectsUrl = '/loadProjects/' + profileClickedId;
       $.ajax({
           url: getUserProjectsUrl,
@@ -361,7 +365,8 @@ $(document).ready(() => {
                   template.content.querySelector('#projectId').textContent = data[i].projectId;
 
                   const currentProjectTitle = data[i].projectTitle;
-                  //query for how many likes this project has and store in array
+                  
+                  /** Get amount of likes each project has from database and display in stats tab */
                   const getAmountOfLikesUrl = 'getAmountOfLikes/' + data[i].projectId;
                   $.ajax({
                     url: getAmountOfLikesUrl,
@@ -410,7 +415,7 @@ $(document).ready(() => {
 
                 //data visualization
 
-
+                /** If a picture is clicked, populate model with project info and make modal visible */
                 $(".design-pics").click(function(event){
                   //clear
                   document.querySelector('.commentList').innerHTML = "";
@@ -443,7 +448,7 @@ $(document).ready(() => {
                       else {
                         $('#likeButton').removeClass('fas').addClass('far');
                       }
-
+                      
                       $.ajax({
                         url: '/getComments/' + $(projectDiv).find('#projectId').text(),
                         type: 'GET',
@@ -563,7 +568,8 @@ $(document).ready(() => {
           console.log(data);
         }
       });
-
+      
+      /** When message button is clicked, create new conversation record in database and open messages page with new conversation open */
       $('#messageButton').click((event) => {
         const createNewConversationUrl = '/createNewConversation'
         $.ajax({
@@ -581,6 +587,7 @@ $(document).ready(() => {
         });
       });
 
+      /** Save comment to database and append to comment box */
       $('#post-comment-button').click((event) => {
         let commentText = $('.comment-text-field').val();
         console.log(commentText);
@@ -597,7 +604,8 @@ $(document).ready(() => {
             console.log("HELLO");
             let template = document.querySelector('.commentTemplate');
             //template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
-            template.content.querySelector('.commentText').textContent =$('.profileName').html() + ": " + commentText;
+            template.content.querySelector('.commentText').textContent =$('.profileName').text(name) + ": " + commentText;
+            console.log(name);
             let clone = document.importNode(template.content, true);
 
             document.querySelector('.commentList').appendChild(clone);
@@ -605,12 +613,13 @@ $(document).ready(() => {
         });
       });
 
-          //redirect to search results page
+      //redirect to search results page
       $('#searchButton').click(()=>{
         let searchKey = '/search/' + $('#search').val();
         window.location.href = 'search.html?' + searchKey;
       });
 
+      /**get stats of how many users have followed this user to display in stats tab */
       const getFollowsUrl = '/getFollows/' + profileClickedId;
       $.ajax({
         url: getFollowsUrl,

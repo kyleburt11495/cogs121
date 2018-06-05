@@ -20,10 +20,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage: storage});
-
 const bodyParser = require('body-parser');
-
-
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('users.db');
 
@@ -31,6 +28,7 @@ app.use(express.static('static_files'));
 //to insert new accounts
 app.use(bodyParser.urlencoded({extended: true})); //hook to the app
 
+//start server
 app.listen(3000, () => {
   console.log('Server started');
 });
@@ -58,15 +56,7 @@ app.post('/uploadFile', upload.single('image'), (req, res) => {
       if(err) {
         console.err(err.message);
       }
-      /**
-      db.get('SELECT * FROM projects WHERE projectId = (SELECT MAX(projectId))', (err, row) => {
-      if(err) {
-      console.err(err.message);
-    }
-    let lastInsertedId = row.projectId;
-    console.log(lastInsertedId);
-  });
-  */
+      
   return res.redirect('/profile.html');
 });
 });
@@ -142,6 +132,7 @@ app.post('/dislikeProject', (req, res) => {
   });
 });
 
+// check if project is liked by user
 app.get('/isProjectLiked/:userId/:projectId', (req, res) => {
   const userId = req.params.userId;
   const projectId = req.params.projectId;
@@ -161,6 +152,7 @@ app.get('/isProjectLiked/:userId/:projectId', (req, res) => {
   });
 });
 
+// follow another user
 app.post('/followPerson', (req, res) => {
   db.run("INSERT INTO followed_people(userFollowingId, userFollowedId, date) VALUES($userFollowingId, $userFollowedId, julianday('now'))", {
     $userFollowingId: req.body.userFollowingId,
@@ -173,7 +165,7 @@ app.post('/followPerson', (req, res) => {
   });
 });
 
-
+// get trending projects for homepage
 app.get('/trending', (req, res) => {
   db.all("SELECT likes.projectId, projects.projectTitle, projects.projectDescription, projects.mainImg, projects.userId, users_account.firstName, users_account.lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId WHERE likes.date BETWEEN julianday('now', '-7 days') AND julianday('now') GROUP BY likes.projectId ORDER BY count(*)", (err, row)=> {
     if(err) {
@@ -185,6 +177,7 @@ app.get('/trending', (req, res) => {
   });
 });
 
+// get popular projects for homepage
 app.get('/popular', (req, res) =>{
   db.all("SELECT likes.projectId AS projectId, projects.projectTitle AS projectTitle, projects.projectDescription AS projectDescription, projects.mainImg AS mainImg, projects.userId AS userId, users_account.firstName AS firstName, users_account.lastName AS lastName, COUNT(*) FROM likes INNER JOIN projects ON projects.projectId = likes.projectId INNER JOIN users_account ON projects.userId = users_account.userId GROUP BY likes.projectId ORDER BY COUNT(*) DESC", (err, row) => {
     if (err) {
@@ -197,6 +190,7 @@ app.get('/popular', (req, res) =>{
   });
 });
 
+// get projects of people following for homepage
 app.get('/following/:userId', (req, res) =>{
   //res.send(database);
   let userId = req.params.userId;
@@ -223,6 +217,7 @@ app.get('/getFollows/:userId', (req, res) => {
   });
 });
 
+// get user information to load profile
 app.get('/loadProfile/:userid', (req, res) => {
   const userId = req.params.userid;
   console.log(userId);
@@ -362,6 +357,7 @@ app.get('/loadProjects/:userid', (req, res) => {
   });
 });
 
+// get projects and users matching search key
 app.get('/search/:searchKey',(req,res) => {
   const key = '%' + req.params.searchKey + '%';
   console.log("BACK " + req.params.searchKey);
@@ -395,6 +391,7 @@ app.post('/users', (req,res) => {
   });
 });
 
+// create user account
 app.post('/signup', (req, res)=>{
   // let match = false;
   db.all('SELECT email from users_account', (err,row)=> {

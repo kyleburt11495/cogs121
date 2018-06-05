@@ -1,4 +1,4 @@
-<!-- Main page of the web application and consists of a list of all the projects. User can view trending,
+<!-- HOME.HTML: Main page of the web application and consists of a list of all the projects. User can view trending,
 following and popular projects from the tabs at the top. The navigation bar links to the user's profile,
 messages page and will allow you to logout. User can 'like' and 'comment' on other users' projects when they
 click on a project. Users can search for other users or certain projects in the search bar. -->
@@ -13,10 +13,6 @@ click on a project. Users can search for other users or certain projects in the 
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" id="nav">
-		<!-- <a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button> -->
 
 		<form>
 			<div class="box" id="navbarSupportedContent">
@@ -28,14 +24,6 @@ click on a project. Users can search for other users or certain projects in the 
 				 </div>
 			</div>
 		</form>
-
-		<!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search..." id="searchValue">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
-				</span>
-			</div>  -->
 
 		<div class="navbar-header">
 			<a class="navbar-brand" href="home.html">INLOOK</a>
@@ -54,17 +42,6 @@ click on a project. Users can search for other users or certain projects in the 
 				<a class="menu-options" href="messages.html"><li>Messages</li></a>
 				<a id="logout" class="menu-options" href="login.html"><li>Logout</li></a>
 			</ul>
-			<!-- <ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i>User</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-				</li>
-				<li class="nav-item">
-					<a href="login.html" class="nav-link" id="logout"><i class="fas fa-sign-out-alt"></i></a>
-				</li>
-			</ul>-->
 
 		</div>
 	</nav>
@@ -78,16 +55,7 @@ click on a project. Users can search for other users or certain projects in the 
 			<li class="tablink" id="following">FOLLOWING</li>
 		</ul>
 		<div class="tabcontent" id="trendingContent">
-			<!-- <h4 class="category-title">STORIES</h4>
-			<div id="stories">
-				<img class="story img-responsive" id="story1" alt="story1" src="story1.jpg"/>
-				<img class="story img-responsive" id="story2" alt="story2" src="story2.jpg"/>
-				<img class="story img-responsive" id="story3" alt="story3" src="story3.jpg"/>
-				<img class="story img-responsive" id="story4" alt="story4" src="story4.jpg"/>
-				<img class="story img-responsive" id="story5" alt="story5" src="story5.jpg"/>
-			</div>
-			<h4 class="category-title">PROJECTS</h4> -->
-      <div id="projects-list">
+      <div id="projects-list" class="ml-3">
       </div>
 
       <div id="projectTemplate" class="hidden">
@@ -108,29 +76,6 @@ click on a project. Users can search for other users or certain projects in the 
 
 $(document).ready(function() {
 
-	/*$('#searchButton').click( () =>{
-		// let searchValue = $('#searchValue').val().toLowerCase();
-		let searchValue = $('#searchValue').val();
-		let i = searchValue.indexOf(' ');
-		let firstName = searchValue.slice(0,i).trim();
-		let lastName = searchValue.slice(i+1, searchValue.length).trim();
-		console.log(searchValue);
-		console.log(firstName);
-		console.log(lastName);
-		$.ajax({
-			url: 'searchForUsers/' + searchValue,
-			type: 'GET',
-			datatype: 'JSON',
-		//	data: {firstName: firstName, lastName:lastName},
-			success: (data) =>{
-				const userSearchId = data.userId;
-                console.log("hsss" + userSearchId);
-				sessionStorage.setItem('profileClickedId', userSearchId);
-				window.location.href = 'profile.html';
-			}
-		});
-	});*/
-
    //get userId from session storage
   let userId = sessionStorage.getItem('id');
   //redirect to profile page of logged in user
@@ -140,7 +85,7 @@ $(document).ready(function() {
     window.location.href = 'profile.html';
   });
 
-
+  /** display popular projects */
   $('#popular').click((e)=>{
     //display popular images
     $('#trending').removeClass('active');
@@ -157,6 +102,7 @@ $(document).ready(function() {
             console.log(data);
             $('#projects-list').empty();
             $(data).each((e)=>{
+              /** Clone a template and populate clone with data retrieved from database, then append to page **/
               console.log(data);
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
@@ -168,6 +114,7 @@ $(document).ready(function() {
     });
   });
 
+  /** display projects from designers followed by user */
   $('#following').click((e)=>{
     $('#trending').removeClass('active');
     $('#popular').removeClass('active');
@@ -187,6 +134,7 @@ $(document).ready(function() {
             console.log(data);
             $('#projects-list').empty();
             $(data).each((e)=>{
+               /** Clone a template and populate clone with data retrieved from database, then append to page **/
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
               clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
@@ -197,6 +145,7 @@ $(document).ready(function() {
     });
   });
 
+  /** display projects that have the most likes within the last week */
   $('#trending').click((e)=>{
     $('#popular').removeClass('active');
     $('#following').removeClass('active');
@@ -213,6 +162,7 @@ $(document).ready(function() {
             console.log(data);
             $('#projects-list').empty();
             $(data).each((e)=>{
+              /** Clone a template and populate clone with data retrieved from database, then append to page **/
               let clone = $('#projectTemplate').contents().clone().attr('src',data[e].mainImg);
               clone.find('img').attr('src',data[e].mainImg).removeClass('hidden');
               clone.find('#projectOwner').html(data[e].firstName + ' ' + data[e].lastName).attr('val',data[e].userId);
@@ -320,7 +270,7 @@ $(document).ready(function() {
   //redirect to search results page
   $('#searchButton').click(()=>{
     if($('#search').val() != ''){
-      let searchKey = '/search/' + $('#search').val(); 
+      let searchKey = '/search/' + $('#search').val();
       window.location.href = 'search.html?' + searchKey;
     }
   });
