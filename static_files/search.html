@@ -1,5 +1,6 @@
 <!-- SEARCH.HTML: This is the search results page that displays all matching results from the user search input, including users associated with the search key and all associated projects (based on project title and description). The user and project results are created via templates. Clicking on a user result will direct to their profile page. Clicking on the message next to their name will redirect to messages page and open a conversation. Clicking on a project result will open a modal that displays the project name, project owner, and project description. On the modal, users can also like the project by clicking on the heart icon. Users can view the profile of a project owner by clicking their name on the project result card. -->
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -296,7 +297,6 @@
 					$('#projectOwnerModal').html(data[0].firstName + " " + data[0].lastName);
 					$('#projectImgModal').attr('src',data[0].mainImg);
 					$('#projectDescriptionModal').html(data[0].projectDescription);
-
 					/* check if project is liked by logged in user */
 					const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projId;
 					$.ajax({

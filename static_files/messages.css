@@ -1,3 +1,6 @@
+/* This file contains the style sheet for the messages.html.  */
+
+
 *{
 	font-family: Lato;
 }
@@ -508,4 +511,8 @@ input{
 	color: white;
 	border: none;
 	align-content: margin-right;
+}
+
+.active {
+  background-color: #F3F3F3;
 }

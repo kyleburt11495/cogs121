@@ -1,3 +1,5 @@
+/* This file contains all the styling for the signup page */
+
 *{
   font-family: Lato;
 }
@@ -141,7 +143,7 @@ h4 {
 
 .form-control{
   border: none;
-  border-radius: 0px; 
+  border-radius: 0px;
 }
 
 #designer, #customer{
