@@ -118,7 +118,7 @@ Messaging is implemented using sendbird API -->
 		let currentConversationIndex;
 
 
-
+        /** connect to sendbird API and set up listeners and channels for conversations **/
 		sb.connect(userId, (user, error) => {
 			if (error) {
 				console.error(error.message);
@@ -168,9 +168,7 @@ Messaging is implemented using sendbird API -->
 								const template = document.querySelector('.person-template');
 								const peopleList = document.querySelector('.people-list');
 								template.content.querySelector('.personId').textContent = otherUserId;
-								//CHANGE LATER TO USER'S NAME
 								template.content.querySelector('.person-name-1').textContent = firstName + ' ' + lastName;
-								//CHANGE LATER TO LAST MESSAGE IN CONVERSATION
 								template.content.querySelector('.lastMessage').textContent = "";
 								//clone template and append to people-list
 								let clone = document.importNode(template.content, true);
@@ -199,12 +197,13 @@ Messaging is implemented using sendbird API -->
 									console.log('did not match');
 								}
 								sb.addChannelHandler(1, channelHandler);
+                                
+                                /** Click listener for switching between conversations **/
 								//when sidebar is clicked, get correct channel and display chat history
 								$('.person').unbind();
 								$('.person').click((event) => {
                                     $('.people-list').children().removeClass('active');
 									$('.chat-messages').html("");
-                                    //clickedPersonDiv.removeClass('active');
 									console.log("Clicked person");
 									//get clicked conversation
 									let clickedDiv = $(event.target);
@@ -220,7 +219,8 @@ Messaging is implemented using sendbird API -->
 									//access channel of other user
 									messageChannel = currentConversation.otherUserId;
 
-									//access chat history of channel
+                                    
+									/** access chat history of channel */
 									let messageListQuery = messageChannel.createPreviousMessageListQuery();
 									messageListQuery.load(3, true, (messageList, err) => {
 										if(err) {
@@ -228,6 +228,8 @@ Messaging is implemented using sendbird API -->
 											return;
 										}
 										console.log(messageList);
+                                        
+                                        /** Populate chat window with messages from past */
 										//loop through messageList, get messages and fill and clone template with message things
 										let chatMessagesDiv = document.querySelector('.chat-messages');
 										for(let i = messageList.length-1; i >= 0; i--) {
