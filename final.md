@@ -14,7 +14,7 @@ Sumedha: Took care of all the logistical work for all the milestones including c
 
 Lynley: Implemented search functionality and created templates to load projects and profiles for both the home page and the search results page. Implemented hovering functionality on homepage and display of project modals with correct redirection to project owner profiles.
 
-Vincent: Implemented sign up and login. Implemented the edit profile modal for the end user to edit their bio and upload a profile picture. Assisted with both the front-end and backend development of the web application. Worked with sumedha with styling the pages in the web application and minor application.
+Vincent: Implemented sign up and login. Implemented the edit profile modal for the end user to edit their bio and upload a profile picture. Assisted with both the front-end and backend development of the web application. Worked with sumedha with styling the pages and minor application.
 
 Kyle: Implemented most of the back end code. Designed database model. Implemented data visualization, file upload, following designers, liking projects. Used sendbird API to implement messaging. Did some front end HTML design
 
