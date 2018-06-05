@@ -1,4 +1,4 @@
-
+<!-- SEARCH.HTML: This is the search results page that displays all matching results from the user search input, including users associated with the search key and all associated projects (based on project title and description). The user and project results are created via templates. Clicking on a user result will direct to their profile page. Clicking on the message next to their name will redirect to messages page and open a conversation. Clicking on a project result will open a modal that displays the project name, project owner, and project description. On the modal, users can also like the project by clicking on the heart icon. Users can view the profile of a project owner by clicking their name on the project result card. -->
 
 <!DOCTYPE html>
 <html>
@@ -12,53 +12,27 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
-	<!-- <nav class="navbar navbar-expand-lg" id="nav">
-		<a class="navbar-brand" href="home.html"><img src="inlook.png" class="img-responsive" alt="brandlogo" id="logoImg"/></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search..." id="search">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="searchButton"><i class="fas fa-search"></i></button>
-				</span>
-			</div>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a id="userName" class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i>User</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="messages.html"><i class="far fa-envelope fa-lg"></i></a>
-				</li>
-				|
-				<li class="nav-item">
-					<a href="login.html" class="nav-link" id="logout"><i class="fas fa-sign-out-alt"></i></a>
-				</li>
-			</ul>
-		</div>
-	</nav> -->
+	<!-- Nav Bar -->
 	<nav class="navbar navbar-expand-lg" id="nav">
-
+		<!-- Search -->
 		<form>
 			<div class="box" id="navbarSupportedContent">
-				 <div class="container-2">
-				 	<input type="search" id="search" />
-				    <span class="icon">
+				<div class="container-2">
+					<input type="search" id="search" />
+					<span class="icon">
 						<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
 					</span>
-				    <!-- <input type="search" id="search" /> -->
-				 </div>
+				</div>
 			</div>
 		</form>
-
+		<!-- Brand Header -->
 		<div class="navbar-header">
 			<a class="navbar-brand" href="home.html">INLOOK</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 		</div>
-
+		<!-- Nav Bar Menu -->
 		<div id="menuToggle">
 			<input type="checkbox"/>
 			<span></span>
@@ -71,11 +45,14 @@
 			</ul>
 		</div>
 	</nav>
-
+	<!-- Search Results Title -->
 	<h2 id="resultsTitle">RESULTS FOR<span id="searchFor"><span></h2>
 	<div class="error hidden"></div>
+	<!-- Profile Results appended here -->
 	<div id="profileResults"></div>
+	<!-- Project Results appended here -->
 	<div id="projectResults"></div>
+	<!-- Profile Result Template -->
 	<div class="profileTemplate hidden">
 		<div class="profile col-sm-4">
 			<img class="profilePic disabled" id="picprof" src="" height="70px" width="70px">
@@ -87,6 +64,7 @@
 			<i class="far fa-envelope fa-lg" id="message"></i>
 		</div>
 	</div>
+	<!-- Project Result Template -->
 	<div class="projectTemplate hidden">
 		<div class="project card col-sm-5">
 			<img src="" height="300px" width="100%" class="cardImg" id="searchImg"/>
@@ -95,7 +73,6 @@
 				<span class="projectTitle"></span><br>
 				<span class="projectOwner"></span>
 				<input type="hidden" value="" id="ownerId"></input>
-				<!--<i class="far fa-heart fa-lg likeButton" value=""></i>-->
 			</div>
 		</div>
 	</div>
@@ -127,94 +104,108 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 	$(document).ready(()=>{
-        const dislikeProjectUrl= '/dislikeProject';
-        const likeProjectUrl = '/likeProject';
-        let projId;
+		const dislikeProjectUrl= '/dislikeProject';
+		const likeProjectUrl = '/likeProject';
+		let projId;
 		const userId = sessionStorage.getItem('id');
+
+		/* Load the logged in userName in navbar */
 		const getUserProfileUrl = '/loadProfile/' + userId;
 		$.ajax({
 			url: getUserProfileUrl,
 			type: 'GET',
 			datatype: 'JSON',
 			success: (data) => {
-				console.log('Recieved user profile info');
-				console.log(data);
 				$('#userName')[0].childNodes[1].nodeValue = ' ' + data.firstName + ' ' + data.lastName;
-				$('.profileName').html(data.firstName + ' ' + data.lastName);
 			}
 		});
 
+		/* Redirect to profile page of logged in user */
 		$('#userName').click(()=>{
 			sessionStorage.setItem('profileClickedId',sessionStorage.getItem('id'));
 			window.location.href = 'profile.hmtl';
 		});
+
+		/* Get search key from url and decode to handle spaces */
 		const searchKey = decodeURIComponent(window.location.search.substr(1));
 		const key = decodeURIComponent(window.location.search.substr(9));
-		console.log("SEARCH " + searchKey);
+		/* Get search results on page load */
 		$('#searchFor').html(' "' + key + '"');
 		$.ajax({
 			url: searchKey,
 			type: 'GET',
 			datatype: 'JSON',
 			success: (data) => {
+				/* If matching results */
 				if(data.length > 0){
-				$('#profileResults').empty();
-				$('#projectResults').empty();
-				let users = {};
-				$(data).each((e)=>{
-					if(data[e].projectId){
-						let clone = $('.projectTemplate').contents().clone();
-						clone.find('img').attr('src',data[e].mainImg);
-						clone.find('.projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
-						clone.find('.projectTitle').html(data[e].projectTitle);
-						clone.find('#ownerId').attr('value',data[e].userId);
-						clone.find('#projectId').attr('value',data[e].projectId);
-						clone.find('.likeButton').attr('value',data[e].projectId);
-						clone.appendTo("#projectResults");
-						if(!(data[e].userId in users)){
-							users[data[e].userId] = data[e];
-						}
-					} else {
-						if(!(data[e].userId in users)){
-							users[data[e].userId] = data[e];
-						}
-					}
-				});
-				Object.keys(users).forEach((e)=>{
-					if(users[e].firstName.toUpperCase().search(key.toUpperCase()) || users[e].lastName.toUpperCase().search(key.toUpperCase())){
-						let clone = $('.profileTemplate').contents().clone();
-						clone.find('#userId').attr('value',users[e].userId);
-						clone.find('.name').html(users[e].firstName + ' ' + users[e].lastName);
-						if(users[e].userId == sessionStorage.getItem('id')){
-							clone.find('#message').addClass('hidden');
-						}
-						if(users[e].profilePicture == null){
-							clone.find('.profilePic').attr('src','https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png');
+					$('#profileResults').empty();
+					$('#projectResults').empty();
+					let users = {};
+					$(data).each((e)=>{
+						/* If result has a projectId, clone the project template and insert project information */
+						if(data[e].projectId){
+							let clone = $('.projectTemplate').contents().clone();
+							clone.find('img').attr('src',data[e].mainImg);
+							clone.find('.projectOwner').html(data[e].firstName + ' ' + data[e].lastName);
+							clone.find('.projectTitle').html(data[e].projectTitle);
+							clone.find('#ownerId').attr('value',data[e].userId);
+							clone.find('#projectId').attr('value',data[e].projectId);
+							clone.find('.likeButton').attr('value',data[e].projectId);
+							/* Add to project results */
+							clone.appendTo("#projectResults");
+							/* Add project info to users if project owner not already in users */
+							if(!(data[e].userId in users)){
+								users[data[e].userId] = data[e];
+							}
+							/* If no projectId, add user info to users if user not already in users */
 						} else {
-							clone.find('.profilePic').attr('src', users[e].profilePicture);
+							if(!(data[e].userId in users)){
+								users[data[e].userId] = data[e];
+							}
 						}
-						$('#profileResults').append(clone);
-					}
-				});
+					});
+					/* For each user in users, create profile template if first or last name contains search key */
+					Object.keys(users).forEach((e)=>{
+						if(users[e].firstName.toUpperCase().search(key.toUpperCase()) || users[e].lastName.toUpperCase().search(key.toUpperCase())){
+							let clone = $('.profileTemplate').contents().clone();
+							clone.find('#userId').attr('value',users[e].userId);
+							clone.find('.name').html(users[e].firstName + ' ' + users[e].lastName);
+							// if profile of logged in user, don't give messaging option
+							if(users[e].userId == sessionStorage.getItem('id')){
+								clone.find('#message').addClass('hidden');
+							}
+							if(users[e].profilePicture == null){
+								clone.find('.profilePic').attr('src','https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png');
+							} else {
+								clone.find('.profilePic').attr('src', users[e].profilePicture);
+							}
+							/* Add to profile results */
+							$('#profileResults').append(clone);
+						}
+					});
 				}
+				/* If no matching results */
 				else {
 					$('.error').html("Oops we couldn't find anything!").removeClass("hidden");
 				}
 			}
 		});
+
+		/* Add search to url and reload page if search input */
 		$('#searchButton').click(()=>{
-			console.log($('#search').val());
 			if($('#search').val() != ''){
 				window.location.href = 'search.html?/search/' + $('#search').val();
 			}
 		});
+
+		/* Redirect to project owner profile page when click on project result */
 		$('body').on('click','.projectOwner',()=>{
 			sessionStorage.setItem('profileClickedId',$(event.target).next().val() );
 			window.location.href = '/profile.html';
 		});
 
+		/* Redirect to messages and open conversation when click on messages in profile template */
 		$('body').on('click','#message',(e)=>{
-			console.log("messages");
 			e.stopPropagation();
 			let id = $(event.target).prev().find('#userId').attr('value');
 			console.log(id);
@@ -234,6 +225,7 @@
 			});
 		});
 
+		/* Redirect to correct user profile from profile results*/
 		$('body').on('click','.profile',()=>{
 			console.log(event.target);
 
@@ -245,54 +237,47 @@
 				id = $(event.target).siblings('#userId').attr('value');
 			}
 
-			console.log("ID " + id);
 			sessionStorage.setItem('profileClickedId',id);
 			window.location.href = '/profile.html';
 		});
-      
-        $('body').on('click', '#likeButton', (event) => {
-          console.log(projId);
-          if($('#likeButton').hasClass('fas')){
-            $.ajax({
-              url: dislikeProjectUrl,
-              type: 'POST',
-              datatype: 'JSON',
-              data: {
-                userId: userId,
-                projectId: projId
-              },
-              success: (data) => {
-                console.log('disliked');
-                $('#likeButton').removeClass('fas').addClass('far');
-              }
-            });
-            } 
-            else {
-              $.ajax({
-                  url: likeProjectUrl,
-                  type: 'POST',
-                  datatype: 'JSON',
-                  data: {
-                      userId: userId,
-                      projectId: projId
-                  },
-                  success: (data) => {
-                      //change appearance of like button
-                      console.log('Liked');
-                      $('#likeButton').removeClass('far').addClass('fas');
-                  }
-              });
-            }
-        });
 
-		$('#projectViewModal').on('hidden.bs.modal',()=>{
-			if($('.modal-footer .likeButton').hasClass('fas')){
-				$('.card-body .likeButton').removeClass('far').addClass('fas');
-			} else {
-				$('.card-body .likeButton').removeClass('fas').addClass('far');
+		/*  Like or dislike project when click on the like button */
+		$('body').on('click', '#likeButton', (event) => {
+			/* If project already liked */
+			if($('#likeButton').hasClass('fas')){
+				$.ajax({
+					url: dislikeProjectUrl,
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userId: userId,
+						projectId: projId
+					},
+					success: (data) => {
+		              	//change appearance of like button (empty heart)
+		              	$('#likeButton').removeClass('fas').addClass('far');
+		              }
+		          });
+			} 
+			/* If project not liked */
+			else {
+				$.ajax({
+					url: likeProjectUrl,
+					type: 'POST',
+					datatype: 'JSON',
+					data: {
+						userId: userId,
+						projectId: projId
+					},
+					success: (data) => {
+		                      //change appearance of like button (full heart)
+		                      $('#likeButton').removeClass('far').addClass('fas');
+		                  }
+		              });
 			}
 		});
 
+		/*  Open modal when click on project */
 		$('body').on('click','.project',()=>{
 			projId = $(event.target).find('#projectId').val();
 			console.log($(event.target).next().children('#projectOwner'));
@@ -300,6 +285,7 @@
 			if(!projId){
 				projId = $(event.target).next().children('#projectId').val();
 			}
+			/* Get project information to add to project modal */
 			$.ajax({
 				url: '/getProject/' + projId,
 				type: 'GET',
@@ -310,36 +296,29 @@
 					$('#projectOwnerModal').html(data[0].firstName + " " + data[0].lastName);
 					$('#projectImgModal').attr('src',data[0].mainImg);
 					$('#projectDescriptionModal').html(data[0].projectDescription);
-                  
-                    const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projId;
-                    $.ajax({
-                      url: isProjectLikedUrl,
-                      type: 'GET',
-                      datatype: 'JSON',
-                      success: (data) => {
-                        console.log('Checked if disliked or not');
-                        //if data exists then project was disliked
-                        if (data) {
-                          //set appearance of like button to already liked
-                          $('#likeButton').removeClass('far').addClass('fas');
-                        }
-                        else {
-                          $('#likeButton').removeClass('fas').addClass('far');
-                        }
-                        $('#projectViewModal').modal();
-                      }
-                    });
+
+					/* check if project is liked by logged in user */
+					const isProjectLikedUrl = '/isProjectLiked/' + userId + '/' + projId;
+					$.ajax({
+						url: isProjectLikedUrl,
+						type: 'GET',
+						datatype: 'JSON',
+						success: (data) => {
+		                	//if data exists then project was disliked
+		                    if (data) {
+		                    	//set appearance of like button according to whether liked or not
+		                    	$('#likeButton').removeClass('far').addClass('fas');
+		                    } else {
+		                      	$('#likeButton').removeClass('fas').addClass('far');
+		                    }
+		                    // open modal
+		                    $('#projectViewModal').modal();
+		                }
+		            });
 				}
 			});
-			if($(event.target).find('.likeButton').hasClass('fas')){
-				$('.modal-footer .likeButton').removeClass('far').addClass('fas');
-			} else {
-				$('modal-footer .likeButton').removeClass('fas').addClass('far');
-			}
-
-			$('#projectViewModal').modal();
 		});
 	});
-	</script>
+</script>
 </body>
 </html>

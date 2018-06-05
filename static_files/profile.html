@@ -291,6 +291,7 @@ $(document).ready(() => {
       const userId = sessionStorage.getItem('id');
       //get id of viewed profile
       const profileClickedId = sessionStorage.getItem('profileClickedId');
+      const name = '';
       console.log("hello" + profileClickedId);
 
 
@@ -326,6 +327,7 @@ $(document).ready(() => {
 						}
 
 							$('#imagePic').attr("value", data.profilePicture);
+							name = data.firstName + ' ' + data.lastName;
           }
       });
 
@@ -593,7 +595,8 @@ $(document).ready(() => {
             console.log("HELLO");
             let template = document.querySelector('.commentTemplate');
             //template.content.querySelector(".commentAuthor").textContent = $('.profileName').html();
-            template.content.querySelector('.commentText').textContent =$('.profileName').html() + ": " + commentText;
+            template.content.querySelector('.commentText').textContent =$('.profileName').text(name) + ": " + commentText;
+            console.log(name);
             let clone = document.importNode(template.content, true);
 
             document.querySelector('.commentList').appendChild(clone);

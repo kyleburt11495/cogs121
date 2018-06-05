@@ -1,7 +1,10 @@
+/* SEARCH.CSS: This file contains all of the styling for the search results page which is found in search.html */
+
 *{
 	font-family: Lato;
 }
 
+/* MENU IN NAVBAR */
 .menu-options{
 	text-decoration: none;
 	color: #9E9E9E;
@@ -58,8 +61,6 @@
 	opacity 0.55s ease;
 }
 
-
-
 #menuToggle span:first-child
 {
 	transform-origin: 0% 0%;
@@ -91,7 +92,6 @@
 	opacity: 1;
 	transform: rotate(-45deg) translate(0, -1px);
 }
-
 
 #menu
 {
@@ -128,6 +128,7 @@ color: #ECECEC;
 	opacity: 1;
 }
 
+/* NAVBAR */
 .navbar-header {
 	float: left;
 	padding: 15px;
@@ -152,21 +153,6 @@ color: #ECECEC;
 	height: 110px;
 	box-shadow: 0px 2px 20px #E6E6E6;
 }
-
-/* .navbar-brand {
-margin-left: 0.3rem;
-max-width: 7rem;
-padding: 0;
-}
-
-.img-responsive{
-width: 4rem;
-}
-
-#logoImg {
-width: 4.3rem;
-margin: 0.1rem;
-}*/
 
 .search {
 	float: right;
@@ -200,8 +186,6 @@ margin: 0.1rem;
 	margin-left: 60px;
 	border-style: none;
 	color: black;
-
-
 	-webkit-transition: width .55s ease;
 	-o-transition: width .55s ease;
 	transition: width .55s ease;
@@ -261,31 +245,6 @@ margin: 0.1rem;
 	padding: 0px;
 }
 
-/* #nav {
-	background-color: #212121;
-  padding: 0;
-  width: 100%;
-}
-
-.navbar-brand {
-	margin-left: 0.3rem;
-  max-width: 7rem;
-  padding: 0;
-}
-
- .img-responsive{
-  width: 4rem;
-}
-#logoImg {
-	width: 4.3rem;
-	margin: 0.1rem;
-}
-
-#search {
-	float: right;
-	width: 15%;
-	margin-right: 1rem;
-} */
 
 #navbarSupportedContent {
 	float: right;
@@ -367,9 +326,6 @@ margin: 0.1rem;
 	float: right;
 }
 
-/* #picprof{
-	padding-top: 10px;
-} */
 
 .name{
 	padding-left: 20px;
